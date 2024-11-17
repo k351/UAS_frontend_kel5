@@ -1,0 +1,249 @@
+.product {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 80px 40px 40px;
+    background-color: var(--primary-color);
+}
+
+.compare-list-container {
+    position: fixed;
+    left: 15px;
+    top: 100px;
+    padding: 30px 40px;
+    width: 350px;
+    max-height: 50vw;
+    display: none;
+    background-color: var(--primary-color);
+    z-index: 8;
+    border: 1px solid var(--tertiary-color);
+    border-radius: 10px;
+}
+
+.compare-list-container i {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    color: var(--tertiary-color);
+    cursor: pointer;
+}
+
+.compare-list-container .compare-list {
+    list-style: none;
+    font-size: 16px;
+    font-weight: bolder;
+    color: var(--tertiary-color);
+    overflow-y: scroll;
+}
+
+.compare-list li {
+    cursor: pointer;
+    padding: 2px 0;
+}
+
+.product-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    z-index: 7;
+}
+
+.product-container .main-product {
+    position: relative;
+    width: 30%;
+}
+
+.main-product img {
+    width: 100%;
+    height: auto;
+}
+
+.main-product button {
+    font-size: 25px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}
+
+.main-product .main-product-summary1 {
+    display: none;
+    text-align: center;
+    line-height: 25px;
+    color: var(--tertiary-color);
+}
+
+.product-container .main-product-details {
+    width: 50%;
+    padding-top: 10px;
+    padding-left: 20px;
+    color: var(--tertiary-color);
+}
+
+.main-product-details h6 {
+    color: var(--quinary-color);
+}
+
+.main-product-details h4 {
+    font-size: 18px;
+    padding: 10px 0 20px;
+}
+
+.main-product-details h2 {
+    font-size: 26px;
+}
+
+.main-product-details select {
+    background-color: var(--primary-color);
+    padding: 5px 20px 5px 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    color: var(--tertiary-color);
+    cursor: pointer;
+}
+
+.main-product-details .product-details-button {
+    display: flex;
+    gap: 10px;
+    height: 47px;
+}
+
+.product-details-button input {
+    width: 50px;
+    padding-left: 10px;
+    font-size: 16px;
+    border-radius: 3px;
+    border: 1px solid var(--tertiary-color);
+}
+
+.product-details-button button {
+    background-color: var(--secondary-color);
+    color: black;
+    width: 130px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.product-details-button .compare-button {
+    background-color: var(--secondary-color);
+    width: 47px;
+    height: 47px;
+}
+
+.product-details-button .compare-button i {
+    font-size: 20px;
+    color: black;
+}
+
+.main-product-details p {
+    text-align: justify;
+    width: 100%;
+}
+
+.product-container .compare-product {
+    display: none;
+    width: 30%;
+    overflow: hidden;
+}
+
+.compare-product .compare-product-image {
+    position: relative;
+}
+
+.compare-product .compare-product-image img {
+    width: 100%;
+}
+
+.compare-product .compare-product-image button {
+    font-size: 25px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    border: 0;
+    background: transparent;
+}
+
+.compare-product .compare-summary,
+.compare-product .compare-details {
+    text-align: center;
+    line-height: 25px;
+    color: var(--tertiary-color);
+}
+
+.product-container .compare-line {
+    display: none;
+    width: 1px;
+    height: 100%;
+    border: 1px solid var(--tertiary-color);
+}
+
+.product-container .show {
+    display: block;
+}
+
+.compare-list-container-show {
+    display: block;
+}
+
+@media (max-width: 1150px) {
+    .product {
+        padding: 80px 5vw;
+    }
+
+    .product-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-container .main-product-details {
+        width: 100%;
+        padding: 30px 8vw 0;
+    }
+
+    .comparable {
+        display: flex;
+        gap: 20px;
+        height: auto;
+    }
+
+    .comparable .compare-product {
+        position: static;
+        width: 40vw;
+        height: auto;
+    }
+
+    .compare-product .compare-product-image i {
+        top: 15px;
+        right: 15px;
+    }
+
+    .comparable .main-product {
+        width: 60vw;
+    }
+
+    .comparable .compare-line {
+        height: 40vw;
+    }
+
+    .comparable .main-product-show {
+        width: 40vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-product-details {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .main-product-details select {
+        width: 250px;
+    }
+}

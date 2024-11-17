@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* Variabel warna dasar */
+:root {
+    --primary-color: #f3f3f3;
+    --secondary-color: #ACACDE;
+    --tertiary-color: #000;
+    --quarternary-color: #b5b8b9;
+    --quinary-color: #A9A9A9;
+    --primary-font: 'Libre Baskerville', sans-serif;
+    --secondary-font: 'Poppins', Arial;
+}
+
+/* Variabel warna mode darkmode */
+.darkmode {
+    --primary-color: #1C1C1C;
+    --secondary-color: #36b1b7; 
+    --tertiary-color: #EEEEEE;
+    --quarternary-color: #A9A9A9; 
+    --quinary-color: #8d99ad;
+}
+
+/* Mengatur styling scrollbar */
+::-webkit-scrollbar {
+    background: var(--primary-color); 
+    width: 10px;
+    height: 10px; 
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px; 
+    background-color: var(--primary-color); 
+    border: 2px solid #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--tertiary-color);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--primary-font);
+    transition: 0.2s;
+}
+
+body, html
+{
+    height: 100%;
+    margin-top: 30px;
+    scroll-behavior: smooth;
+    background-color: var(--primary-color);
+}
+
+section {
+    width: 100%;
+    min-height: auto;
+    padding: 65px 0 65px 0;
+}
+
+.section-p1 {
+    padding: 40px 80px;
+    min-height: 30vh;
+}
+
+.section-p2 {
+    padding: 60px 80px 40px 80px;
+}
+
+.section-p3 {
+    padding: 40px 80px;
+    margin: 0;
+}
+
+.copyright {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--secondary-color);
+}
+
+.copyright p {
+    font-size: 15px;
+    color: var(--primary-color);
+}
+
+
+@media(max-width: 768px) {
+
+    header {
+        overflow: hidden;
+    }
+
+    .home {
+        padding-top: 80px;
+    }
+
+    section {
+        padding-top: 145px;
+    }
+}

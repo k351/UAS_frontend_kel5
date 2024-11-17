@@ -1,0 +1,335 @@
+/* Wishlist */
+.wishlist-main {
+    display: flex;
+    background-color: var(--primary-color);
+    justify-content: space-evenly;
+}
+
+.filter-container {
+    width: 20%;
+    height: 30%;
+    background-color: var(--primary-color);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.filter-container h2 {
+    color: var(--tertiary-color);
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.filter-header h3 {
+    color: var(--tertiary-color);
+    margin: 0;
+}
+
+.filter-header i {
+    transition: transform 0.3s;
+    color: var(--tertiary-color);
+}
+
+.filter-section.active .filter-header i {
+    transform: rotate(180deg);
+}
+
+.filter-options {
+    height: 0; /* start from zero */
+    overflow: hidden;
+    transition: height 0.5s ease;
+}
+
+.filter-section.active .filter-options {
+    height: 300px; /* any reasonable fixed height */
+}
+
+.filter-options label {
+    color: var(--tertiary-color);
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.filter-options input {
+    margin-right: 10px;
+}
+
+.filter-options ul {
+    list-style-type: none;
+    padding: 0;
+    font-size: 14px;
+}
+
+.filter-options ul li {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: var(--tertiary-color);
+}
+
+.filter-options a {
+    font-size: 14px;
+    text-decoration: none;
+    margin-top: 10px;
+    display: block;
+}
+
+.filter-section.active .filter-options {
+    display: block;
+}
+
+.filter-section.active .filter-header i {
+    transform: rotate(180deg);
+}
+
+#priceArrow {
+    margin-left: 0.7rem;
+}
+
+.wishlist-container {
+    display: grid;
+    width: 75%;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    justify-items: center;
+    gap: 1rem; 
+}
+
+.wishlist-container a {
+    color: white;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+    min-height: 300px;  
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--tertiary-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+
+.product-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.product-info {
+    padding: 15px;
+    text-align: center;
+    font-size: 1rem;
+    background-color: var(--primary-color);
+    flex-grow: 1;
+}
+
+.product-info h3 {
+    color: var(--tertiary-color);
+}
+
+.product-info h4 {
+    color: var(--tertiary-color);
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.product-info p {
+    color: var(--tertiary-color);
+    margin-bottom: 8px;
+}
+
+.product-card .image-container {
+    background-color: var(--quinary-color);
+    max-height: 300px;
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;  /* Let the height adjust automatically */
+    object-fit: contain;  /* Ensure the entire image fits within the container */
+    object-position: center;
+    border-radius: 10px 10px 0 0;
+}
+
+.product-title {
+    font-size: 16px;
+    margin: 10px 0;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.product-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.wishlist-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--secondary-color);
+}
+
+.wishlist-btn i {
+    font-size: 20px;
+}
+
+.wishlist-btn:hover {
+    color: var(--secondary-color);
+}
+
+/* Wishlist Empty Message Styling */
+.wishlist-empty {
+    color: var(--tertiary-color); /* You can change this color to whatever you prefer */
+    font-size: 1.2em;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+
+.product-location, .product-sold {
+    font-size: 14px;
+    color: var(--quinary-color);
+    margin: 5px 0;
+}
+
+.rating {
+    color: #ffbf00;
+    font-size: 14px;
+}
+
+.add-cart {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    height: 10%;    
+}
+
+.add-cart:hover {
+    background-color: var();
+}
+
+/* Fade-in effect */
+.fade-in {
+    opacity: 0;
+    animation: fadeInAnimation 0.5s forwards;
+}
+
+@keyframes fadeInAnimation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+@media only screen and (max-width: 768px) {
+
+    .wishlist-main {
+        padding-top: 40px;
+    }
+
+    .wishlist-container {
+        width: 75%;
+        padding: 0;
+        grid-template-columns: 1fr 1fr; 
+        align-items: center;
+        justify-items: center;
+    }
+
+    .container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .add-cart {     
+        padding: 10px 0;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+
+    .wishlist-container {
+        grid-template-columns: 1fr; 
+        gap: 10px;
+    }
+
+    .filter-container {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    .product-card {
+        margin-bottom: 15px;
+    }
+
+    .product-card img {
+        width: 100%;
+        height: auto;  
+        object-fit: contain;  
+    }
+}
+
+
+@media(max-width: 1150px){
+    .wishlist-main {
+        flex-direction: column;
+        align-items: center;   
+    }
+
+    .filter-container {
+        width: 90%; /* Atur filter-container agar lebar penuh di layar kecil */
+        margin-bottom: 20px; /* Tambahkan jarak antara filter dan wishlist */
+    }
+
+    .categories .content .categories-links {
+        display: grid;
+        justify-items: center;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .nav-item {
+        margin: 0 5px;
+    }
+
+    .search-header {
+        width: 17vw;
+    }
+
+    .search-header button {
+        display: none;
+    }
+
+    .wishlist-main {
+        padding: 3rem 0;
+    }
+}

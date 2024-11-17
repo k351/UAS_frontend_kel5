@@ -1,0 +1,68 @@
+.carousel {
+    display: flex;
+    position: relative;
+    width: 100%;
+    justify-content: center;
+    background-color: var(--primary-color);
+}
+
+.carousel-container {
+    position: relative;
+    width: 90vw;
+    display: flex;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.slide {
+    min-width: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); 
+    background-color: white;
+    color: black;
+    border: none;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    display: none; 
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+}
+
+.left-arrow {
+    left: 10px; 
+}
+
+.right-arrow {
+    right: 10px; 
+}
+
+/* Arrow hover effects */
+.arrow:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-50%) scale(1.1); 
+}
+
+.carousel-container:hover .arrow {
+    display: flex;
+}

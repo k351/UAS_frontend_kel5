@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revife.</title>
+    <link rel="stylesheet" href="style/header.css">
+    <link rel="stylesheet" href="style/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/product.css">
+    <script src="scripts/jquery-3.7.1.min.js"></script>
+    <script id="productData" type="application/json">
+        {"name": "Tailored Jacket Relax Fit"}
+    </script>
+</head>
+<body>
+    <header>
+        <div class="main-header">
+            <div class="logo">
+                <a href="index.html"> 
+                    <h2>revife<span>.</span></h2>
+                </a>
+            </div>
+            <form action="#" class="search-header">
+                <input type="text" placeholder="Search for products" id="searchBar" oninput="search()">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <nav class="navbar">
+                <ul class="nav-menu">
+                    <li class="nav-item"><span class="nav-link" id="Explore">Explore <i class="fa-solid fa-angle-down"></i></span></li>
+                    <li class="nav-item"><a href="#" class="nav-link"><img src="images\icon\moon.png" alt="" id="dark-theme"></a></li>
+                    <li class="nav-item"><a href="cart.html" class="nav-link"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li class="nav-item"><a href="wishlist.html" class="nav-link"><i class="fa-solid fa-heart"></i></a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+        <div class="categories-header">
+            <nav>
+                <ul>
+                    <li><a href="#" data-category="shirts" onclick="handleCategoryFilter(event)">Shirts</a></li>
+                    <li><a href="#" data-category="t-shirts" onclick="handleCategoryFilter(event)">T-Shirts</a></li>
+                    <li><a href="#" data-category="jackets" onclick="handleCategoryFilter(event)">Jackets</a></li>
+                    <li><a href="#" data-category="chinos" onclick="handleCategoryFilter(event)">Chinos</a></li>
+                    <li><a href="#" data-category="jeans" onclick="handleCategoryFilter(event)">Jeans</a></li>
+                    <li><a href="#" data-category="skirts" onclick="handleCategoryFilter(event)">Skirts</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="explore-links">
+            <div class="pria">
+                <h3>pria</h3>
+                <h5>Temukan Style mu disini</h5>
+            </div>
+            <div class="wanita">
+                <h3>wanita</h3>
+                <h5>Temukan hal menarik disini</h5>
+            </div>
+        </div>
+        <div class="explore-contents">
+            <div class="contents" id="pria-contents">
+                <div class="divition">
+                    <h5>New Arrivals</h5>
+                    <ul>
+                        <li><a href="product_4.html">Uni sweatshirt</a></li>
+                        <li><a href="product_6.html">White Polo</a></li>
+                    </ul>
+                    <br>
+                    <h5>Hot</h5>
+                    <ul>
+                        <li><a href="product_2.html">Godzilla Shirt</a></li>
+                        <li><a href="product_1.html">CN Shirt</a></li>
+                    </ul>
+                </div>
+                <div class="divition">
+                    <h5>Category</h5>
+                    <ul>
+                        <li><a data-category="shirts" onclick="handleCategoryFilter(event)">Shirts</a></li>
+                        <li><a data-category="t-shirts" onclick="handleCategoryFilter(event)">T-Shirts</a></li>
+                        <li><a data-category="jacket" onclick="handleCategoryFilter(event)">Jackets</a></li>
+                        <li><a data-category="sweatshirt" onclick="handleCategoryFilter(event)">Sweatshirt</a></li>
+                        <li><a data-category="chinos" onclick="handleCategoryFilter(event)">Chinos</a></li>
+                        <li><a data-category="jeans" onclick="handleCategoryFilter(event)">Jeans</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="contents" id="wanita-contents">
+                <div class="divition">
+                <h5>New Arrivals</h5>
+                <ul>
+                    <li><a href="product_4.html">Uni sweatshirt</a></li>
+                    <li><a href="product_6.html">White Polo</a></li>
+                </ul>
+                <br>
+                <h5>Hot</h5>
+                <ul>
+                    <li><a href="product_2.html">Godzilla Shirt</a></li>
+                    <li><a href="product_7.html">Jacket Relax</a></li>
+                </ul>
+                </div>
+                <div class="divition">
+                    <h5>Category</h5>
+                    <ul>
+                        <li><a data-category="shirts" onclick="handleCategoryFilter(event)">Shirts</a></li>
+                        <li><a data-category="t-shirts" onclick="handleCategoryFilter(event)">T-Shirts</a></li>
+                        <li><a data-category="jeans" onclick="handleCategoryFilter(event)">Jeans</a></li>
+                        <li><a data-category="skirts" onclick="handleCategoryFilter(event)">Skirts</a></li>
+                        <li><a data-category="dress" onclick="handleCategoryFilter(event)">Dress</a></li>
+                        <li><a data-category="blouses" onclick="handleCategoryFilter(event)">Blouses</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="black-box"></div>
+    </header>
+    <div class="compare-list-container">
+        <i class="fa-solid fa-x" id="compare-list-close"></i>
+        <ul class="compare-list">
+        </ul>
+    </div>
+    <section class="product">
+        <div class="product-container">
+            <div class="compare-product">
+                <div class="compare-product-image">
+                    <img src="" alt="">
+                </div>
+                <div class="compare-summary">
+                    <h5>(Compared-product)</h5>
+                    <h3></h3>
+                    <h2></h2>
+                </div>
+            </div>
+            <div class="compare-line"></div>
+            <div class="main-product">
+                <div class="product-image">
+                    <img src="./images/products/f7.png" alt="">
+                </div>
+                <div class="main-product-summary1">
+                    <h5>T shirts</h5>
+                    <h3>Tailored Jacket Relax Fit</h3>
+                    <h2>Rp399.000</h4>
+                </div>
+            </div>
+            <div class="main-product-details">
+                <div class="main-product-summary2">
+                    <h6>T shirts</h6>
+                    <h4>Tailored Jacket Relax Fit</h4>
+                    <h2>Rp399.000</h2>
+                </div>
+                <select>
+                    <option>Select Size</option>
+                    <option>XXL</option>
+                    <option>XL</option>
+                    <option>L</option>
+                    <option>M</option>
+                    <option>S</option>
+                    <option>XS</option>
+                </select>
+                <div class="product-details-button">
+                    <input type="number" value="1">
+                    <button>Add to Cart</button>
+                    <button class="compare-button">
+                        <i class="fa-solid fa-code-compare"></i>
+                    </button>    
+                </div>
+                <h4>Product Details</h4>
+                <p> Temukan kenyamanan maksimal dalam kesederhanaan dengan koleksi baju polos kami yang terbuat dari 100% katun berkualitas premium. Desain minimalis yang elegan menjadikan baju ini pilihan tepat untuk gaya sehari-hari, baik untuk bersantai di rumah maupun beraktivitas di luar.
+                    <br>
+                    <br>
+                    Kain katun yang lembut memberikan rasa nyaman di kulit, serta memiliki sirkulasi udara yang baik sehingga tetap sejuk sepanjang hari. Selain itu, daya serap tinggi dari bahan katun menjaga tubuh tetap kering dan bebas dari rasa gerah.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="section-p1">
+        <div class="col">
+            <h2>revife<span class="color">.</span></h2>
+            <h4>Contact</h4>
+            <p><strong>Address: </strong> Jl. Sunter Karya G K A V I / 14 </p>
+            <p><strong>Phone: </strong> +62 896-2324-4972 </p>
+            <p><strong>Hours: </strong> 10:00 - 18:00, Mon-Sun </p>
+            <div class="social">
+                <h4>Follow Us</h4>
+                <div class="icon">
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-x-twitter"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-pinterest"></i>
+                    <i class="fa-brands fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <h4>About</h4>
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="cart.html">Cart</a>
+            <a href="wishlist.html">Wishlist</a>
+        </div>
+
+        <div class="col">
+            <h4>Best Seller</h4>
+            <a href="#">Crew Neck T-Shirts</a>
+            <a href="#">Soft Flannel Skipper Shirt</a>
+            <a href="#">White Polo</a>
+            <a href="#">Unisex Sweatshirts</a>
+            <a href="#">Fleece Full-Zip Jacket</a>
+        </div>
+
+        <div class="col-install">
+            <h4>Install App</h4>
+            <p>From App Store and Google Play</p>
+            <div class="row">
+                <img src="images\icon\app.jpg" alt="App Store">
+                <img src="images\icon\play.jpg" alt="Play Store">
+            </div>
+            <p>Secured Payment Gateway</p>
+            <img src="images\icon\pay.png" alt="Secured Payment">
+        </div>
+
+    </footer>
+
+    <div class="copyright">
+        <p>© 2024, UTS Front-End Programming</p>
+    </div>
+    <script src="./scripts/darkmode.js"></script>
+    <script src="./scripts/resmenu.js"></script>
+    <script src="./scripts/hamburger.js"></script>
+    <script src="./scripts/header.js"></script>
+    <script src="./scripts/categoriesQuery.js"></script>
+    <script type="module" src="./scripts/compare.js"></script>
+    <script type="module" src="./scripts/productWishlist.js"></script>
+</body>
+</html>
