@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="revifeApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revife.</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/header.css">
+    <link rel="stylesheet" href="../style/footer.css">
+    <link rel="stylesheet" href="../style/checkout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="scripts/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+
+    <ng-include src="'partials/header.html'"></ng-include>
+
+    <section id="cart-check-out" class="section-p2">
+        <div class="total">
+            <h3>Address Delivery
+                <button id="edit-address-btn">Edit Address</button>
+                <div class="edit-address-modal" id="edit-address-modal">
+                    <button id="save-address-btn">Save</button>
+                    <button id="cancel-btn">Cancel</button>
+                </div>
+            </h3>
+            <table>
+                <tr>
+                    <td>Contact Person</td>
+                    <td id="contact-person"></td>
+                </tr>
+                <tr>
+                    <td>Phone Number</td>
+                    <td id="phone-number"></td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td id="address"></td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td id="city"></td>
+                </tr>
+                <tr>
+                    <td>Postcode</td>
+                    <td id="postcode"></td>
+                </tr>
+            </table>
+            
+            <h3>Cart Total</h3>
+            <table>
+                <tr>
+                    <td>Cart Total</td>
+                    <td><strong id="cart-total-cell">Rp 0</strong></td>
+                </tr>
+                <tr>
+                    <td>Coupon</td>
+                    <td><strong id="discount-cell">Rp 0</strong></td>
+                </tr>
+                <tr>
+                    <td>Shipping</td>
+                    <td>Free</td>
+                </tr>
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td><strong id="total-cell">Rp 0</strong></td>
+                </tr>
+            </table>
+            <div class="payment">
+                <h3>Payment</h3>
+                <select id="payment-method">
+                    <option value="paypal">Paypal</option>
+                    <option value="mastercard">Mastercard</option>
+                    <option value="ovo">OVO</option>
+                    <option value="gopay">GoPay</option>
+                    <option value="bank">Bank</option>
+                </select>
+            </div>
+            <button id="checkout-button" class="normal">Checkout</button>
+        </div>
+    </section>
+
+    <ng-include src="'partials/footer.html'"></ng-include>
+
+    <script src="app.js"></script>
+    <script src="./scripts/header.js"></script>
+    <script src="scripts/checkout.js"></script>
+    <script src="scripts/darkmode.js"></script>
+    <script src="scripts/hamburger.js"></script>
+    <script src="scripts/resmenu.js"></script>
+    <script src="./scripts/categoriesQuery.js"></script>
+</body>
+</html>

@@ -29,7 +29,7 @@ function renderProducts() {
         let productBox = `
             <div class="box">
                 <a onclick="redirectToProductPage(${product.index})">
-                    <img src="${product.image}" alt="${product.name}">
+                    <img src="../${product.image}" alt="${product.name}">
                     <div class="desc">
                         <span>${product.category}</span>
                         <h5>${product.name}</h5>

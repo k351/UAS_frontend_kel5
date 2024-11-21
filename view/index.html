@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="revifeApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revife.</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/header.css">
+    <link rel="stylesheet" href="../style/home.css">
+    <link rel="stylesheet" href="../style/carousel.css">
+    <link rel="stylesheet" href="../style/products.css">
+    <link rel="stylesheet" href="../style/footer.css">
+    <link rel="stylesheet" href="../style/cart.css">
+    <link rel="stylesheet" href="../style/checkout.css">
+    <link rel="stylesheet" href="../style/categories.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="scripts/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <ng-include src="'partials/header.html'"></ng-include>
+    <section class="home">
+        <div class="content">
+            <div class="background-image">
+                <img src="../images/boximage/Orang1box.png">
+                <img src="../images/boximage/Orang2box.png">
+            </div>
+            <div class="home-details">
+                    <p>Find Your Favourite <span>Outfit</span>, <br>
+                        Discover Your Style.
+                    </p>
+                    <form id="homeSearchForm" class="search-form" onsubmit="handleHomeSearch(event)">
+                        <input type="text" placeholder="Search for products" id="homeSearchBar">
+                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+            </div>
+        </div>
+    </section>    
+    
+    <section class="categories">
+        <div class="content">   
+            <ul class="categories-links">
+                <li><a data-category="shirts" onclick="handleCategoryFilter(event)"><img src="../images/icon/Kemeja.png">Shirts</a></li>
+                <li><a data-category="t-shirts" onclick="handleCategoryFilter(event)"><img src="../images/icon/Kaos.png">T-Shirts</a></li>
+                <li><a data-category="jacket" onclick="handleCategoryFilter(event)"><img src="../images/icon/Jacket.png">Jackets</a></li>
+                <li><a data-category="dress" onclick="handleCategoryFilter(event)"><img src="../images/icon/Dress.png">Dress</a></li>
+                <li><a data-category="jeans" onclick="handleCategoryFilter(event)"><img src="../images/icon/Jeans.png">Jeans</a></li>
+                <li><a data-category="skirts" onclick="handleCategoryFilter(event)"><img src="../images/icon/Rok.png">Skirts</a></li>
+            </ul>
+        </div>
+    </section>
+    
+    <section class="carousel">
+        <div class="carousel-container">
+          <div class="carousel-track">
+            <div class="slide">
+              <img src="../images/slider/image1.jpg" alt="Category 1">
+            </div>
+            <div class="slide">
+              <img src="../images/slider/image2.webp" alt="Category 2">
+            </div>
+            <div class="slide">
+              <img src="../images/slider/image3.jpg" alt="Category 3">
+            </div>
+          </div>
+          <!-- Left and Right Arrows -->
+          <button class="arrow left-arrow">&#9664;</button>
+          <button class="arrow right-arrow">&#9654;</button>
+        </div>
+      </section>  
+    
+    <section class="products">
+        <h2>New Arrival</h2>
+        <p>Summer Collection New Morden Designs</p>
+        <div class="box-container">
+    
+        </div>
+    </section>
+    <ng-include src="'partials/footer.html'"></ng-include>
+    
+    <script src="app.js"></script>
+    <script src="../scripts/categoriesQuery.js"></script>
+    <script src="../scripts/darkmode.js"></script>
+    <script src="../scripts/resmenu.js"></script>
+    <script src="../scripts/hamburger.js"></script>
+    <script src="../scripts/carousel.js"></script>
+    <script src="../scripts/header.js"></script>
+    <script src="../scripts/addToCart.js"></script>
+    <script src="../scripts/searchQuery.js"></script>
+    <script type="module" src="../scripts/indexproduct.js"></script>
+    <script type="module" src="../scripts/addToWishlist.js"></script>
+</body>
+</html>

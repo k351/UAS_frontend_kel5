@@ -48,7 +48,7 @@ function loadWishlistItems(sortCriteria = null, sortOrder = 'asc') {
             let productBox = `
                 <div class="product-card fade-in">
                     <div class="image-container">
-                        <img src="${product.image}" alt="${product.name}">
+                        <img src="../${product.image}" alt="${product.name}">
                     </div>
                     <div class="product-info">
                         <h3 class="product-title">${product.name}</h3>

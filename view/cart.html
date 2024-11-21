@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="revifeApp">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revife.</title>
+    <link rel="stylesheet" href="../style/header.css">
+    <link rel="stylesheet" href="../style/products.css">
+    <link rel="stylesheet" href="../style/footer.css">
+    <link rel="stylesheet" href="../style/cart.css">
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="scripts/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <ng-include src="'partials/header.html'"></ng-include>
+
+    <section id="cart" class="section-p2">
+        <table width="100%">
+            <thead>
+                <tr>
+                    <td>Remove</td>
+                    <td>Image</td>
+                    <td>Product</td>
+                    <td>Price</td>
+                    <td>Quantity</td>
+                    <td>Subtotal</td>
+                </tr>
+            </thead>
+            <tbody id="cart-items">
+                <!-- Cart items will be populated here by JavaScript -->
+            </tbody>
+        </table>
+    </section>
+
+    <section id="cart-total" class="section-p3">
+        <div class="coupon">
+            <h3>Apply Coupon</h3>
+            <input type="text" placeholder="Please enter your coupon">
+            <button>Apply</button>
+        </div>
+        <div class="total">
+            <h3>Cart Total</h3>
+            <table>
+                <tr>
+                    <td>Cart Total</td>
+                    <td>Rp 0</td>
+                </tr>
+                <tr>
+                    <td>Discount</td>
+                    <td>Rp 0</td>
+                </tr>
+                <tr>
+                    <td><strong>Sub Total (discount excl.)</strong></td>
+                    <td><strong>Rp 0</strong></td>
+                </tr>
+            </table>
+            <a href="checkout.html"><button class="normal">Proceed to checkout</button></a>
+        </div>
+    </section>
+
+    <ng-include src="'partials/footer.html'"></ng-include>
+
+    <script src="app.js"></script>
+    <script src="./scripts/darkmode.js"></script>
+    <script src="./scripts/resmenu.js"></script>
+    <script src="./scripts/hamburger.js"></script>
+    <script src="./scripts/header.js"></script>
+    <script src="./scripts/cart.js"></script>
+    <script src="./scripts/categoriesQuery.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "uas_frontend_kel5",
+  "version": "1.0.0",
+  "description": "Hai! Kami adalah tim beranggotakan 3 orang yang bersemangat dalam menciptakan platform e-commerce dengan tema life-style. Anggota tim kami terdiri dari:",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.8.2"
+  }
+}

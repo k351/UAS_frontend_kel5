@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="revifeApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revife.</title>
+    <link rel="stylesheet" href="../style/wishlist.css">
+    <link rel="stylesheet" href="../style/header.css">
+    <link rel="stylesheet" href="../style/home.css">
+    <link rel="stylesheet" href="../style/categories.css">
+    <link rel="stylesheet" href="../style/carousel.css">
+    <link rel="stylesheet" href="../style/footer.css">
+    <link rel="stylesheet" href="../style/cart.css">
+    <link rel="stylesheet" href="../style/checkout.css">
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/products.css">
+    <link rel="stylesheet" href="../style/product.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="../scripts/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+
+    <ng-include src="'partials/header.html'"></ng-include>
+
+    <section class="wishlist-main">
+        <div class="filter-container">
+            <h2>Filter</h2>
+
+            <div class="filter-section">
+                <div class="filter-header" onclick="toggleFilter(this)">
+                    <h3>Urutkan</h3>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div class="filter-options">
+                    <label><input type="radio" name="sort" value="rating"> Rating</label>
+                    <label><input type="radio" name="sort" value="price"> Harga <i id="priceArrow" class="fa fa-arrow-up"></i></label>
+                    <label><input type="radio" name="sort" value="name-asc"> Nama (A-Z)</label>  <!-- Ascending -->
+                    <label><input type="radio" name="sort" value="name-desc"> Nama (Z-A)</label> <!-- Descending -->
+                </div>
+            </div>
+                
+            <!-- Filter for "Penawaran" -->
+            <div class="filter-section">
+                <div class="filter-header" onclick="toggleFilter(this)">
+                    <h3>Penawaran</h3>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div class="filter-options">
+                    <label><input type="checkbox"> Cashback</label>
+                    <label><input type="checkbox"> Diskon</label>
+                    <label><input type="checkbox"> COD</label>
+                    <label><input type="checkbox"> Harga Grosir</label>
+                </div>
+            </div>
+        
+            <!-- Filter for "Stok" -->
+            <div class="filter-section">
+                <div class="filter-header" onclick="toggleFilter(this)">
+                    <h3>Stok</h3>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div class="filter-options">
+                    <label><input type="checkbox" name="stok"> Preorder</label>
+                    <label><input type="checkbox" name="stok"> Tersedia</label>
+                    <label><input type="checkbox" name="stok"> Tidak Tersedia</label>
+                </div>
+            </div>
+        
+            <!-- Filter for "Kategori" -->
+            <div class="filter-section">
+                <div class="filter-header" onclick="toggleFilter(this)">
+                    <h3>Kategori</h3>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div class="filter-options">
+                    <ul>
+                        <li><a href="">Audio, Kamera & Elektronik</a></li>
+                        <li><a href="">Buku</a></li>
+                        <li><a href="">Dapur</a></li>
+                        <li><a href="">Elektronik</a></li>
+                        <li><a href="">Fashion Anak & Bayi</a></li>
+                    </ul>
+                    <a href="#">Lihat Kategori Lainnya</a>
+                </div>
+            </div>
+        </div>
+        
+    
+        <div class="wishlist-container" id="wishlist-container">
+            <section class="products">
+                <div class="box-container">
+        
+                </div>
+            </section>
+        </div>
+    </section>
+
+
+    <ng-include src="'partials/footer.html'"></ng-include>
+
+    <script src="app.js"></script>
+    <script src="../scripts/darkmode.js"></script>
+    <script src="../scripts/resmenu.js"></script>
+    <script src="../scripts/hamburger.js"></script>
+    <script src="../scripts/header.js"></script>
+    <script src="../scripts/addToCart.js"></script>
+    <script src="../scripts/wishlist-filter.js"></script>
+    <script src="../scripts/searchQuery.js"></script>
+    <script src="../scripts/categoriesQuery.js"></script>
+    <script type="module" src="../scripts/addToWishlist.js"></script>
+    <script type="module" src="../scripts/wishlist.js"></script>
+</body>
+</html>

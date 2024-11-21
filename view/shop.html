@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="revifeApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revife.</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/header.css">
+    <link rel="stylesheet" href="../style/categories.css">
+    <link rel="stylesheet" href="../style/carousel.css">
+    <link rel="stylesheet" href="../style/products.css">
+    <link rel="stylesheet" href="../style/footer.css">
+    <link rel="stylesheet" href="../style/cart.css">
+    <link rel="stylesheet" href="../style/checkout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="scripts/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+
+    <ng-include src="'partials/header.html'"></ng-include>
+
+    <section class="products">
+        <div class="categories-filter">
+            <h1>Filter by:</h1>
+            <select name="categories" id="categories" class="categories-selection">
+                <option value="none">none</option>
+                <option value="shirts">Shirts</option>
+                <option value="t-shirts">T-shirts</option>
+                <option value="jacket">Jackets</option>
+                <option value="chinos">Chinos</option>
+                <option value="jeans">Jeans</option>
+                <option value="skirts">Skirts</option>
+                <option value="blouses">Blouses</option>
+                <option value="dress">Dress</option>
+                <option value="sweatshirt">Sweatshirts</option>
+            </select>
+        </div>
+        <div class="box-container"></div>
+    </section>
+
+    <section id="pagination" class="section-p1">
+    </section>
+
+    <ng-include src="'partials/footer.html'"></ng-include>
+
+    <script src="app.js"></script>
+    <script src="../scripts/darkmode.js"></script>
+    <script src="../scripts/resmenu.js"></script>
+    <script src="../scripts/hamburger.js"></script>
+    <script src="../scripts/header.js"></script>
+    <script src="../scripts/addToCart.js"></script>
+    <script src="../scripts/searchQuery.js"></script>
+    <script src="../scripts/categoriesQuery.js"></script>
+    <script type="module" src="../scripts/searchfilterpagination.js"></script>
+</body>
+</html>
