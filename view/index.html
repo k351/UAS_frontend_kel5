@@ -15,10 +15,11 @@
     <link rel="stylesheet" href="../style/categories.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
-    <script src="scripts/jquery-3.7.1.min.js"></script>
+    <script src="../scripts/jquery-3.7.1.min.js"></script>
 </head>
 <body>
-    <ng-include src="'partials/header.html'"></ng-include>
+    <ng-include src="'partials/header.html'" onload="initHeaderScripts()"></ng-include>
+
     <section class="home">
         <div class="content">
             <div class="background-image">
@@ -79,14 +80,10 @@
     <ng-include src="'partials/footer.html'"></ng-include>
     
     <script src="app.js"></script>
-    <script src="../scripts/categoriesQuery.js"></script>
-    <script src="../scripts/darkmode.js"></script>
-    <script src="../scripts/resmenu.js"></script>
-    <script src="../scripts/hamburger.js"></script>
-    <script src="../scripts/carousel.js"></script>
-    <script src="../scripts/header.js"></script>
-    <script src="../scripts/addToCart.js"></script>
-    <script src="../scripts/searchQuery.js"></script>
+    <script defer src="../scripts/categoriesQuery.js"></script>
+    <script defer src="../scripts/carousel.js"></script>
+    <script defer src="../scripts/addToCart.js"></script>
+    <script defer src="../scripts/searchQuery.js"></script>
     <script type="module" src="../scripts/indexproduct.js"></script>
     <script type="module" src="../scripts/addToWishlist.js"></script>
 </body>
