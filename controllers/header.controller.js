@@ -54,7 +54,7 @@ angular.module('revifeApp.controllers', [])
 
             // Handle scroll events for index page
             const currentPage = $window.location.pathname;
-            if (currentPage.includes('index.html') || currentPage === '/') {
+            if (currentPage === '/') {
                 angular.element($window).on('scroll', function() {
                     const searchLimiter = $document[0].querySelector('.home');
                     const searchHidden = $document[0].querySelector('.search-header');
@@ -142,7 +142,7 @@ angular.module('revifeApp.controllers', [])
             }
             
             $window.localStorage.setItem('searchQuery', searchQuery);
-            $window.location.href = 'shop.html';
+            $window.location.href = '/shop';
         };
 
         $scope.handleHomeSearch = function(event) {
@@ -153,10 +153,16 @@ angular.module('revifeApp.controllers', [])
                 alert('You searched for nothing!');
                 return;
             }
-            
             $window.localStorage.setItem('searchQuery', searchQuery);
-            $window.location.href = 'shop.html';
+            $window.location.href = '/shop';
         };
+
+        $scope.handleSearch = function(event) {
+            event.preventDefault();
+            const searchQuery = $document[0].getElementById('searchBar').value;
+            $window.localStorage.setItem('searchQuery', searchQuery)
+            $window.location.href = '/shop'
+        }
 
         // Responsive menu
         $scope.initResponsiveMenu = function() {
@@ -168,6 +174,14 @@ angular.module('revifeApp.controllers', [])
                     $scope.updateNav(e);
                 });
             });
+        };
+
+        // Category Header Filter
+        $scope.handleCategoryFilter = function(event) {
+            event.preventDefault(); 
+            const filterQuery = angular.element(event.currentTarget).attr('data-category');
+            $window.localStorage.setItem('filterQuery', filterQuery);
+            $window.location.href = '/shop';
         };
 
         $scope.updateNav = function(mediaQuery) {

@@ -1,7 +1,7 @@
 <header ng-controller="HeaderController" ng-init="init()">
     <div class="main-header">
         <div class="logo">
-            <a href="index.html"> 
+            <a href="/"> 
                 <h2>revife<span>.</span></h2>
             </a>
         </div>
@@ -13,8 +13,8 @@
             <ul class="nav-menu">
                 <li class="nav-item"><span class="nav-link" id="Explore" ng-click="toggleExplore()">Explore <i class="fa-solid fa-angle-down"></i></span></li>
                 <li class="nav-item"><a href="#" class="nav-link" ng-click="toggleDarkMode()"><img src="../images/icon/moon.png" id="dark-theme"></a></li>
-                <li class="nav-item"><a href="cart.html" class="nav-link"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                <li class="nav-item"><a href="wishlist.html" class="nav-link"><i class="fa-solid fa-heart"></i></a></li>
+                <li class="nav-item"><a href="/cart" class="nav-link"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <li class="nav-item"><a href="/wishlist" class="nav-link"><i class="fa-solid fa-heart"></i></a></li>
             </ul>
             <div class="hamburger" ng-click="toggleMenu()">
                 <span class="bar"></span>
@@ -26,12 +26,12 @@
     <div class="categories-header">
         <nav>
             <ul>
-                <li><a href="#" data-category="shirts" ng-click="handleCategoryFilter($event)">Shirts</a></li>
-                <li><a href="#" data-category="t-shirts" ng-click="handleCategoryFilter($event)">T-Shirts</a></li>
-                <li><a href="#" data-category="jackets" ng-click="handleCategoryFilter($event)">Jackets</a></li>
-                <li><a href="#" data-category="chinos" ng-click="handleCategoryFilter($event)">Chinos</a></li>
-                <li><a href="#" data-category="jeans" ng-click="handleCategoryFilter($event)">Jeans</a></li>
-                <li><a href="#" data-category="skirts" ng-click="handleCategoryFilter($event)">Skirts</a></li>
+                <li><a href="/shop" data-category="shirts" ng-click="handleCategoryFilter($event)">Shirts</a></li>
+                <li><a href="/shop" data-category="t-shirts" ng-click="handleCategoryFilter($event)">T-Shirts</a></li>
+                <li><a href="/shop" data-category="jackets" ng-click="handleCategoryFilter($event)">Jackets</a></li>
+                <li><a href="/shop" data-category="chinos" ng-click="handleCategoryFilter($event)">Chinos</a></li>
+                <li><a href="/shop" data-category="jeans" ng-click="handleCategoryFilter($event)">Jeans</a></li>
+                <li><a href="/shop" data-category="skirts" ng-click="handleCategoryFilter($event)">Skirts</a></li>
             </ul>
         </nav>
     </div>
@@ -50,25 +50,25 @@
             <div class="divition">
                 <h5>New Arrivals</h5>
                 <ul>
-                    <li><a href="product_4.html">Uni sweatshirt</a></li>
-                    <li><a href="product_6.html">White Polo</a></li>
+                    <li><a href="/product">Uni sweatshirt</a></li>
+                    <li><a href="/product">White Polo</a></li>
                 </ul>
                 <br>
                 <h5>Hot</h5>
                 <ul>
-                    <li><a href="product_2.html">Godzilla Shirt</a></li>
-                    <li><a href="product_1.html">CN Shirt</a></li>
+                    <li><a href="/product">Godzilla Shirt</a></li>
+                    <li><a href="/product">CN Shirt</a></li>
                 </ul>
             </div>
             <div class="divition">
                 <h5>Category</h5>
                 <ul>
-                    <li><a data-category="shirts" onclick="handleCategoryFilter(event)">Shirts</a></li>
-                    <li><a data-category="t-shirts" onclick="handleCategoryFilter(event)">T-Shirts</a></li>
-                    <li><a data-category="jacket" onclick="handleCategoryFilter(event)">Jackets</a></li>
-                    <li><a data-category="sweatshirt" onclick="handleCategoryFilter(event)">Sweatshirt</a></li>
-                    <li><a data-category="chinos" onclick="handleCategoryFilter(event)">Chinos</a></li>
-                    <li><a data-category="jeans" onclick="handleCategoryFilter(event)">Jeans</a></li>
+                    <li><a data-category="shirts" ng-click="handleCategoryFilter($event)">Shirts</a></li>
+                    <li><a data-category="t-shirts" ng-click="handleCategoryFilter($event)">T-Shirts</a></li>
+                    <li><a data-category="jacket" ng-click="handleCategoryFilter($event)">Jackets</a></li>
+                    <li><a data-category="sweatshirt" ng-click="handleCategoryFilter($event)">Sweatshirt</a></li>
+                    <li><a data-category="chinos" ng-click="handleCategoryFilter($event)">Chinos</a></li>
+                    <li><a data-category="jeans" ng-click="handleCategoryFilter($event)">Jeans</a></li>
                 </ul>
             </div>
         </div>
@@ -76,25 +76,25 @@
             <div class="divition">
             <h5>New Arrivals</h5>
             <ul>
-                <li><a href="product_4.html">Uni sweatshirt</a></li>
-                <li><a href="product_6.html">White Polo</a></li>
+                <li><a href="/product">Uni sweatshirt</a></li>
+                <li><a href="/product">White Polo</a></li>
             </ul>
             <br>
             <h5>Hot</h5>
             <ul>
-                <li><a href="product_2.html">Godzilla Shirt</a></li>
-                <li><a href="product_7.html">Jacket Relax</a></li>
+                <li><a href="/product">Godzilla Shirt</a></li>
+                <li><a href="/product">Jacket Relax</a></li>
             </ul>
             </div>
             <div class="divition">
                 <h5>Category</h5>
                 <ul>
-                    <li><a data-category="shirts" onclick="handleCategoryFilter(event)">Shirts</a></li>
-                    <li><a data-category="t-shirts" onclick="handleCategoryFilter(event)">T-Shirts</a></li>
-                    <li><a data-category="jeans" onclick="handleCategoryFilter(event)">Jeans</a></li>
-                    <li><a data-category="skirts" onclick="handleCategoryFilter(event)">Skirts</a></li>
-                    <li><a data-category="dress" onclick="handleCategoryFilter(event)">Dress</a></li>
-                    <li><a data-category="blouses" onclick="handleCategoryFilter(event)">Blouses</a></li>
+                    <li><a data-category="shirts" ng-click="handleCategoryFilter($event)">Shirts</a></li>
+                    <li><a data-category="t-shirts" ng-click="handleCategoryFilter($event)">T-Shirts</a></li>
+                    <li><a data-category="jeans" ng-click="handleCategoryFilter($event)">Jeans</a></li>
+                    <li><a data-category="skirts" ng-click="handleCategoryFilter($event)">Skirts</a></li>
+                    <li><a data-category="dress" ng-click="handleCategoryFilter($event)">Dress</a></li>
+                    <li><a data-category="blouses" ng-click="handleCategoryFilter($event)">Blouses</a></li>
                 </ul>
             </div>
         </div>

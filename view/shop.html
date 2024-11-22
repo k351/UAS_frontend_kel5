@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revife.</title>
-    <link rel="stylesheet" href="../style/style.css">
-    <link rel="stylesheet" href="../style/header.css">
-    <link rel="stylesheet" href="../style/categories.css">
-    <link rel="stylesheet" href="../style/carousel.css">
-    <link rel="stylesheet" href="../style/products.css">
-    <link rel="stylesheet" href="../style/footer.css">
-    <link rel="stylesheet" href="../style/cart.css">
-    <link rel="stylesheet" href="../style/checkout.css">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/header.css">
+    <link rel="stylesheet" href="style/categories.css">
+    <link rel="stylesheet" href="style/carousel.css">
+    <link rel="stylesheet" href="style/products.css">
+    <link rel="stylesheet" href="style/footer.css">
+    <link rel="stylesheet" href="style/cart.css">
+    <link rel="stylesheet" href="style/checkout.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
     <script src="scripts/jquery-3.7.1.min.js"></script>
 </head>
-<body>
+
+<body ng-controller="ShopController">
 
     <ng-include src="'partials/header.html'"></ng-include>
 
@@ -39,16 +40,49 @@
         <div class="box-container"></div>
     </section>
 
-    <section id="pagination" class="section-p1">
-    </section>
+    <div class="box-container">
+        <div class="box" ng-repeat="product in paginatedProducts">
+            <a href="product_{{product.index}}">
+                <img ng-src="{{product.image}}" alt="{{product.name}}">
+                <div class="desc">
+                    <span>{{product.category}}</span>
+                    <h5>{{product.name}}</h5>
+                    <div class="star">
+                        <i class="fa-solid fa-star" ng-repeat="n in [].constructor(product.stars) track by $index"></i>
+                    </div>
+                    <h4>{{product.price}}</h4>
+                </div>
+                <a ng-click="addToCart(product)">
+                    <i class="fa-solid fa-cart-plus cart" ng-style="{'color': product.cart_icon_color}"></i>
+                </a>
+                <button class="wishlist-btn" ng-click="toggleWishlist(product)">
+                    <i ng-class="wishlistState[product.name] ? 'fa-solid' : 'fa-regular'"
+                        ng-style="{'color': wishlistState[product.name] ? 'var(--secondary-color)' : 'gray'}"
+                        class="fa-heart"></i>
+                </button>
+            </a>
+        </div>
 
-    <ng-include src="'partials/footer.html'"></ng-include>
+        <div id="pagination">
+            <a href="#" ng-click="changePage(page)" ng-repeat="page in pages"
+                ng-class="{'active': page === currentPage}">
+                {{page}}
+            </a>
+            <a href="#" ng-click="changePage(currentPage - 1)" ng-if="currentPage > 1">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <a href="#" ng-click="changePage(currentPage + 1)" ng-if="currentPage < totalPages">
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
 
-    <script src="app.js"></script>
-    <script src="../controllers/header.controller.js"></script>
-    <script src="../scripts/addToCart.js"></script>
-    <script src="../scripts/searchQuery.js"></script>
-    <script src="../scripts/categoriesQuery.js"></script>
-    <script type="module" src="../scripts/searchfilterpagination.js"></script>
+        <ng-include src="'partials/footer.html'"></ng-include>
+
+        <script src="app.js"></script>
+        <script src="../controllers/header.controller.js"></script>
+        <script src="../controllers/shop.controller.js"></script>
+        <script src="../scripts/addToCart.js"></script>
+        <script type="module" src="../scripts/searchfilterpagination.js"></script>
 </body>
+
 </html>

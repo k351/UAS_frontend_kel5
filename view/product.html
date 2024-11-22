@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="revifeApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revife.</title>
+    <link rel="stylesheet" href="style/header.css">
+    <link rel="stylesheet" href="style/footer.css">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/product.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <script src="scripts/jquery-3.7.1.min.js"></script>
+    <script id="productData" type="application/json">
+        {"name": "Crew Neck T-Shirts"}
+    </script>
+</head>
+
+<body>
+
+    <ng-include src="'partials/header.html'" onload="initHeaderScripts()"></ng-include>
+
+    <div class="compare-list-container">
+        <i class="fa-solid fa-x" id="compare-list-close"></i>
+        <ul class="compare-list">
+        </ul>
+    </div>
+    <section class="product">
+        <div class="product-container">
+            <div class="compare-product">
+                <div class="compare-product-image">
+                    <img src="" alt="">
+                </div>
+                <div class="compare-summary">
+                    <h5>(Compared-product)</h5>
+                    <h3></h3>
+                    <h2></h2>
+                </div>
+            </div>
+            <div class="compare-line"></div>
+            <div class="main-product">
+                <div class="product-image">
+                    <img src="../images/products/f1.png" alt="">
+                </div>
+                <div class="main-product-summary1">
+                    <h5>T shirts</h5>
+                    <h3>Crew Neck T-Shirts</h3>
+                    <h2>Rp199.000</h4>
+                </div>
+            </div>
+            <div class="main-product-details">
+                <div class="main-product-summary2">
+                    <h6>T shirts</h6>
+                    <h4>Crew Neck T-Shirts</h4>
+                    <h2>Rp199.000</h2>
+                </div>
+                <select>
+                    <option>Select Size</option>
+                    <option>XXL</option>
+                    <option>XL</option>
+                    <option>L</option>
+                    <option>M</option>
+                    <option>S</option>
+                    <option>XS</option>
+                </select>
+                <div class="product-details-button">
+                    <input type="number" value="1">
+                    <button>Add to Cart</button>
+                    <button class="compare-button">
+                        <i class="fa-solid fa-code-compare"></i>
+                    </button>
+                </div>
+                <h4>Product Details</h4>
+                <p> Temukan kenyamanan maksimal dalam kesederhanaan dengan koleksi baju polos kami yang terbuat dari
+                    100% katun berkualitas premium. Desain minimalis yang elegan menjadikan baju ini pilihan tepat untuk
+                    gaya sehari-hari, baik untuk bersantai di rumah maupun beraktivitas di luar.
+                    <br>
+                    <br>
+                    Kain katun yang lembut memberikan rasa nyaman di kulit, serta memiliki sirkulasi udara yang baik
+                    sehingga tetap sejuk sepanjang hari. Selain itu, daya serap tinggi dari bahan katun menjaga tubuh
+                    tetap kering dan bebas dari rasa gerah.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <ng-include src="'partials/footer.html'" onload="initHeaderScripts()"></ng-include>
+
+    <script src="app.js"></script>
+    <script defer src="../controllers/header.controller.js"></script>
+    <script type="module" src="../scripts/compare.js"></script>
+    <script type="module" src="../scripts/productWishlist.js"></script>
+</body>
+</html>

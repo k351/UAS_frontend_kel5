@@ -3,14 +3,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revife.</title>
-    <link rel="stylesheet" href="../style/header.css">
-    <link rel="stylesheet" href="../style/products.css">
-    <link rel="stylesheet" href="../style/footer.css">
-    <link rel="stylesheet" href="../style/cart.css">
-    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="style/header.css">
+    <link rel="stylesheet" href="style/products.css">
+    <link rel="stylesheet" href="style/footer.css">
+    <link rel="stylesheet" href="style/cart.css">
+    <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
-    <script src="scripts/jquery-3.7.1.min.js"></script>
 </head>
 <body>
     <ng-include src="'partials/header.html'"></ng-include>
@@ -55,7 +54,7 @@
                     <td><strong>Rp 0</strong></td>
                 </tr>
             </table>
-            <a href="checkout.html"><button class="normal">Proceed to checkout</button></a>
+            <a href="/checkout"><button class="normal">Proceed to checkout</button></a>
         </div>
     </section>
 
@@ -63,7 +62,6 @@
 
     <script src="app.js"></script>
     <script src="../controllers/header.controller.js"></script>
-    <script src="./scripts/cart.js"></script>
-    <script src="./scripts/categoriesQuery.js"></script>
+    <script src="../scripts/cart.js"></script>
 </body>
 </html>
