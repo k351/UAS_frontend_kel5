@@ -1,0 +1,84 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.login-box {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-title {
+    text-align: center;
+    color: var(--tertiary-color);
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--quinary-color);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 40px;
+    border: 1px solid var(--quarternary-color);
+    border-radius: 5px;
+    font-size: 16px;
+    color: var(--tertiary-color);
+    background-color: transparent;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--secondary-color);
+    outline: none;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    opacity: 0.9;
+}
+
+.login-links {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login-links a {
+    color: var(--tertiary-color);
+    text-decoration: none;
+    font-size: 14px;
+    margin: 0 10px;
+}
+
+.login-links a:hover {
+    color: var(--secondary-color);
+}
