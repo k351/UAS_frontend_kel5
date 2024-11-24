@@ -6,14 +6,14 @@ exports.verifyToken = async (req, res, next) => {
         const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
         if (!token) {
-            return res.redirect('/');
+            return res.redirect('/login');
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findById(decoded.userId);
 
         if (!user) {
-            return res.redirect('/');
+            return res.redirect('/login');
         }
 
         req.user = user;

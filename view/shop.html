@@ -17,15 +17,15 @@
     <script src="scripts/jquery-3.7.1.min.js"></script>
 </head>
 
-<body ng-controller="ShopController">
+<body>
 
     <ng-include src="'partials/header.html'"></ng-include>
-
-    <section class="products">
+    
+    <section class="products" ng-controller="ShopController">
         <div class="categories-filter">
             <h1>Filter by:</h1>
-            <select name="categories" id="categories" class="categories-selection">
-                <option value="none">none</option>
+            <select name="categories" id="categories" class="categories-selection" ng-model="selectedCategory" ng-change="filterByCategory()">
+                <option value="none">None</option>
                 <option value="shirts">Shirts</option>
                 <option value="t-shirts">T-shirts</option>
                 <option value="jacket">Jackets</option>
@@ -37,30 +37,10 @@
                 <option value="sweatshirt">Sweatshirts</option>
             </select>
         </div>
-        <div class="box-container"></div>
-    </section>
-
-    <div class="box-container">
-        <div class="box" ng-repeat="product in paginatedProducts">
-            <a href="product_{{product.index}}">
-                <img ng-src="{{product.image}}" alt="{{product.name}}">
-                <div class="desc">
-                    <span>{{product.category}}</span>
-                    <h5>{{product.name}}</h5>
-                    <div class="star">
-                        <i class="fa-solid fa-star" ng-repeat="n in [].constructor(product.stars) track by $index"></i>
-                    </div>
-                    <h4>{{product.price}}</h4>
-                </div>
-                <a ng-click="addToCart(product)">
-                    <i class="fa-solid fa-cart-plus cart" ng-style="{'color': product.cart_icon_color}"></i>
-                </a>
-                <button class="wishlist-btn" ng-click="toggleWishlist(product)">
-                    <i ng-class="wishlistState[product.name] ? 'fa-solid' : 'fa-regular'"
-                        ng-style="{'color': wishlistState[product.name] ? 'var(--secondary-color)' : 'gray'}"
-                        class="fa-heart"></i>
-                </button>
-            </a>
+        <div class="box-container">
+            <div class="box" ng-repeat="product in paginatedProducts">
+                <product-box product = 'product'></product-box>
+            </div>
         </div>
 
         <div id="pagination">
@@ -75,14 +55,14 @@
                 <i class="fa-solid fa-arrow-right"></i>
             </a>
         </div>
+    </section>
 
         <ng-include src="'partials/footer.html'"></ng-include>
-
         <script src="app.js"></script>
         <script src="../controllers/header.controller.js"></script>
         <script src="../controllers/shop.controller.js"></script>
         <script src="../scripts/addToCart.js"></script>
-        <script type="module" src="../scripts/searchfilterpagination.js"></script>
+        <script src="component/component.js"></script>
 </body>
 
 </html>

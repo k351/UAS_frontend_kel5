@@ -1,3 +1,1 @@
-const app = angular.module('revifeApp', [
-    'revifeApp.controllers',
-]);
+angular.module('revifeApp', []);  

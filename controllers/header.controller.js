@@ -1,4 +1,4 @@
-angular.module('revifeApp.controllers', [])
+angular.module('revifeApp')
     .controller('HeaderController', ['$scope', '$window', '$document', 
     function($scope, $window, $document) {
         // Dark Mode functionality
@@ -208,10 +208,7 @@ angular.module('revifeApp.controllers', [])
             });
         };
 
-        // Initialize everything
-        $scope.init = function() {
             $scope.initDarkMode();
             $scope.initExplore();
             $scope.initResponsiveMenu();
-        };
     }]);
