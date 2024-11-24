@@ -1,11 +1,23 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('loginForm');
-    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-    const modalMessage = document.getElementById('modalMessage');
+    const notification = document.getElementById('notification');
 
+    // Function to show notification
+    function showNotification(message, isError = false) {
+        notification.textContent = message;
+        notification.className = `notification ${isError ? 'error' : ''}`;
+        notification.style.display = 'block';
+
+        // Hide notification after 3 seconds
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+
+    // Handle form submission
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
@@ -13,37 +25,24 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email, password }),
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                // Show success message before redirect
-                modalMessage.textContent = 'Login successful! Redirecting...';
-                loginModal.show();
-                
-                // Redirect after a short delay
+                showNotification('Login successful! Redirecting...');
                 setTimeout(() => {
                     window.location.href = data.redirect;
                 }, 1500);
             } else {
-                // Show error message in modal
-                modalMessage.textContent = data.message || 'Login failed. Please try again.';
-                loginModal.show();
+                showNotification(data.message || 'Login failed. Please try again.', true);
             }
         } catch (error) {
             console.error('Error:', error);
-            modalMessage.textContent = 'An error occurred during login. Please try again.';
-            loginModal.show();
+            showNotification('An error occurred during login. Please try again.', true);
         }
-    });
-
-    // Clear form on modal close
-    document.getElementById('loginModal').addEventListener('hidden.bs.modal', function () {
-        if (modalMessage.textContent.includes('successful')) return; // Don't clear if login was successful
-        document.getElementById('loginForm').reset();
     });
 });

@@ -1,8 +1,7 @@
-angular.module('revifeApp', [])
-.controller('ShopController', ['$scope', '$filter', function($scope, $filter) {
-    // Initialize products data (assuming you'll load this from a service)
-    $scope.productsData = []; // Populate with your product data
-    $scope.filteredProducts = [];
+angular.module('revifeApp')
+.controller('ShopController', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
+    // Initialize products data
+    $scope.productsData = [];
     
     // Pagination settings
     $scope.currentPage = 1;
@@ -14,56 +13,61 @@ angular.module('revifeApp', [])
     
     // Initialize wishlist state
     $scope.wishlistState = JSON.parse(localStorage.getItem('wishlistState')) || {};
-    
-    // Initial load and filtering
+
+    // Initialize products
     $scope.initializeProducts = function() {
-        // Check localStorage for previous search/filter
-        const storedSearchQuery = localStorage.getItem('searchQuery');
-        const storedFilterQuery = localStorage.getItem('filterQuery');
-        
-        if (storedSearchQuery && storedSearchQuery !== '') {
-            $scope.searchQuery = storedSearchQuery;
-            $scope.searchProducts();
-            localStorage.removeItem('searchQuery');
-        } else if (storedFilterQuery && storedFilterQuery !== 'none') {
-            $scope.selectedCategory = storedFilterQuery;
-            $scope.filterByCategory();
-            localStorage.removeItem('filterQuery');
-        } else {
-            $scope.filteredProducts = $scope.productsData;
-        }
-        
-        $scope.setupPagination();
+        $http.get('/api/products') // Assuming products are fetched from this endpoint
+            .then(response => {
+                $scope.productsData = response.data;
+                
+                // Retrieve stored search and filter queries if available
+                const storedSearchQuery = localStorage.getItem('searchQuery');
+                const storedFilterQuery = localStorage.getItem('filterQuery');
+                
+                if(storedSearchQuery) {
+                    $scope.searchQuery = storedSearchQuery;
+                    localStorage.removeItem('searchQuery');
+                    $scope.searchProducts();
+                } else if(storedFilterQuery && storedFilterQuery !== 'none') {
+                    $scope.selectedCategory = storedFilterQuery;
+                    localStorage.removeItem('filterQuery');
+                    $scope.filterByCategory();
+                }
+                
+                $scope.setupPagination();
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error);
+            });
     };
-    
-    // Search functionality
+
+    // Search products by query
     $scope.searchProducts = function() {
-        const searchTerm = $scope.searchQuery.toUpperCase();
-        $scope.filteredProducts = $scope.productsData.filter(product => 
-            product.name.toUpperCase().includes(searchTerm)
-        );
-        
-        $scope.currentPage = 1;
+        if ($scope.searchQuery) {
+            $scope.productsData = $scope.productsData.filter(product =>
+                product.name.toLowerCase().includes($scope.searchQuery.toLowerCase())
+            );
+        }
+        $scope.currentPage = 1;  // Reset pagination on search
         $scope.setupPagination();
     };
-    
+
     // Category filtering
     $scope.filterByCategory = function() {
         if ($scope.selectedCategory === 'none') {
-            $scope.filteredProducts = $scope.productsData;
+            $scope.initializeProducts(); // Re-fetch all products if no category selected
         } else {
-            $scope.filteredProducts = $scope.productsData.filter(product => 
+            $scope.productsData = $scope.productsData.filter(product => 
                 product.category.toUpperCase() === $scope.selectedCategory.toUpperCase()
             );
         }
-        
-        $scope.currentPage = 1;
+        $scope.currentPage = 1;  // Reset pagination
         $scope.setupPagination();
     };
-    
+
     // Pagination setup
     $scope.setupPagination = function() {
-        $scope.totalPages = Math.ceil($scope.filteredProducts.length / $scope.itemsPerPage);
+        $scope.totalPages = Math.ceil($scope.productsData.length / $scope.itemsPerPage);
         $scope.pages = [];
         
         for (let i = 1; i <= $scope.totalPages; i++) {
@@ -73,12 +77,11 @@ angular.module('revifeApp', [])
         $scope.paginatedProducts = $scope.getPaginatedProducts();
     };
     
-    // Get paginated products for current page
+    // Get paginated products
     $scope.getPaginatedProducts = function() {
         const startIndex = ($scope.currentPage - 1) * $scope.itemsPerPage;
         const endIndex = startIndex + $scope.itemsPerPage;
-        
-        return $scope.filteredProducts.slice(startIndex, endIndex);
+        return $scope.productsData.slice(startIndex, endIndex);
     };
     
     // Change page
@@ -86,19 +89,18 @@ angular.module('revifeApp', [])
         $scope.currentPage = page;
         $scope.paginatedProducts = $scope.getPaginatedProducts();
     };
-    
+
     // Wishlist toggle
     $scope.toggleWishlist = function(product) {
         $scope.wishlistState[product.name] = !$scope.wishlistState[product.name];
         localStorage.setItem('wishlistState', JSON.stringify($scope.wishlistState));
     };
-    
+
     // Add to cart (placeholder function)
     $scope.addToCart = function(product) {
-        // Implement cart logic
         console.log('Added to cart:', product);
     };
-    
-    // Initialize on controller load
+
+    // Initialize products on load
     $scope.initializeProducts();
 }]);
