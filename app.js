@@ -10,6 +10,8 @@ const authRoutes = require('./api/routes/auth.routes');
 const productRoutes = require('./api/routes/product.routes');
 const pageRoutes = require('./api/routes/page.routes');
 const cartRoutes = require('./api/routes/cart.routes');
+const wishlistRoutes = require('./api/routes/wishlist.routes');
+const wishlist = require('./api/models/wishlist.schema');
 
 const app = express();
 const port = 5500;
@@ -32,6 +34,7 @@ app.use('/', pageRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/wishlist', wishlistRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

@@ -7,6 +7,7 @@
     <title>Revife.</title>
     <link rel="stylesheet" href="style/wishlist.css">
     <link rel="stylesheet" href="style/header.css">
+    <link rel="stylesheet" href="style/home.css">
     <link rel="stylesheet" href="style/categories.css">
     <link rel="stylesheet" href="style/carousel.css">
     <link rel="stylesheet" href="style/footer.css">
@@ -28,7 +29,6 @@
         <div class="filter-container">
             <h2>Filter</h2>
         
-            <!-- Filter Section: Urutkan -->
             <div class="filter-section" ng-class="{'active': isFilterActive('urutkan')}">
                 <div class="filter-header" ng-click="toggleFilter('urutkan')">
                     <h3>Urutkan</h3>
@@ -44,7 +44,6 @@
                 </div>
             </div>
         
-            <!-- Filter Section: Penawaran -->
             <div class="filter-section" ng-class="{'active': isFilterActive('penawaran')}">
                 <div class="filter-header" ng-click="toggleFilter('penawaran')">
                     <h3>Penawaran</h3>
@@ -59,7 +58,6 @@
                 </div>
             </div>
         
-            <!-- Filter Section: Stok -->
             <div class="filter-section" ng-class="{'active': isFilterActive('stok')}">
                 <div class="filter-header" ng-click="toggleFilter('stok')">
                     <h3>Stok</h3>
@@ -73,7 +71,6 @@
                 </div>
             </div>
         
-            <!-- Filter Section: Kategori -->
             <div class="filter-section" ng-class="{'active': isFilterActive('kategori')}">
                 <div class="filter-header" ng-click="toggleFilter('kategori')">
                     <h3>Kategori</h3>
@@ -92,28 +89,46 @@
             </div>
         </div>
 
-
-        <div class="wishlist-container" id="wishlist-container">
-            <section class="products">
-                <div class="box-container">
-                    <!-- Products will be dynamically loaded here -->
+        <div class="wishlist-container">
+            <div ng-repeat="product in wishlistItems" class="product-card fade-in">
+                <div class="image-container">
+                    <img ng-src="../{{product.image}}" alt="product.name">
                 </div>
-            </section>
+                <div class="product-info">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                    <h4 class="product-price">{{ product.price }}</h4>
+                    <p class="product-sold">Terjual {{ product.sold }}</p>
+                    <div class="rating">
+                        <i class="fa fa-star" ng-repeat="star in [].constructor(product.stars) track by $index"></i> {{
+                        product.stars }}.0
+                    </div>
+                </div>
+                <button class="wishlist-btn" ng-click="toggleWishlist(product._id)">
+                                <i class="fa-solid fa-heart" ng-if="product.isInWishlist"></i>
+                                <i class="fa-regular fa-heart" ng-if="!product.isInWishlist"></i>
+                            </button>
+                <button class="add-cart" ng-click="addToCart(product)">+ Keranjang</button>
+            </div>
         </div>
+
+        <!-- <div ng-if="emptyWishlistMessage" style="color: var(--tertiary-color);">
+            {{ emptyWishlistMessage }}
+        </div> -->
+           
+
     </section>
 
     <ng-include src="'partials/footer.html'"></ng-include>
 
     <script src="app.js"></script>
-    <script src="../controllers/controllers.module.js"></script>
-    <script src="../controllers/header.controller.js"></script>
     <script src="../controllers/wishlist.controller.js"></script>
+    <script src="../controllers/header.controller.js"></script>
 
-    <script src="../scripts/addToCart.js"></script>
+    <!-- <script src="../scripts/addToCart.js"></script>
     <script src="../scripts/searchQuery.js"></script>
     <script src="../scripts/categoriesQuery.js"></script>
     <script type="module" src="../scripts/addToWishlist.js"></script>
-    <script type="module" src="../scripts/wishlist.js"></script>
+    <script type="module" src="../scripts/wishlist.js"></script> -->
 
 </body>
 
