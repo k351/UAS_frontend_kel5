@@ -1,3 +1,3 @@
 const app = angular.module('revifeApp', [
-    'revifeApp.controllers'
+    'revifeApp.controllers',
 ]);

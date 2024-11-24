@@ -10,6 +10,7 @@ require('dotenv').config();
 
 const { verifyToken, isAdmin } = require('./middleware/auth');
 const User = require('./models/user.schema.js');
+const Wishlist = require('./models/wishlist.schema.js')
 
 const app = express();
 const port = 5500;
@@ -141,6 +142,54 @@ app.post('/api/auth/login', async (req, res) => {
 app.post('/api/auth/logout', (req, res) => {
     res.clearCookie('token');
     res.json({ redirect: '/' });
+});
+
+// Add item to wishlist
+app.post('/api/wishlist', verifyToken, async (req, res) => {
+    const { userId, productId } = req.body;
+
+    try {
+        // Find the user's wishlist
+        let wishlist = await Wishlist.findOne({ userId });
+
+        // If no wishlist exists, create a new one
+        if (!wishlist) {
+            wishlist = new Wishlist({ userId, products: [productId] });
+            await wishlist.save();
+        } else {
+            // Check if the product is already in the wishlist to avoid duplicates
+            if (wishlist.products.includes(productId)) {
+                return res.status(400).json({ message: 'Item is already in the wishlist' });
+            }
+
+            // Add the product to the existing wishlist
+            wishlist.products.push(productId);
+            await wishlist.save();
+        }
+
+        res.json({ success: true, message: 'Item added to wishlist' });
+    } catch (error) {
+        console.error('Error adding item to wishlist:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Get wishlist items for a user
+app.get('/api/wishlist/:userId', verifyToken, async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        // Find the user's wishlist and populate product details
+        const wishlist = await Wishlist.findOne({ userId }).populate('products');
+        if (!wishlist) {
+            return res.json([]); // Return an empty array if no wishlist is found
+        }
+
+        res.json(wishlist.products);
+    } catch (error) {
+        console.error('Error fetching wishlist items:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
 // Error handling middleware

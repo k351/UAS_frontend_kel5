@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="revifeApp">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,36 +17,41 @@
     <link rel="stylesheet" href="style/product.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
-    <script src="../scripts/jquery-3.7.1.min.js"></script>
+    <script src="scripts/jquery-3.7.1.min.js"></script>
 </head>
-<body>
+
+<body ng-controller="WishlistController">
 
     <ng-include src="'partials/header.html'"></ng-include>
 
     <section class="wishlist-main">
         <div class="filter-container">
             <h2>Filter</h2>
-
-            <div class="filter-section">
-                <div class="filter-header" onclick="toggleFilter(this)">
+        
+            <!-- Filter Section: Urutkan -->
+            <div class="filter-section" ng-class="{'active': isFilterActive('urutkan')}">
+                <div class="filter-header" ng-click="toggleFilter('urutkan')">
                     <h3>Urutkan</h3>
-                    <i class="fa fa-angle-down"></i>
+                    <i class="fa"
+                        ng-class="{'fa-angle-down': !isFilterActive('urutkan'), 'fa-angle-up': isFilterActive('urutkan')}"></i>
                 </div>
-                <div class="filter-options">
+                <div class="filter-options" ng-style="{'height': isFilterActive('urutkan') ? 'auto' : '0px'}">
                     <label><input type="radio" name="sort" value="rating"> Rating</label>
-                    <label><input type="radio" name="sort" value="price"> Harga <i id="priceArrow" class="fa fa-arrow-up"></i></label>
-                    <label><input type="radio" name="sort" value="name-asc"> Nama (A-Z)</label>  <!-- Ascending -->
-                    <label><input type="radio" name="sort" value="name-desc"> Nama (Z-A)</label> <!-- Descending -->
+                    <label><input type="radio" name="sort" value="price"> Harga <i id="priceArrow"
+                            class="fa fa-arrow-up"></i></label>
+                    <label><input type="radio" name="sort" value="name-asc"> Nama (A-Z)</label>
+                    <label><input type="radio" name="sort" value="name-desc"> Nama (Z-A)</label>
                 </div>
             </div>
-                
-            <!-- Filter for "Penawaran" -->
-            <div class="filter-section">
-                <div class="filter-header" onclick="toggleFilter(this)">
+        
+            <!-- Filter Section: Penawaran -->
+            <div class="filter-section" ng-class="{'active': isFilterActive('penawaran')}">
+                <div class="filter-header" ng-click="toggleFilter('penawaran')">
                     <h3>Penawaran</h3>
-                    <i class="fa fa-angle-down"></i>
+                    <i class="fa"
+                        ng-class="{'fa-angle-down': !isFilterActive('penawaran'), 'fa-angle-up': isFilterActive('penawaran')}"></i>
                 </div>
-                <div class="filter-options">
+                <div class="filter-options" ng-style="{'height': isFilterActive('penawaran') ? 'auto' : '0px'}">
                     <label><input type="checkbox"> Cashback</label>
                     <label><input type="checkbox"> Diskon</label>
                     <label><input type="checkbox"> COD</label>
@@ -53,26 +59,28 @@
                 </div>
             </div>
         
-            <!-- Filter for "Stok" -->
-            <div class="filter-section">
-                <div class="filter-header" onclick="toggleFilter(this)">
+            <!-- Filter Section: Stok -->
+            <div class="filter-section" ng-class="{'active': isFilterActive('stok')}">
+                <div class="filter-header" ng-click="toggleFilter('stok')">
                     <h3>Stok</h3>
-                    <i class="fa fa-angle-down"></i>
+                    <i class="fa"
+                        ng-class="{'fa-angle-down': !isFilterActive('stok'), 'fa-angle-up': isFilterActive('stok')}"></i>
                 </div>
-                <div class="filter-options">
-                    <label><input type="checkbox" name="stok"> Preorder</label>
-                    <label><input type="checkbox" name="stok"> Tersedia</label>
-                    <label><input type="checkbox" name="stok"> Tidak Tersedia</label>
+                <div class="filter-options" ng-style="{'height': isFilterActive('stok') ? 'auto' : '0px'}">
+                    <label><input type="checkbox" name="stok" value="preorder"> Preorder</label>
+                    <label><input type="checkbox" name="stok" value="available"> Tersedia</label>
+                    <label><input type="checkbox" name="stok" value="unavailable"> Tidak Tersedia</label>
                 </div>
             </div>
         
-            <!-- Filter for "Kategori" -->
-            <div class="filter-section">
-                <div class="filter-header" onclick="toggleFilter(this)">
+            <!-- Filter Section: Kategori -->
+            <div class="filter-section" ng-class="{'active': isFilterActive('kategori')}">
+                <div class="filter-header" ng-click="toggleFilter('kategori')">
                     <h3>Kategori</h3>
-                    <i class="fa fa-angle-down"></i>
+                    <i class="fa"
+                        ng-class="{'fa-angle-down': !isFilterActive('kategori'), 'fa-angle-up': isFilterActive('kategori')}"></i>
                 </div>
-                <div class="filter-options">
+                <div class="filter-options" ng-style="{'height': isFilterActive('kategori') ? 'auto' : '0px'}">
                     <ul>
                         <li><a href="">Audio, Kamera & Elektronik</a></li>
                         <li><a href="">Buku</a></li>
@@ -80,31 +88,34 @@
                         <li><a href="">Elektronik</a></li>
                         <li><a href="">Fashion Anak & Bayi</a></li>
                     </ul>
-                    <a href="#">Lihat Kategori Lainnya</a>
                 </div>
             </div>
         </div>
-        
-    
+
+
         <div class="wishlist-container" id="wishlist-container">
             <section class="products">
                 <div class="box-container">
-        
+                    <!-- Products will be dynamically loaded here -->
                 </div>
             </section>
         </div>
     </section>
 
-
     <ng-include src="'partials/footer.html'"></ng-include>
 
     <script src="app.js"></script>
+    <script src="../controllers/controllers.module.js"></script>
     <script src="../controllers/header.controller.js"></script>
+    <script src="../controllers/wishlist.controller.js"></script>
+
     <script src="../scripts/addToCart.js"></script>
-    <script src="../scripts/wishlist-filter.js"></script>
     <script src="../scripts/searchQuery.js"></script>
     <script src="../scripts/categoriesQuery.js"></script>
     <script type="module" src="../scripts/addToWishlist.js"></script>
     <script type="module" src="../scripts/wishlist.js"></script>
+
 </body>
+
 </html>
+
