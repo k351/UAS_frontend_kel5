@@ -88,11 +88,21 @@
                   <a ng-click="addToCart(product)">
                       <i class="fa-solid fa-cart-plus cart" ng-style="{'color': product.cart_icon_color}"></i>
                   </a>
-                  <button class="wishlist-btn" ng-click="toggleWishlist(product)">
+                  <div>
+
+                  </div>
+                  <!-- <button class="wishlist-btn" ng-click="toggleWishlist(product)">
                       <i ng-class="wishlistState[product.name] ? 'fa-solid' : 'fa-regular'"
                           ng-style="{'color': wishlistState[product.name] ? 'var(--secondary-color)' : 'gray'}"
                           class="fa-heart"></i>
-                  </button>
+                  </button> -->
+                  <div ng-controller="WishlistController">
+                    <button class="wishlist-btn" ng-click="toggleWishlist(product)">
+                        <i ng-class="wishlistState[product._id] ? 'fa-solid' : 'fa-regular'"
+                            ng-style="{'color': wishlistState[product._id] ? 'var(--secondary-color)' : 'gray'}" class="fa-heart"></i>
+                    </button>
+                  </div>
+                
               </a>
           </div>
         </div>
@@ -100,10 +110,11 @@
     <ng-include src="'partials/footer.html'"></ng-include>
     <script src="app.js"></script>
     <script defer src="../controllers/header.controller.js"></script>
+    <script defer src="../controllers/wishlist.controller.js"></script>
     <script defer src="../scripts/carousel.js"></script>
     <script defer src="../scripts/addToCart.js"></script>
-    <script type="module" src="../scripts/indexproduct.js"></script>
+    <!-- <script type="module" src="../scripts/indexproduct.js"></script> -->
     <script src="../controllers/shop.controller.js"></script>
-    <script type="module" src="../scripts/addToWishlist.js"></script>
+    <!-- <script type="module" src="../scripts/addToWishlist.js"></script> -->
 </body>
 </html>

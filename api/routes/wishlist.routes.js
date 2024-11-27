@@ -26,20 +26,18 @@ router.get('/', verifyToken, async (req, res) => {
 // Add an item to the user's wishlist
 router.post('/', verifyToken, async (req, res) => {
     try {
-        const { productId } = req.body;  // Assuming the product has a unique productId
-        const wishlist = await Wishlist.findOne({ userId: req.user._id });  // Use req.user._id here
+        const { productId } = req.body;
+        const wishlist = await Wishlist.findOne({ userId: req.user._id });
 
         if (!wishlist) {
-            // If the wishlist does not exist for the user, create a new one
             const newWishlist = new Wishlist({
-                userId: req.user._id,  // Use req.user._id here
+                userId: req.user._id,
                 products: [productId]
             });
             await newWishlist.save();
             return res.json({ message: 'Item added to wishlist', wishlist: newWishlist.products });
         }
 
-        // Avoid adding duplicate items to the wishlist
         if (wishlist.products.includes(productId)) {
             return res.status(400).json({ message: 'Item already in wishlist' });
         }
@@ -57,13 +55,19 @@ router.post('/', verifyToken, async (req, res) => {
 // Remove an item from the user's wishlist
 router.delete('/', verifyToken, async (req, res) => {
     try {
+        console.log('Request body:', req.body);  // Debugging line to check req.body
         const { productId } = req.body;
-        const wishlist = await Wishlist.findOne({ userId: req.user._id });  // Use req.user._id here
+
+        if (!productId) {
+            return res.status(400).json({ message: 'Product ID is missing' });
+        }
+
+        const wishlist = await Wishlist.findOne({ userId: req.user._id });
+
         if (!wishlist) {
             return res.status(404).json({ message: 'Wishlist not found' });
         }
 
-        // Remove the product from the wishlist
         const index = wishlist.products.indexOf(productId);
         if (index === -1) {
             return res.status(400).json({ message: 'Item not found in wishlist' });
@@ -78,5 +82,6 @@ router.delete('/', verifyToken, async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
 
 module.exports = router;

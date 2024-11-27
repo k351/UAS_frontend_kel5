@@ -103,10 +103,10 @@
                         product.stars }}.0
                     </div>
                 </div>
-                <button class="wishlist-btn" ng-click="toggleWishlist(product._id)">
-                                <i class="fa-solid fa-heart" ng-if="product.isInWishlist"></i>
-                                <i class="fa-regular fa-heart" ng-if="!product.isInWishlist"></i>
-                            </button>
+                <button class="wishlist-btn" ng-click="toggleWishlist(product)">
+                    <i ng-class="wishlistState[product._id] ? 'fa-solid' : 'fa-regular'"
+                        ng-style="{'color': wishlistState[product._id] ? 'var(--secondary-color)' : 'gray'}" class="fa-heart"></i>
+                </button>
                 <button class="add-cart" ng-click="addToCart(product)">+ Keranjang</button>
             </div>
         </div>

@@ -13,27 +13,27 @@ angular.module('revifeApp')
     
     // Initialize wishlist state
     $scope.wishlistState = JSON.parse(localStorage.getItem('wishlistState')) || {};
-
+    
     // Initialize products
     $scope.initializeProducts = function() {
         $http.get('/api/products') // Assuming products are fetched from this endpoint
-            .then(response => {
-                $scope.productsData = response.data;
-                
-                // Retrieve stored search and filter queries if available
-                const storedSearchQuery = localStorage.getItem('searchQuery');
-                const storedFilterQuery = localStorage.getItem('filterQuery');
-                
-                if(storedSearchQuery) {
-                    $scope.searchQuery = storedSearchQuery;
-                    localStorage.removeItem('searchQuery');
-                    $scope.searchProducts();
-                } else if(storedFilterQuery && storedFilterQuery !== 'none') {
-                    $scope.selectedCategory = storedFilterQuery;
-                    localStorage.removeItem('filterQuery');
-                    $scope.filterByCategory();
-                }
-                
+        .then(response => {
+            $scope.productsData = response.data;
+            
+            // Retrieve stored search and filter queries if available
+            const storedSearchQuery = localStorage.getItem('searchQuery');
+            const storedFilterQuery = localStorage.getItem('filterQuery');
+            
+            if(storedSearchQuery) {
+                $scope.searchQuery = storedSearchQuery;
+                localStorage.removeItem('searchQuery');
+                $scope.searchProducts();
+            } else if(storedFilterQuery && storedFilterQuery !== 'none') {
+                $scope.selectedCategory = storedFilterQuery;
+                localStorage.removeItem('filterQuery');
+                $scope.filterByCategory();
+            }
+            
                 $scope.setupPagination();
             })
             .catch(error => {
