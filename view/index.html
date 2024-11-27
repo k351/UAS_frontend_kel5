@@ -75,44 +75,23 @@
         <p>Summer Collection New Morden Designs</p>
         <div class="box-container">
             <div class="box" ng-repeat="product in paginatedProducts">
-              <a href="product_{{product.index}}">
-                  <img ng-src="{{product.image}}" alt="{{product.name}}">
-                  <div class="desc">
-                      <span>{{product.category}}</span>
-                      <h5>{{product.name}}</h5>
-                      <div class="star">
-                          <i class="fa-solid fa-star" ng-repeat="n in [].constructor(product.stars) track by $index"></i>
-                      </div>
-                      <h4>{{product.price}}</h4>
-                  </div>
-                  <a ng-click="addToCart(product)">
-                      <i class="fa-solid fa-cart-plus cart" ng-style="{'color': product.cart_icon_color}"></i>
-                  </a>
-                  <div>
-
-                  </div>
-                  <!-- <button class="wishlist-btn" ng-click="toggleWishlist(product)">
-                      <i ng-class="wishlistState[product.name] ? 'fa-solid' : 'fa-regular'"
-                          ng-style="{'color': wishlistState[product.name] ? 'var(--secondary-color)' : 'gray'}"
-                          class="fa-heart"></i>
-                  </button> -->
-                  <div ng-controller="WishlistController">
-                    <button class="wishlist-btn" ng-click="toggleWishlist(product)">
-                        <i ng-class="wishlistState[product._id] ? 'fa-solid' : 'fa-regular'"
-                            ng-style="{'color': wishlistState[product._id] ? 'var(--secondary-color)' : 'gray'}" class="fa-heart"></i>
-                    </button>
-                  </div>
-                
-              </a>
-          </div>
+                <product-box product = 'product'></product-box>
+            </div>
+            <!-- <div ng-controller="WishlistController">
+                <button class="wishlist-btn" ng-click="toggleWishlist(product)">
+                    <i ng-class="wishlistState[product._id] ? 'fa-solid' : 'fa-regular'"
+                        ng-style="{'color': wishlistState[product._id] ? 'var(--secondary-color)' : 'gray'}" class="fa-heart"></i>
+                </button>
+              </div> -->
         </div>
     </section>
     <ng-include src="'partials/footer.html'"></ng-include>
     <script src="app.js"></script>
+    <script src="component/component.js"></script>
     <script defer src="../controllers/header.controller.js"></script>
     <script defer src="../controllers/wishlist.controller.js"></script>
     <script defer src="../scripts/carousel.js"></script>
-    <script defer src="../scripts/addToCart.js"></script>
+    <script src="../controllers/cart.controller.js"></script>
     <!-- <script type="module" src="../scripts/indexproduct.js"></script> -->
     <script src="../controllers/shop.controller.js"></script>
     <!-- <script type="module" src="../scripts/addToWishlist.js"></script> -->

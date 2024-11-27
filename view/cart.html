@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
 </head>
-<body>
+<body ng-controller="CartController">
     <ng-include src="'partials/header.html'"></ng-include>
 
     <section id="cart" class="section-p2">
@@ -26,8 +26,21 @@
                     <td>Subtotal</td>
                 </tr>
             </thead>
-            <tbody id="cart-items">
-                <!-- Cart items will be populated here by JavaScript -->
+            <tbody>
+                <tr ng-repeat="item in cartItems">
+                    <td>
+                        <button ng-click="removeItem(item.id)">X</button>
+                    </td>
+                    <td>
+                        <img ng-src="{{item.image}}" alt="{{item.name}}">
+                    </td>
+                    <td>{{item.name}}</td>
+                    <td>Rp {{item.price}}</td>
+                    <td>
+                        <input type="number" ng-model="item.cartQuantity" min="1" ng-change="updateQuantity(item.id, item.cartQuantity)">
+                    </td>
+                <td>Rp {{item.cartQuantity * item.price}}</td>
+                </tr>
             </tbody>
         </table>
     </section>
@@ -35,23 +48,23 @@
     <section id="cart-total" class="section-p3">
         <div class="coupon">
             <h3>Apply Coupon</h3>
-            <input type="text" placeholder="Please enter your coupon">
-            <button>Apply</button>
+            <input type="text" ng-model="couponCode" placeholder="Please enter your coupon">
+            <button ng-click="applyCoupon()">Apply</button>
         </div>
         <div class="total">
             <h3>Cart Total</h3>
             <table>
                 <tr>
                     <td>Cart Total</td>
-                    <td>Rp 0</td>
+                    <td>Rp {{cartTotal}}</td>
                 </tr>
                 <tr>
                     <td>Discount</td>
-                    <td>Rp 0</td>
+                    <td>Rp {{couponDiscount}}</td>
                 </tr>
                 <tr>
                     <td><strong>Sub Total (discount excl.)</strong></td>
-                    <td><strong>Rp 0</strong></td>
+                    <td><strong>Rp {{cartTotal - couponDiscount}}</strong></td>
                 </tr>
             </table>
             <a href="/checkout"><button class="normal">Proceed to checkout</button></a>
@@ -59,9 +72,8 @@
     </section>
 
     <ng-include src="'partials/footer.html'"></ng-include>
-
     <script src="app.js"></script>
     <script src="../controllers/header.controller.js"></script>
-    <script src="../scripts/cart.js"></script>   
+    <script src="../controllers/cart.controller.js"></script>
 </body>
 </html>

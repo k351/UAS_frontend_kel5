@@ -28,12 +28,10 @@ const userSchema = new mongoose.Schema({
     },
     cart: [
         {
-            productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-            cartQuantity: { type: Number, required: true }
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'cartItem', 
         }
     ]
 });
-
-
 
 module.exports = mongoose.model('User', userSchema);

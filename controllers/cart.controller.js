@@ -1,53 +1,71 @@
 // Cart Service
-angular.module('revifeApp.services', [])
-.service('CartService', ['$http', function($http) {
+const revifeApp = angular.module('revifeApp')
+
+revifeApp.service('CartService', ['$http', function($http) {
+
     this.getCartItems = function() {
-        return $http.get('/api/cart-items');
+        return $http.get('/api/cart').then(response => response.data);
     };
 
-    this.updateQuantity = function(itemName, newQuantity) {
-        return $http.put('/api/cart-items/update', {
-            name: itemName, 
-            quantity: newQuantity
+    this.getCartItemsPopulate = function() {
+        return $http.get('/api/cart/populate');
+    };
+
+    this.addToCart = function(productId, quantity) {
+        return $http.post('/api/cart/add', {
+            productId: productId,
+            cartQuantity: quantity
         });
     };
 
-    this.removeItem = function(itemName) {
-        return $http.delete(`/api/cart-items/${itemName}`);
+    this.updateQuantity = function(cartItemId, newQuantity) {
+        return $http.put(`/api/cart/update/${cartItemId}`, { cartQuantity: newQuantity });
     };
 
-    this.applyCoupon = function(couponCode) {
-        return $http.post('/api/apply-coupon', { code: couponCode });
+    this.removeItem = function(cartItemId) {
+        return $http.delete(`/api/cart/delete/${cartItemId}`);
     };
+}]);
 
-    this.calculateCartTotal = function() {
-        return $http.get('/api/cart-total');
-    };
-}])
 
-// Cart Controller
-.controller('CartController', ['$scope', 'CartService', function($scope, CartService) {
+revifeApp.controller('CartController', ['$scope', 'CartService', function($scope, CartService) {
     $scope.cartItems = [];
-    $scope.couponDiscount = 0;
     $scope.cartTotal = 0;
-    $scope.isCheckoutButtonVisible = false;
 
-    // Load Cart Items
     $scope.loadCartItems = function() {
-        CartService.getCartItems()
+        CartService.getCartItemsPopulate()
             .then(function(response) {
-                $scope.cartItems = response.data;
-                $scope.isCheckoutButtonVisible = $scope.cartItems.length > 0;
-                $scope.updateCartTotal();
+                $scope.cartItems = response.data.map(function(cartItem) {
+                    return { 
+                        id: cartItem._id,
+                        name: cartItem.productId.name,
+                        price: cartItem.productId.price,
+                        image: cartItem.productId.image,
+                        cartQuantity: cartItem.cartQuantity
+                    };
+                });
+                $scope.calculateCartTotal();
             })
             .catch(function(error) {
                 console.error('Error loading cart items:', error);
             });
     };
 
-    // Update Item Quantity
-    $scope.updateQuantity = function(itemName, newQuantity) {
-        CartService.updateQuantity(itemName, newQuantity)
+
+    $scope.addToCart = function(productId, quantity) {
+        CartService.addToCart(productId, quantity)
+            .then(function() {
+                alert('Item added to cart successfully!');
+                $scope.loadCartItems();
+            })
+            .catch(function(error) {
+                console.error('Error adding to cart:', error);
+                alert('Failed to add item to cart.');
+            });
+    };
+
+    $scope.updateQuantity = function(cartItemId, newQuantity) {
+        CartService.updateQuantity(cartItemId, newQuantity)
             .then(function() {
                 $scope.loadCartItems();
             })
@@ -56,9 +74,8 @@ angular.module('revifeApp.services', [])
             });
     };
 
-    // Remove Item
-    $scope.removeItem = function(itemName) {
-        CartService.removeItem(itemName)
+    $scope.removeItem = function(cartItemId) {
+        CartService.removeItem(cartItemId)
             .then(function() {
                 $scope.loadCartItems();
             })
@@ -67,42 +84,13 @@ angular.module('revifeApp.services', [])
             });
     };
 
-    // Update Cart Total
-    $scope.updateCartTotal = function() {
-        CartService.calculateCartTotal()
-            .then(function(response) {
-                $scope.cartTotal = response.data.total;
-                $scope.couponDiscount = response.data.discount;
-            })
-            .catch(function(error) {
-                console.error('Error calculating total:', error);
-            });
+    $scope.calculateCartTotal = function() {
+        let total = 0;
+        $scope.cartItems.forEach(function(item) {
+            total += item.cartQuantity * item.price;
+        });
+        $scope.cartTotal = total;
     };
 
-    // Apply Coupon
-    $scope.applyCoupon = function() {
-        const couponCode = $scope.couponCode.trim().toUpperCase();
-        
-        if ($scope.cartItems.length === 0) {
-            alert('Please add items to cart before applying a coupon.');
-            return;
-        }
-
-        CartService.applyCoupon(couponCode)
-            .then(function(response) {
-                if (response.data.success) {
-                    alert(`Coupon applied! You saved Rp ${response.data.discount}.`);
-                    $scope.updateCartTotal();
-                } else {
-                    alert('Invalid coupon code.');
-                }
-            })
-            .catch(function(error) {
-                console.error('Error applying coupon:', error);
-                alert('Failed to apply coupon.');
-            });
-    };
-
-    // Initialize on controller load
     $scope.loadCartItems();
 }]);

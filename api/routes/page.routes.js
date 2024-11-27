@@ -17,7 +17,7 @@ router.get('/product', (req, res) => res.sendFile(path.join(__dirname, '../../vi
 
 // Admin Routes
 router.get('/admin-dashboard', verifyToken, isAdmin, (req, res) => {
-    res.sendFile(path.join(__dirname, '../view/admin-dashboard.html'));
+    res.sendFile(path.join(__dirname, '../../view/admin-dashboard.html'));
 });
 
 module.exports = router;
