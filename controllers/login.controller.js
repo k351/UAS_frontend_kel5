@@ -1,19 +1,36 @@
-angular.module('revifeApp').controller('LoginController', function($scope, $http) {
-    $scope.login = function() {
-        $http.post('/api/auth/login', $scope.credentials)
-        .then(function(response) {
-            // Store token in localStorage
-            localStorage.setItem('token', response.data.token);
-            
-            // Redirect based on role
-            if (response.data.user.role === 'admin') {
-                window.location.href = '/admin';
+angular.module("revifeApp").controller("LoginController", [
+    "$scope",
+    "$http",
+    function ($scope, $http) {
+        $scope.credentials = {
+            email: "",
+            password: "",
+        };
+        $scope.login = function () {
+            if ($scope.credentials.email && $scope.credentials.password) {
+                $http.post("/api/auth/login", {
+                    email: $scope.credentials.email,
+                    password: $scope.credentials.password,
+                })
+                    .then(function (response) {
+                        // Simpan token di localStorage
+                        const { token, username, userId } = response.data.loginSuccess;
+                        localStorage.setItem("authToken", token);
+                        localStorage.setItem("name", username);
+                        localStorage.setItem("id", userId);
+
+                        // Redirect ke halaman yang sesuai
+                        const redirectUrl = response.data.redirect || "/dashboard/overview";
+                        alert(`Login successful! Welcome, ${username}`);
+                        window.location.href = redirectUrl;
+                    })
+                    .catch(function (error) {
+                        console.error('Login error:', error);
+                        alert(error.data?.message || "An error occurred during login");
+                    });
             } else {
-                window.location.href = '/dashboard';
+                alert("Please fill in both fields!");
             }
-        })
-        .catch(function(error) {
-            $scope.errorMessage = 'Login failed';
-        });
-    };
-});
+        };
+    },
+]);

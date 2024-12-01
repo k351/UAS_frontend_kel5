@@ -1,7 +1,4 @@
-// Cart Service
-const revifeApp = angular.module('revifeApp')
-
-revifeApp.service('CartService', ['$http', function($http) {
+angular.module('revifeApp').service('CartService', ['$http', function($http) {
 
     this.getCartItems = function() {
         return $http.get('/api/cart').then(response => response.data);
@@ -28,7 +25,7 @@ revifeApp.service('CartService', ['$http', function($http) {
 }]);
 
 
-revifeApp.controller('CartController', ['$scope', 'CartService', function($scope, CartService) {
+angular.module('revifeApp').controller('CartController', ['$scope', 'CartService', function($scope, CartService) {
     $scope.cartItems = [];
     $scope.cartTotal = 0;
 

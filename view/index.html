@@ -2,98 +2,184 @@
 <html lang="en" ng-app="revifeApp">
 <head>
     <meta charset="UTF-8">
+    <!-- <base href="/"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revife.</title>
-    <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/header.css">
-    <link rel="stylesheet" href="style/home.css">
-    <link rel="stylesheet" href="style/carousel.css">
-    <link rel="stylesheet" href="style/products.css">
-    <link rel="stylesheet" href="style/footer.css">
-    <link rel="stylesheet" href="style/cart.css">
-    <link rel="stylesheet" href="style/checkout.css">
-    <link rel="stylesheet" href="style/categories.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
-    <script src="../scripts/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
-<body>
-    <ng-include src="'partials/header.html'"></ng-include>
 
-    <section class="home">
-        <div class="content">
-            <div class="background-image">
-                <img src="../images/boximage/Orang1box.png">
-                <img src="../images/boximage/Orang2box.png">
+<body>
+    <header ng-if="!isLoginPage && !isSignupPage" ng-controller="HeaderController">
+        <div class="main-header">
+            <div class="logo">
+                <a href="/"> 
+                    <h2>revife<span>.</span></h2>
+                </a>
             </div>
-            <div class="home-details">
-                    <p>Find Your Favourite <span>Outfit</span>, <br>
-                        Discover Your Style.
-                    </p>
-                    <form id="homeSearchForm" class="search-form" ng-submit="handleHomeSearch($event)">
-                        <input type="text" placeholder="Search for products" id="homeSearchBar">
-                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    </form>
+            <form id="headerSearchForm" class="search-header" ng-submit="handleHeaderSearch($event)">
+                <input type="text" placeholder="Search for products" id="headerSearchBar">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <nav class="navbar">
+                <ul class="nav-menu">
+                    <li class="nav-item"><span class="nav-link" id="Explore" ng-click="toggleExplore()">Explore <i class="fa-solid fa-angle-down"></i></span></li>
+                    <li class="nav-item"><a href="" class="nav-link" ng-click="toggleDarkMode()"><img src="../images/icon/moon.png" id="dark-theme"></a></li>
+                    <li class="nav-item"><a href="#!/cart" class="nav-link"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li class="nav-item"><a href="#!/wishlist" class="nav-link"><i class="fa-solid fa-heart"></i></a></li>
+                    <li class="nav-item"><a href="#!/settings" class="nav-link"><i class="fa-solid fa-gear"></i></a></li>
+                </ul>
+                <div class="hamburger" ng-click="toggleMenu()">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+        <div class="categories-header">
+            <nav>
+                <ul>
+                    <li><a href="#!/shop" data-category="shirts" ng-click="handleCategoryFilter($event)">Shirts</a></li>
+                    <li><a href="#!/shop" data-category="t-shirts" ng-click="handleCategoryFilter($event)">T-Shirts</a></li>
+                    <li><a href="#!/shop" data-category="jackets" ng-click="handleCategoryFilter($event)">Jackets</a></li>
+                    <li><a href="#!/shop" data-category="chinos" ng-click="handleCategoryFilter($event)">Chinos</a></li>
+                    <li><a href="#!/shop" data-category="jeans" ng-click="handleCategoryFilter($event)">Jeans</a></li>
+                    <li><a href="#!/shop" data-category="skirts" ng-click="handleCategoryFilter($event)">Skirts</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="explore-links">
+            <div class="pria" ng-click="showPriaContent()">
+                <h3>pria</h3>
+                <h5>Temukan Style mu disini</h5>
+            </div>
+            <div class="wanita" ng-click="showWanitaContent()">
+                <h3>wanita</h3>
+                <h5>Temukan hal menarik disini</h5>
             </div>
         </div>
-    </section>    
+        <div class="explore-contents">
+            <div class="contents" id="pria-contents">
+                <div class="divition">
+                    <h5>New Arrivals</h5>
+                    <ul>
+                        <li><a href="#!/product">Uni sweatshirt<a><li>
+                        <li><a href="#!/product">White Polo</a></li>
+                    </ul>
+                    <br>
+                    <h5>Hot</h5>
+                    <ul>
+                        <li><a href="#!/product">Godzilla Shirt</a></li>
+                        <li><a href="#!/product">CN Shirt</a></li>
+                    </ul>
+                </div>
+                <div class="divition">
+                    <h5>Category</h5>
+                    <ul>
+                        <li><a href="#!/shop" data-category="shirts" ng-click="handleCategoryFilter($event)">Shirts</a></li>
+                        <li><a href="#!/shop" data-category="t-shirts" ng-click="handleCategoryFilter($event)">T-Shirts</a></li>
+                        <li><a href="#!/shop" data-category="jacket" ng-click="handleCategoryFilter($event)">Jackets</a></li>
+                        <li><a href="#!/shop" data-category="sweatshirt" ng-click="handleCategoryFilter($event)">Sweatshirt</a></li>
+                        <li><a href="#!/shop" data-category="chinos" ng-click="handleCategoryFilter($event)">Chinos</a></li>
+                        <li><a href="#!/shop" data-category="jeans" ng-click="handleCategoryFilter($event)">Jeans</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="contents" id="wanita-contents">
+                <div class="divition">
+                <h5>New Arrivals</h5>
+                <ul>
+                    <li><a href="#!/product">Uni sweatshirt</a></li>
+                    <li><a href="#!/product">White Polo</a></li>
+                </ul>
+                <br>
+                <h5>Hot</h5>
+                <ul>
+                    <li><a href="#!/product">Godzilla Shirt</a></li>
+                    <li><a href="#!/product">Jacket Relax</a></li>
+                </ul>
+                </div>
+                <div class="divition">
+                    <h5>Category</h5>
+                    <ul>
+                        <li><a href="#!/shop" data-category="shirts" ng-click="handleCategoryFilter($event)">Shirts</a></li>
+                        <li><a href="#!/shop" data-category="t-shirts" ng-click="handleCategoryFilter($event)">T-Shirts</a></li>
+                        <li><a href="#!/shop" data-category="jeans" ng-click="handleCategoryFilter($event)">Jeans</a></li>
+                        <li><a href="#!/shop" data-category="skirts" ng-click="handleCategoryFilter($event)">Skirts</a></li>
+                        <li><a href="#!/shop" data-category="dress" ng-click="handleCategoryFilter($event)">Dress</a></li>
+                        <li><a href="#!/shop" data-category="blouses" ng-click="handleCategoryFilter($event)">Blouses</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     
-    <section class="categories">
-        <div class="content">   
-            <ul class="categories-links">
-                <li><a data-category="shirts" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Kemeja.png">Shirts</a></li>
-                <li><a data-category="t-shirts" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Kaos.png">T-Shirts</a></li>
-                <li><a data-category="jacket" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Jacket.png">Jackets</a></li>
-                <li><a data-category="dress" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Dress.png">Dress</a></li>
-                <li><a data-category="jeans" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Jeans.png">Jeans</a></li>
-                <li><a data-category="skirts" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Rok.png">Skirts</a></li>
-            </ul>
-        </div>
-    </section>
+        <div class="black-box" ng-click="toggleExplore()"></div>
+    </header>
     
-    <section class="carousel">
-        <div class="carousel-container">
-          <div class="carousel-track">
-            <div class="slide">
-              <img src="../images/slider/image1.jpg" alt="Category 1">
+        <div ng-view></div>
+
+    <footer ng-if="!isLoginPage && !isSignupPage" class="section-p1">
+        <div class="col">
+            <h2>revife<span class="color">.</span></h2>
+            <h4>Contact</h4>
+            <p><strong>Address: </strong> Jl. Sunter Karya G K A V I / 14 </p>
+            <p><strong>Phone: </strong> +62 896-2324-4972 </p>
+            <p><strong>Hours: </strong> 10:00 - 18:00, Mon-Sun </p>
+            <div class="social">
+                <h4>Follow Us</h4>
+                <div class="icon">
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-x-twitter"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-pinterest"></i>
+                    <i class="fa-brands fa-youtube"></i>
+                </div>
             </div>
-            <div class="slide">
-              <img src="../images/slider/image2.webp" alt="Category 2">
-            </div>
-            <div class="slide">
-              <img src="../images/slider/image3.jpg" alt="Category 3">
-            </div>
-          </div>
-          <!-- Left and Right Arrows -->
-          <button class="arrow left-arrow">&#9664;</button>
-          <button class="arrow right-arrow">&#9654;</button>
         </div>
-      </section>  
     
-    <section class="products" ng-controller="ShopController">
-        <h2>New Arrival</h2>
-        <p>Summer Collection New Morden Designs</p>
-        <div class="box-container">
-            <div class="box" ng-repeat="product in paginatedProducts">
-                <product-box product = 'product'></product-box>
-            </div>
-            <!-- <div ng-controller="WishlistController">
-                <button class="wishlist-btn" ng-click="toggleWishlist(product)">
-                    <i ng-class="wishlistState[product._id] ? 'fa-solid' : 'fa-regular'"
-                        ng-style="{'color': wishlistState[product._id] ? 'var(--secondary-color)' : 'gray'}" class="fa-heart"></i>
-                </button>
-              </div> -->
+        <div class="col">
+            <h4>About</h4>
+            <a href="#!/">Home</a>
+            <a href="#!/shop">Shop</a>
+            <a href="#!/cart">Cart</a>
+            <a href="#!/wishlist">Wishlist</a>
         </div>
-    </section>
-    <ng-include src="'partials/footer.html'"></ng-include>
+    
+        <div class="col">
+            <h4>Best Seller</h4>
+            <a href="#">Crew Neck T-Shirts</a>
+            <a href="#">Soft Flannel Skipper Shirt</a>
+            <a href="#">White Polo</a>
+            <a href="#">Unisex Sweatshirts</a>
+            <a href="#">Fleece Full-Zip Jacket</a>
+        </div>
+    
+        <div class="col-install">
+            <h4>Install App</h4>
+            <p>From App Store and Google Play</p>
+            <div class="row">
+                <img src="../images\icon\app.jpg" alt="App Store">
+                <img src="../images\icon\play.jpg" alt="Play Store">
+            </div>
+            <p>Secured Payment Gateway</p>
+            <img src="../images\icon\pay.png" alt="Secured Payment">
+        </div>    
+    </footer>
+    <div class="copyright" ng-if="!isLoginPage && !isSignupPage">
+        <p>© 2024, UTS Front-End Programming</p>
+    </div>
+    <script src="../scripts/jquery-3.7.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
     <script src="app.js"></script>
     <script src="component/component.js"></script>
     <script defer src="../controllers/header.controller.js"></script>
+    <script defer src="../controllers/signup.controller.js"></script>
+    <script defer src="../controllers/login.controller.js"></script>
     <script defer src="../controllers/wishlist.controller.js"></script>
-    <script defer src="../scripts/carousel.js"></script>
-    <script src="../controllers/cart.controller.js"></script>
-    <!-- <script type="module" src="../scripts/indexproduct.js"></script> -->
-    <script src="../controllers/shop.controller.js"></script>
-    <!-- <script type="module" src="../scripts/addToWishlist.js"></script> -->
+    <script defer src="../controllers/product.controller.js"></script>
+    <script defer src="../controllers/cart.controller.js"></script>
+    <script defer src="../controllers/shop.controller.js"></script>
+    <script defer src="../controllers/home.controller.js"></script>
 </body>
+
 </html>

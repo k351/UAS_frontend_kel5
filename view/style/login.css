@@ -1,179 +1,170 @@
-/* Login Page Styling */
-.login-container {
+html, body {
+    margin-top: 0;
+}
+
+.login-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background-color: var(--primary-color);
-    padding: 20px;
+    font-family: 'Inter', sans-serif;
 }
 
-.login-box {
+.login-container {
+    display: flex;
+    width: 80%;
+    max-width: 1100px;
     background-color: var(--secondary-color);
-    padding: 30px 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
-.login-title {
-    font-family: var(--primary-font);
-    color: var(--tertiary-color);
+.login-illustration {
+    flex: 1;
+    background: linear-gradient(135deg, var(--secondary-color), #e1c7fc);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 24px;
 }
 
-.input-group {
+.illustration-content {
+    padding: 20px;
+    max-width: 350px;
+}
+
+.illustration-content h1 {
+    font-size: 2.5rem;
     margin-bottom: 15px;
 }
 
-.form-control {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid var(--quarternary-color);
-    border-radius: 5px;
-    background-color: var(--primary-color);
-    color: var(--tertiary-color);
-    outline: none;
-    font-family: var(--secondary-font);
-    transition: border-color 0.2s;
+.dot {
+    color: var(--secondary-color);
 }
 
-.form-control:focus {
-    border-color: var(--secondary-color);
-    background-color: var(--primary-color);
+.illustration-content p {
+    font-size: 1rem;
+    color: var(--tertiary-color)
 }
 
-.btn {
-    display: inline-block;
-    padding: 10px 15px;
-    font-size: 16px;
-    font-family: var(--secondary-font);
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    width: 100%;
-    transition: background-color 0.3s;
-}
-
-.btn:hover {
-    background-color: var(--tertiary-color);
-}
-
-.login-links {
-    margin-top: 15px;
-    text-align: center;
-}
-
-.login-links p {
-    font-family: var(--secondary-font);
-    font-size: 14px;
-    color: var(--tertiary-color);
-}
-
-.login-links a {
-    color: var(--tertiary-color);
-    text-decoration: underline;
-    transition: color 0.2s;
-}
-
-.login-links a:hover {
-    color: var(--quarternary-color);
-}
-
-/* Modal Styling */
-.modal {
-    display: none; /* Hide modal initially */
-    position: fixed;
-    z-index: 1050;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-dialog {
-    position: relative;
-    margin: 10% auto;
-    width: 90%;
-    max-width: 400px;
-}
-
-.modal-content {
-    background-color: var(--primary-color);
-    border: none;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.modal-header {
-    background-color: var(--secondary-color);
-    padding: 15px;
-    border-bottom: 1px solid var(--quarternary-color);
-    color: var(--primary-color);
+.login-form-container {
+    flex: 1;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    padding: 50px;
 }
 
-.modal-title {
-    font-family: var(--primary-font);
-    font-size: 18px;
+.login-form {
+    width: 100%;
+    max-width: 350px;
 }
 
-.btn-close {
-    background: none;
+.login-form h2 {
+    color: var(--tertiary-color);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--tertiary-color);
+    font-weight: 500;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var(--primary-color);
+    transition: border-color 0.3s ease;
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--tertiary-color);
+}
+
+.input-wrapper svg {
+    margin-right: 10px;
+    color: var(--tertiary-color);
+}
+
+.input-wrapper input {
+    flex-grow: 1;
     border: none;
-    font-size: 20px;
+    background: transparent;
+    font-size: 1rem;
+    outline: none;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.forgot-password a {
+    color: var(--tertiary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.forgot-password a:hover {
     color: var(--primary-color);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--tertiary-color);
+    color: var(--secondary-color);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
 }
 
-.modal-body {
-    padding: 20px;
+.login-btn:hover {
+    background-color: var(--primary-color);
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 20px;
     color: var(--tertiary-color);
-    font-family: var(--secondary-font);
 }
 
-.modal-footer {
-    background-color: var(--secondary-color);
-    padding: 10px;
-    text-align: right;
+.signup-link a {
+    color: var(--tertiary-color);
+    text-decoration: none;
+    font-weight: 600;
 }
 
-.modal-footer .btn {
-    margin-left: 10px;
+.signup-link a:hover {
+    color: var(--primary-color)
 }
 
-.modal-footer .btn-secondary {
-    background-color: var(--quinary-color);
-}
-
-.modal-footer .btn-secondary:hover {
-    background-color: var(--quarternary-color);
-}
-
-@media(max-width: 768px) {
-    .login-box {
-        padding: 20px;
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+        width: 90%;
     }
 
-    .login-title {
-        font-size: 20px;
+    .login-illustration {
+        display: none;
     }
 
-    .btn {
-        font-size: 14px;
-        padding: 8px 10px;
+    .login-form-container {
+        padding: 30px;
     }
 }

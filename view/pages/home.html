@@ -1,0 +1,69 @@
+<head>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">  
+</head>
+
+<section class="home">
+    <div class="content">
+        <div class="background-image">
+            <img src="../images/boximage/Orang1box.png">
+            <img src="../images/boximage/Orang2box.png">
+        </div>
+        <div class="home-details" ng-controller="HomeController">
+                <p>Find Your Favourite <span>Outfit</span>, <br>
+                    Discover Your Style.
+                </p>
+                <form id="homeSearchForm" class="search-form" ng-submit="handleHomeSearch($event)">
+                    <input type="text" placeholder="Search for products" id="homeSearchBar">
+                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+        </div>
+    </div>
+</section>    
+
+<section class="categories">
+    <div class="content">   
+        <ul class="categories-links">
+            <li><a href="#!/shop" data-category="shirts" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Kemeja.png">Shirts</a></li>
+            <li><a href="#!/shop" data-category="t-shirts" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Kaos.png">T-Shirts</a></li>
+            <li><a href="#!/shop" data-category="jacket" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Jacket.png">Jackets</a></li>
+            <li><a href="#!/shop" data-category="dress" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Dress.png">Dress</a></li>
+            <li><a href="#!/shop" data-category="jeans" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Jeans.png">Jeans</a></li>
+            <li><a href="#!/shop" data-category="skirts" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Rok.png">Skirts</a></li>
+        </ul>
+    </div>
+</section>
+
+<section class="carousel">
+    <div class="carousel-container">
+      <div class="carousel-track">
+        <div class="slide">
+          <img src="../images/slider/image1.jpg" alt="Category 1">
+        </div>
+        <div class="slide">
+          <img src="../images/slider/image2.webp" alt="Category 2">
+        </div>
+        <div class="slide">
+          <img src="../images/slider/image3.jpg" alt="Category 3">
+        </div>
+      </div>
+      <!-- Left and Right Arrows -->
+      <button class="arrow left-arrow" ng-click="moveToPrevSlide()">&#9664;</button>
+      <button class="arrow right-arrow" ng-click="moveToNextSlide()">&#9654;</button>
+    </div>
+  </section>  
+
+<section class="products" ng-controller="ShopController">
+    <h2>New Arrival</h2>
+    <p>Summer Collection New Morden Designs</p>
+    <div class="box-container">
+        <div class="box" ng-repeat="product in paginatedProducts">
+            <product-box product = 'product'></product-box>
+            <div ng-controller="WishlistController">
+                <button class="wishlist-btn" ng-click="toggleWishlist(product)">
+                    <i ng-class="wishlistState[product._id] ? 'fa-solid' : 'fa-regular'"
+                        ng-style="{'color': wishlistState[product._id] ? 'var(--secondary-color)' : 'gray'}" class="fa-heart"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,30 +1,28 @@
-angular.module('revifeApp')
-    .controller('WishlistController', ['$scope', '$http', function($scope, $http) {
+angular.module('revifeApp').controller('WishlistController', ['$scope', '$http', function($scope, $http) {
         // Active filters for sorting (removed sorting logic)
         $scope.activeFilters = {};
-        $scope.wishlistState = {};  // Keeps track of whether a product is in the wishlist
+        $scope.wishlistState = {};  
 
-        // Fetch wishlist items from the backend
         $scope.loadWishlistItems = function() {
-            $http.get('/api/wishlist')  // Call the backend to get the wishlist
+            $http.get('/api/wishlist')  
                 .then(function(response) {
-                    const wishlistItems = response.data;  // The response data is the wishlist
-                    
-                    // Attach the wishlist products to scope
+                    const wishlistItems = response.data || [];  // Ensure it's an array
                     $scope.wishlistItems = wishlistItems;
-
-                    // Mark products as in wishlist
-                    wishlistItems.forEach(product => {
-                        $scope.wishlistState[product._id] = true; // Mark product as in wishlist
-                    });
-
-                    // Handle the empty wishlist case
-                    if ($scope.wishlistItems.length === 0) {
-                        $scope.emptyWishlistMessage = 'Your wishlist is empty!';
+        
+                    if (Array.isArray(wishlistItems)) {
+                        wishlistItems.forEach(product => {
+                            $scope.wishlistState[product._id] = true; // Mark product as in wishlist
+                        });
+        
+                        if ($scope.wishlistItems.length === 0) {
+                            $scope.emptyWishlistMessage = 'Your wishlist is empty!';
+                        } else {
+                            $scope.emptyWishlistMessage = '';  // Clear any empty message
+                        }
                     } else {
-                        $scope.emptyWishlistMessage = '';  // Clear any empty message
+                        console.error('Response data is not an array:', wishlistItems);
+                        $scope.emptyWishlistMessage = 'Failed to load wishlist.';
                     }
-
                 }, function(error) {
                     console.error('Error fetching wishlist:', error);
                     $scope.emptyWishlistMessage = 'Failed to load wishlist.';

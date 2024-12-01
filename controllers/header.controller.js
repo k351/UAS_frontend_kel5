@@ -1,6 +1,6 @@
 angular.module('revifeApp')
-    .controller('HeaderController', ['$scope', '$window', '$document', 
-    function($scope, $window, $document) {
+    .controller('HeaderController', ['$scope', '$window', '$document', '$location',
+    function($scope, $window, $document, $location) {
         // Dark Mode functionality
         $scope.initDarkMode = function() {
             $scope.darkTheme = $document[0].getElementById("dark-theme");
@@ -53,7 +53,7 @@ angular.module('revifeApp')
             });
 
             // Handle scroll events for index page
-            const currentPage = $window.location.pathname;
+            const currentPage = $location.path();
             if (currentPage === '/') {
                 angular.element($window).on('scroll', function() {
                     const searchLimiter = $document[0].querySelector('.home');
@@ -142,26 +142,14 @@ angular.module('revifeApp')
             }
             
             $window.localStorage.setItem('searchQuery', searchQuery);
-            $window.location.href = '/shop';
-        };
-
-        $scope.handleHomeSearch = function(event) {
-            event.preventDefault();
-            const searchQuery = $document[0].getElementById('homeSearchBar').value;
-            
-            if (searchQuery === '') {
-                alert('You searched for nothing!');
-                return;
-            }
-            $window.localStorage.setItem('searchQuery', searchQuery);
-            $window.location.href = '/shop';
+            $window.location.href = '#!/shop';
         };
 
         $scope.handleSearch = function(event) {
             event.preventDefault();
             const searchQuery = $document[0].getElementById('searchBar').value;
             $window.localStorage.setItem('searchQuery', searchQuery)
-            $window.location.href = '/shop'
+            $window.location.href = '#!/shop'
         }
 
         // Responsive menu
@@ -181,7 +169,7 @@ angular.module('revifeApp')
             event.preventDefault(); 
             const filterQuery = angular.element(event.currentTarget).attr('data-category');
             $window.localStorage.setItem('filterQuery', filterQuery);
-            $window.location.href = '/shop';
+            $window.location.href = '#!/shop';
         };
 
         $scope.updateNav = function(mediaQuery) {
@@ -207,7 +195,6 @@ angular.module('revifeApp')
                 }
             });
         };
-
             $scope.initDarkMode();
             $scope.initExplore();
             $scope.initResponsiveMenu();
