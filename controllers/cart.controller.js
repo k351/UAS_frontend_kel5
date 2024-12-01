@@ -1,36 +1,10 @@
-angular.module('revifeApp').service('CartService', ['$http', function($http) {
-
-    this.getCartItems = function() {
-        return $http.get('/api/cart').then(response => response.data);
-    };
-
-    this.getCartItemsPopulate = function() {
-        return $http.get('/api/cart/populate');
-    };
-
-    this.addToCart = function(productId, quantity) {
-        return $http.post('/api/cart/add', {
-            productId: productId,
-            cartQuantity: quantity
-        });
-    };
-
-    this.updateQuantity = function(cartItemId, newQuantity) {
-        return $http.put(`/api/cart/update/${cartItemId}`, { cartQuantity: newQuantity });
-    };
-
-    this.removeItem = function(cartItemId) {
-        return $http.delete(`/api/cart/delete/${cartItemId}`);
-    };
-}]);
-
-
-angular.module('revifeApp').controller('CartController', ['$scope', 'CartService', function($scope, CartService) {
+angular.module('revifeApp').controller('CartController', ['$scope', '$http', function($scope, $http) {
     $scope.cartItems = [];
     $scope.cartTotal = 0;
+    $scope.couponDiscount = 0;
 
     $scope.loadCartItems = function() {
-        CartService.getCartItemsPopulate()
+        $http.get('/api/cart/populate')
             .then(function(response) {
                 $scope.cartItems = response.data.map(function(cartItem) {
                     return { 
@@ -49,20 +23,8 @@ angular.module('revifeApp').controller('CartController', ['$scope', 'CartService
     };
 
 
-    $scope.addToCart = function(productId, quantity) {
-        CartService.addToCart(productId, quantity)
-            .then(function() {
-                alert('Item added to cart successfully!');
-                $scope.loadCartItems();
-            })
-            .catch(function(error) {
-                console.error('Error adding to cart:', error);
-                alert('Failed to add item to cart.');
-            });
-    };
-
     $scope.updateQuantity = function(cartItemId, newQuantity) {
-        CartService.updateQuantity(cartItemId, newQuantity)
+        $http.put(`/api/cart/update/${cartItemId}`, { cartQuantity: newQuantity })
             .then(function() {
                 $scope.loadCartItems();
             })
@@ -72,7 +34,7 @@ angular.module('revifeApp').controller('CartController', ['$scope', 'CartService
     };
 
     $scope.removeItem = function(cartItemId) {
-        CartService.removeItem(cartItemId)
+        $http.delete(`/api/cart/delete/${cartItemId}`)
             .then(function() {
                 $scope.loadCartItems();
             })
@@ -88,6 +50,44 @@ angular.module('revifeApp').controller('CartController', ['$scope', 'CartService
         });
         $scope.cartTotal = total;
     };
+
+    $scope.applyCoupon = function(couponCode) {
+
+        if (!couponCode) {
+            console.error('Invalid coupon code.');
+            $scope.couponDiscount = 0;
+            return;
+        }
+
+        $http.get(`/api/coupons/${couponCode}`)
+            .then(function(response) {
+                const coupon = response.data;
+            
+            if (coupon) {
+                if (coupon.discountType === "fixed") {
+                    $scope.couponDiscount = coupon.discountValue;
+                }
+                else if (coupon.discountType === "percentage") {
+                    $scope.couponDiscount = (coupon.discountValue / 100) * $scope.cartTotal;
+                }
+                else {
+                    console.error(coupon.discountType);
+                    $scope.couponDiscount = 0;
+                }
+                alert("Coupon Succesfully Added")
+            } else {
+                console.error('Coupon not found.');
+                $scope.couponDiscount = 0;
+                $scope.finalPrice = $scope.cartTotal;
+            }
+        })
+        .catch(function(error) {
+            console.error('Error loading coupon:', error);
+            $scope.couponDiscount = 0;
+            $scope.finalPrice = $scope.cartTotal;
+        });
+    };
+
 
     $scope.loadCartItems();
 }]);

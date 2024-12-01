@@ -176,3 +176,153 @@
     background-color: #f44336;
     color: white;
 }
+
+/* General Container Styling */
+.list-container {
+    margin-top: 20px;
+}
+
+/* Coupon Form Container */
+.form-container {
+    background-color: var(--primary-color);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Form Header */
+.form-container .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--quarternary-color);
+    padding-bottom: 15px;
+}
+
+.form-container .form-header h4 {
+    color: var(--tertiary-color);
+    margin: 0;
+    font-size: 20px;
+}
+
+/* Form Labels */
+.form-container .form-label {
+    color: var(--tertiary-color);
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+/* Form Inputs */
+.form-container .form-control {
+    background-color: var(--primary-color);
+    border: 1px solid var(--quarternary-color);
+    color: var(--tertiary-color);
+    border-radius: 6px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+.form-container .form-control:focus {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    color: var(--primary-color);
+}
+
+/* Form Groups */
+.form-container .mb-3 {
+    margin-bottom: 20px;
+}
+
+/* Checkbox Styling */
+.form-container .form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.form-container .form-check-input {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+}
+
+.form-container .form-check-label {
+    color: var(--tertiary-color);
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+/* Submit Button */
+.form-container .btn-primary {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.form-container .btn-primary:hover {
+    background-color: var(--tertiary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Close Button */
+.form-container .btn-secondary {
+    background-color: transparent;
+    color: var(--tertiary-color);
+    border: 1px solid var(--quarternary-color);
+    transition: all 0.3s ease;
+}
+
+.form-container .btn-secondary:hover {
+    background-color: var(--quarternary-color);
+    color: var(--primary-color);
+}
+
+/* Coupon Table Styling */
+.list-container .table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.list-container .table th,
+.list-container .table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--quarternary-color);
+    color: var(--tertiary-color);
+}
+
+.list-container .table th {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .form-container .form-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-container .form-header .btn-secondary {
+        margin-top: 10px;
+    }
+
+    .list-container .table {
+        font-size: 12px;
+    }
+}

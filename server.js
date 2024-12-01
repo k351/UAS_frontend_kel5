@@ -8,9 +8,9 @@ require('dotenv').config();
 
 const authRoutes = require('./api/routes/auth.routes');
 const productRoutes = require('./api/routes/product.routes');
-const pageRoutes = require('./api/routes/page.routes');
 const cartRoutes = require('./api/routes/cart.routes');
 const wishlistRoutes = require('./api/routes/wishlist.routes');
+const couponRoutes = require('./api/routes/coupon.routes');
 const wishlist = require('./api/models/wishlist.schema');
 
 const app = express();
@@ -31,11 +31,11 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log('MongoDB Connection Error:', err));
 
-app.use('/', pageRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/coupons', couponRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

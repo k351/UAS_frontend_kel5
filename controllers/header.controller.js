@@ -121,16 +121,15 @@ angular.module('revifeApp')
                 $scope.priaExplore.style.left = '';
                 $scope.wanitaExplore.style.left = '';
             } else {
-                const rect = $scope.exploreMenu.getBoundingClientRect();
-                $scope.exploreLinks.style.left = `${rect.left}px`;
-                $scope.priaExplore.style.left = `${rect.left - 410}px`;
-                $scope.wanitaExplore.style.left = `${rect.left - 410}px`;
+                const exploreMenuOffsetLeft = $scope.exploreMenu.offsetLeft;
+                $scope.exploreLinks.style.left = `${exploreMenuOffsetLeft}px`;
+                $scope.priaExplore.style.left = `${exploreMenuOffsetLeft - 410}px`;
+                $scope.wanitaExplore.style.left = `${exploreMenuOffsetLeft - 410}px`;
                 $scope.exploreLinks.style.right = '';
                 $scope.priaExplore.style.right = '';
                 $scope.wanitaExplore.style.right = '';
             }
         };
-
         // Search functionality
         $scope.handleHeaderSearch = function(event) {
             event.preventDefault();
@@ -169,7 +168,7 @@ angular.module('revifeApp')
             event.preventDefault(); 
             const filterQuery = angular.element(event.currentTarget).attr('data-category');
             $window.localStorage.setItem('filterQuery', filterQuery);
-            $window.location.href = '#!/shop';
+            $window.location.href = '#!/shop'
         };
 
         $scope.updateNav = function(mediaQuery) {
@@ -195,6 +194,14 @@ angular.module('revifeApp')
                 }
             });
         };
+
+        $scope.$watch(function() {
+            return $location.path();
+        }, function(path) {
+            $scope.isLoginPage = (path === '/login');
+            $scope.isSignupPage = (path === '/signup');
+        });
+
             $scope.initDarkMode();
             $scope.initExplore();
             $scope.initResponsiveMenu();

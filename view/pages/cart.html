@@ -47,8 +47,10 @@
     <section id="cart-total" class="section-p3">
         <div class="coupon">
             <h3>Apply Coupon</h3>
-            <input type="text" ng-model="couponCode" placeholder="Please enter your coupon">
-            <button ng-click="applyCoupon()">Apply</button>
+            <form ng-submit="applyCoupon(couponCode)">
+                <input type="text" ng-model="couponCode" placeholder="Please enter your coupon" required>
+                <button type="submit">Apply</button>
+            </form>
         </div>
         <div class="total">
             <h3>Cart Total</h3>
