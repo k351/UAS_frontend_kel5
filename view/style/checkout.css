@@ -1,114 +1,78 @@
+h3 {
+    margin-top: 8px;
+}
+
 #cart-check-out {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    background-color: var(--primary-color);
+    padding: 50px 15px;
 }
 
 #cart-check-out .total {
-    width: 50%;
-    margin-bottom: 30px;
-    border: 1px solid var(--quinary-color);
-    padding: 30px;
+    width: 500px;
     background-color: var(--primary-color);
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
 }
 
 #cart-check-out .total h3 {
-    padding-bottom: 15px;
     color: var(--tertiary-color);
-    font-size: 20px;
+    margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-#cart-check-out .total button {
-    padding: 12px;
-    width: 100%;
-    border: none;
-    border-radius: 4px;
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
-    cursor: pointer;
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-mark
-#cart-check-out .total button:hover {
-    background-color: darken(var(--secondary-color), 10%);
-}
-
 #cart-check-out .total table {
-    border-collapse: collapse;
     width: 100%;
+    border-collapse: collapse;
     margin-bottom: 20px;
 }
 
-#cart-check-out table td {
-    width: 50%;
-    border: 1px solid var(--quinary-color);
+#cart-check-out .total table td {
     padding: 10px;
-    font-size: 14px;
+    border: 1px solid var(--quinary-color);
     color: var(--tertiary-color);
 }
 
-#cart-check-out .total table td input {
+#cart-check-out .total form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+#cart-check-out .total form input {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid var(--quinary-color);
-    font-size: 14px;
-    color: var(--tertiary-color);
+    border-radius: 4px;
+}
+
+#cart-check-out .total button {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 #cart-check-out .payment {
-    margin: 10px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: 20px 0;
 }
 
-#cart-check-out .payment #payment-method {
-    width: 15%;
+#cart-check-out .payment select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid var(--quinary-color);
 }
 
-#cart-check-out .total #edit-address-btn {
-    padding: 8px;
-    width: 65%;
-    border-radius: 2px;
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
-    cursor: pointer;
-}
-
-#cart-check-out .total #save-address-btn, 
-#cart-check-out .total #cancel-btn {
-    padding: 1vh 5.5vw;
-    font-size: 12px;
-    border-radius: 2px;
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
-    cursor: pointer;
-    display: none;
-}
-
-@media (max-width: 1150px) {
-    #cart-check-out .total {
-        width: 70%;
-        margin: auto;
-    }
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
-    #cart-check-out .payment #payment-method {
-        width: 20vw;
-    }
-
-    #cart-check-out .total button,
-    #cart-check-out .total #edit-address-btn {
+    #cart-check-out .total {
         width: 100%;
+        margin: 0 10px;
     }
 }

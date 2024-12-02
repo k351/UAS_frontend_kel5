@@ -20,7 +20,7 @@ angular.module("revifeApp").controller("LoginController", [
                         localStorage.setItem("id", userId);
 
                         // Redirect ke halaman yang sesuai
-                        const redirectUrl = response.data.redirect || "/dashboard/overview";
+                        const redirectUrl = response.data.redirect || "/#!/admin-dashboard";
                         alert(`Login successful! Welcome, ${username}`);
                         window.location.href = redirectUrl;
                     })

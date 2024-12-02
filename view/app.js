@@ -61,11 +61,6 @@ revifeApp.config(['$routeProvider', function($routeProvider) {
             controller: 'SettingsController',
             css: ['style/style.css', 'style/settings.css', 'style/header.css', 'style/footer.css']
         })
-        .when('/checkout', {
-            templateUrl: 'pages/checkout.html',
-            controller: 'CheckoutController',
-            css: ['style/style.css', 'style/checkout.css']
-        })
         .when('/product/:id', {
             templateUrl: 'pages/product.html',
             controller: 'ProductController',
@@ -73,7 +68,7 @@ revifeApp.config(['$routeProvider', function($routeProvider) {
         })
         .when('/checkout', {
             templateUrl: 'pages/checkout.html',
-            controller: 'CheckoutController',
+            controller: 'CartController',
             css: ['style/style.css', 'style/checkout.css', 'style/header.css', 'style/footer.css']
         })
         .when('/admin-dashboard', {
@@ -92,7 +87,7 @@ revifeApp.run(['$rootScope', '$location', 'loadCSS', function($rootScope, $locat
         // Atur visibilitas header dan footer berdasarkan rute
         $rootScope.isLoginPage = (path === '/login');
         $rootScope.isSignupPage = (path === '/signup');
-        $rootScope.isSignupPage = (path === '/admin-dashboard');
+        $rootScope.isAdminPage = (path === '/admin-dashboard');
         if (current.$$route && current.$$route.css) {
             loadCSS(current.$$route.css);
         }

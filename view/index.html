@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <header ng-if="!isLoginPage && !isSignupPage" ng-controller="HeaderController">
+    <header ng-if="!isLoginPage && !isSignupPage && !isAdminPage" ng-controller="HeaderController">
         <div class="main-header">
             <div class="logo">
                 <a href="/"> 
@@ -117,7 +117,7 @@
     
         <div ng-view></div>
 
-    <footer ng-if="!isLoginPage && !isSignupPage" class="section-p1">
+    <footer ng-if="!isLoginPage && !isSignupPage && !isAdminPage" class="section-p1">
         <div class="col">
             <h2>revife<span class="color">.</span></h2>
             <h4>Contact</h4>
@@ -164,7 +164,7 @@
             <img src="../images\icon\pay.png" alt="Secured Payment">
         </div>
     </footer>
-    <div class="copyright" ng-if="!isLoginPage && !isSignupPage">
+    <div class="copyright" ng-if="!isLoginPage && !isSignupPage && !isAdminPage">
         <p>© 2024, UTS Front-End Programming</p>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>

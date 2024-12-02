@@ -1,12 +1,12 @@
-angular.module('revifeApp').controller('CartController', ['$scope', '$http', function($scope, $http) {
-    $scope.cartItems = [];
-    $scope.cartTotal = 0;
-    $scope.couponDiscount = 0;
+angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$rootScope', '$location', function($scope, $http, $rootScope, $location) {
+    $rootScope.cartItems = $rootScope.cartItems || [];
+    $rootScope.cartTotal = $rootScope.cartTotal || 0;
+    $rootScope.couponDiscount = $rootScope.couponDiscount || 0;
 
     $scope.loadCartItems = function() {
         $http.get('/api/cart/populate')
             .then(function(response) {
-                $scope.cartItems = response.data.map(function(cartItem) {
+                $rootScope.cartItems = response.data.map(function(cartItem) {
                     return { 
                         id: cartItem._id,
                         name: cartItem.productId.name,
@@ -45,17 +45,16 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', fun
 
     $scope.calculateCartTotal = function() {
         let total = 0;
-        $scope.cartItems.forEach(function(item) {
+        $rootScope.cartItems.forEach(function(item) {
             total += item.cartQuantity * item.price;
         });
-        $scope.cartTotal = total;
+        $rootScope.cartTotal = total;
     };
 
     $scope.applyCoupon = function(couponCode) {
 
         if (!couponCode) {
             console.error('Invalid coupon code.');
-            $scope.couponDiscount = 0;
             return;
         }
 
@@ -65,29 +64,69 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', fun
             
             if (coupon) {
                 if (coupon.discountType === "fixed") {
-                    $scope.couponDiscount = coupon.discountValue;
+                    $rootScope.couponDiscount = coupon.discountValue;
                 }
                 else if (coupon.discountType === "percentage") {
-                    $scope.couponDiscount = (coupon.discountValue / 100) * $scope.cartTotal;
+                    $rootScope.couponDiscount = (coupon.discountValue / 100) * $scope.cartTotal;
                 }
                 else {
                     console.error(coupon.discountType);
-                    $scope.couponDiscount = 0;
+                    $rootScope.couponDiscount = 0;
                 }
                 alert("Coupon Succesfully Added")
             } else {
-                console.error('Coupon not found.');
-                $scope.couponDiscount = 0;
-                $scope.finalPrice = $scope.cartTotal;
+                if(!!$rootScope.couponDiscount){
+                    alert("Coupon not found, old coupon used")
+                }
+                else{
+                    alert("Coupon not found")
+                    $rootScope.couponDiscount = 0;
+                }
             }
         })
         .catch(function(error) {
             console.error('Error loading coupon:', error);
-            $scope.couponDiscount = 0;
-            $scope.finalPrice = $scope.cartTotal;
+            $rootScope.couponDiscount = 0;
         });
     };
 
+    if ($location.path() === '/checkout') {
+        $scope.isEditingAddress = false;
+        $scope.editedAddress = {};
+
+        $scope.loadAddress = function() {
+            $http.get('/api/users/address')
+                .then(function(response) {
+                    $scope.userAddress = response.data;
+                    $scope.editedAddress = angular.copy($scope.userAddress);
+                })
+                .catch(function(error) {
+                    console.error('Error fetching address:', error);
+                });
+        };
+        
+
+        $scope.saveAddress = function() {
+            $http.put('/api/users/address/update', $scope.editedAddress)
+                .then(function(response) {
+                    $scope.userAddress = response.data.address; 
+                    $scope.isEditingAddress = false; 
+                    alert('Address updated successfully!');
+                })
+                .catch(function(error) {
+                    console.error('Error updating address:', error);
+                    alert('Failed to update address.');
+                });
+        };
+        
+        $scope.cancelEdit = function() {
+            $scope.editedAddress = angular.copy($scope.userAddress); 
+            $scope.isEditingAddress = false; 
+        };
+
+        $scope.loadAddress();
+    }
+    
 
     $scope.loadCartItems();
 }]);

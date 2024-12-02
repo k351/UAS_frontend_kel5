@@ -97,13 +97,19 @@ router.post('/login', async (req, res) => {
 
         console.log("User authenticated successfully");
         const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 24 * 60 * 60 * 1000
+        });
+        
         res.status(200).json({
             loginSuccess: {
                 token,
                 username: user.name,
                 userId: user._id,
             },
-            redirect: user.role === 'admin' ? '/admin-dashboard' : '/',
+            redirect: user.role === 'admin' ? '/#!/admin-dashboard' : '/',
         });
     } catch (error) {
         console.error("Server error:", error.message);
