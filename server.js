@@ -45,9 +45,6 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/categories', categoriesRoutes);
-app.use('/api/categories', categoriesRoutes);
-
-
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
