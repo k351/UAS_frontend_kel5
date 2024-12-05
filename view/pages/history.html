@@ -3,66 +3,114 @@
 </head>
 
 <body>
-    <div class="transaction-history-container">
-        <div class="history-header">
-            <h1>Transaction History</h1>
+<div class="transaction-history-container">
+    <div class="history-header">
+        <h1>Transaction History</h1>
+    </div>
+
+    <!-- Loading State -->
+    <div ng-if="isLoading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading your transaction history...</p>
+    </div>
+
+    <!-- Error State -->
+    <div ng-if="errorMessage" class="error-state">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- Transactions List -->
+    <div ng-if="!isLoading && !errorMessage">
+        <!-- No Transactions -->
+        <div ng-if="transactions.length === 0" class="no-transactions">
+            <p>No transaction history found.</p>
         </div>
 
-        <!-- Loading State -->
-        <div ng-if="isLoading" class="loading-state">
-            <div class="spinner"></div>
-            <p>Loading your transaction history...</p>
-        </div>
-
-        <!-- Error State -->
-        <div ng-if="errorMessage" class="error-state">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <p>{{ errorMessage }}</p>
-        </div>
-
-        <!-- Transactions List -->
-        <div ng-if="!isLoading && !errorMessage">
-            <!-- No Transactions -->
-            <div ng-if="transactions.length === 0" class="no-transactions">
-                <p>No transaction history found.</p>
+        <!-- Transactions Iteration -->
+        <div ng-repeat="transaction in transactions" class="transaction-card">
+            <!-- Transaction Header -->
+            <div class="transaction-header">
+                <span class="transaction-date">
+                    {{ transaction.transactionDate | date:'medium' }}
+                </span>
+                <span class="transaction-id">
+                    Transaction ID: {{ transaction._id }}
+                </span>
             </div>
 
-            <!-- Transactions Iteration -->
-            <div ng-repeat="transaction in transactions" class="transaction-card">
-                <!-- Transaction Header -->
-                <div class="transaction-header">
-                    <span class="transaction-date">
-                        {{ transaction.transactionDate | date:'medium' }}
-                    </span>
-                    <span class="transaction-id">
-                        Transaction ID: {{ transaction._id }}
-                    </span>
-                </div>
+            <!-- Shipping Address -->
+            <div class="shipping-address">
+                <h3>Shipping Address</h3>
+                <p>{{ transaction.address }}</p>
+            </div>
 
-                <!-- Transaction Items -->
-                <div class="transaction-items">
-                    <div ng-repeat="item in transaction.items" class="transaction-item">
-                        <div class="item-image">
-                            <img ng-src="{{ item.productId.image }}" alt="{{ item.productId.name }}">
-                        </div>
-                        <div class="item-details">
-                            <h3>{{ item.productId.name }}</h3>
-                            <p>Quantity: {{ item.quantity }}</p>
-                            <p>Price: Rp {{ item.price | number }}</p>
-                            <p>Subtotal: Rp {{ calculateItemTotal(item) | number }}</p>
-                        </div>
+            <!-- Transaction Items -->
+            <div class="transaction-items">
+                <div ng-repeat="item in transaction.items" class="transaction-item">
+                    <div class="item-image">
+                        <img ng-src="{{ item.productId.image }}" alt="{{ item.productId.name }}">
                     </div>
+                    <div class="item-details">
+                        <h3>{{ item.productId.name }}</h3>
+                        <p>Quantity: {{ item.quantity }}</p>
+                        <p>Price: Rp {{ item.price | number }}</p>
+                        <p>Subtotal: Rp {{ calculateItemTotal(item) | number }}</p>
+                    </div>
+                    <button ng-if="!isRated(item)" ng-click="openRatingModal(item)" class="rate-button">
+                        Rate Product
+                    </button>
+                    <span ng-if="isRated(item)" class="rated-text">
+                        Rated
+                    </span>
                 </div>
+            </div>
 
-                <!-- Transaction Summary -->
-                <div class="transaction-summary">
-                    <div class="total-price">
-                        <strong>Total:</strong> Rp {{ transaction.totalAmount | number }}
-                    </div>
-                    <div class="transaction-status">
-                        Status: Completed
-                    </div>
+            <!-- Transaction Summary -->
+            <div class="transaction-summary">
+                <div class="total-price">
+                    <strong>Total:</strong> Rp {{ transaction.totalAmount | number }}
                 </div>
+                <div class="transaction-status">
+                    Status: Completed
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <!-- Modal Popup -->
+    <div id="ratingModal" ng-show="isRatingModalOpen" class="modal">
+        <div class="modal-content">
+            <span class="close" ng-click="closeRatingModal()">&times;</span>
+            <h3>Rate {{ currentProductName }}</h3>
+
+            <div class="rating-container">
+                <div class="star-rating">
+                    <input type="radio" id="star5" ng-model="rating" value="5" />
+                    <label for="star5" class="fa-solid fa-star"></label>
+                    <input type="radio" id="star4" ng-model="rating" value="4" />
+                    <label for="star4" class="fa-solid fa-star"></label>
+                    <input type="radio" id="star3" ng-model="rating" value="3" />
+                    <label for="star3" class="fa-solid fa-star"></label>
+                    <input type="radio" id="star2" ng-model="rating" value="2" />
+                    <label for="star2" class="fa-solid fa-star"></label>
+                    <input type="radio" id="star1" ng-model="rating" value="1" />
+                    <label for="star1" class="fa-solid fa-star"></label>
+                </div>
+            </div>
+
+            <textarea class="review-textarea" ng-model="review" placeholder="Write your review here (optional)" rows="4">
+            </textarea>
+
+            <div class="modal-buttons">
+                <button type="button" class="cancel-button" ng-click="closeRatingModal()">
+                    Cancel
+                </button>
+                <button type="button" class="submit-button" ng-click="submitRating()" ng-disabled="!rating">
+                    Submit Rating
+                </button>
             </div>
         </div>
     </div>

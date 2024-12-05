@@ -3,6 +3,7 @@ const router = express.Router();
 const Transaction = require('../models/transaction.schema');
 const TransactionItem = require('../models/transactionitem.schema');
 const CartItem = require('../models/cartItem.schema');
+const User = require('../models/user.schema');
 const Product = require('../models/product.schema'); 
 const { verifyToken } = require('../middleware/auth');
 
@@ -11,7 +12,16 @@ router.post('/', verifyToken, async (req, res) => {
         const { address, items, paymentMethod, totalAmount } = req.body;
         const userId = req.user._id;
 
-        console.log(req.body);    
+        // Fetch the user with their address
+        const user = await User.findById(userId).select('address');
+        if (!user || !user.address) {
+            return res.status(404).json({ error: 'User or address not found.' });
+        }
+
+        // Use the user's full address
+        const fullAddress = Object.values(user.address.toObject())
+            .filter((value) => typeof value === 'string') // Ensure only string values are included
+            .join(', ');
 
         // Validate required fields
         if (!userId || !address || !items || items.length === 0 || !paymentMethod) {
@@ -63,7 +73,7 @@ router.post('/', verifyToken, async (req, res) => {
         // Create Transaction document
         const transaction = new Transaction({
             userId: userId,
-            address: address,
+            address: fullAddress,
             items: transactionItems.map((item) => item._id),
             totalAmount: totalAmount,
             paymentMethod: paymentMethod,
