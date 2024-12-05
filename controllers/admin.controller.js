@@ -253,25 +253,36 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         }
     };
 
-    $scope.addProduct = function (name, price, category, description, image, quantity) {
-        if (!name || !price || !category || !description || !image || !quantity) {
+    $scope.addProduct = function (name, price, category, description, quantity) {
+        if (!name || !price || !category || !description || !quantity) {
             alert('Please fill in all fields before adding new product.');
             return;
         }
 
-        $http.get(`/api/products/name/${name}`)
+        var fileInput = document.getElementById('fileInput');
+        var file = fileInput.files[0];
+
+        if (!file) {
+            alert('Please select an image file.');
+            return;
+        }
+
+        $http.get(`/api/products/checkname/${name}`)
             .then(function (response) {
-                console.log(response.data)
-                if (response.data) {
+                if (response.data.exists) {
                     alert(`The product ${name} already exists!`);
                 } else {
-                    $http.post('/api/products/add', {
-                        name: name,
-                        price: price,
-                        category: category,
-                        description: description,
-                        image: image,
-                        quantity: quantity
+                    var formData = new FormData();
+                    formData.append('name', name);
+                    formData.append('price', price);
+                    formData.append('category', category);
+                    formData.append('description', description);
+                    formData.append('quantity', quantity);
+                    formData.append('image', file);
+
+                    $http.post('/api/products/add', formData, {
+                        transformRequest: angular.identity,
+                        headers: { 'Content-Type': undefined },
                     })
                         .then(function () {
                             alert('Product created successfully!');
@@ -280,7 +291,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
                             $scope.price = '';
                             $scope.category = '';
                             $scope.description = '';
-                            $scope.image = '';
+                            $scope.image = null;
                             $scope.quantity = '';
                         })
                         .catch(function (error) {
@@ -420,6 +431,11 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
     }
 
     $scope.addCategory = function (categoryName, isOnHome) {
+        if(!categoryName) {
+            alert('Please fill the category name.');
+            return;
+        }
+
         var fileInput = document.getElementById('fileInput');
         var file = fileInput.files[0];
 

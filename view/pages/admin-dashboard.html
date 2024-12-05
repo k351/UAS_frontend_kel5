@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="form-container" ng-show="isProductFormVisible">
-                        <form name="productForm" ng-submit="isEditMode ? saveProductEdit() : addProduct(name, price, category, description, image, quantity)">
+                        <form name="productForm" ng-submit="isEditMode ? saveProductEdit() : addProduct(name, price, category, description, quantity)">
                             <div class="mb-3">
                                 <label class="form-label">Product Name</label>
                                 <input type="text" class="form-control" ng-model="name" required>
@@ -78,7 +78,10 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Category</label>
-                                <input type="text" class="form-control" ng-model="category" required>
+                                <select class="form-control" ng-model="category" required>
+                                    <option value="" disabled selected>Select Category</option>
+                                    <option ng-repeat="cat in categories" value="{{ cat.name }}">{{ cat.name }}</option>
+                                </select>
                             </div>
 
                             <div class="mb-3">
@@ -88,8 +91,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Image URL</label>
-                                <input type="text" class="form-control" ng-model="image" required>
+                                <label class="form-label">Upload PNG Image</label>
+                                <input type="file" id="fileInput" accept="image/png" required>
                             </div>
 
                             <div class="mb-3">
