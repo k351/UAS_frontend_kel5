@@ -12,8 +12,7 @@ const cartRoutes = require('./api/routes/cart.routes');
 const wishlistRoutes = require('./api/routes/wishlist.routes');
 const couponRoutes = require('./api/routes/coupon.routes');
 const userRoutes = require('./api/routes/user.routes')
-// const transactionRoutes = require('./api/routes/transaction.routes');
-const wishlist = require('./api/models/wishlist.schema');
+const checkoutRoutes = require("./api/routes/transaction.routes");
 
 const app = express();
 const port = 5500;
@@ -39,6 +38,7 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/checkout', checkoutRoutes);
 // app.use('/api/transaction', transactionRoutes);
 
 app.use((err, req, res, next) => {
