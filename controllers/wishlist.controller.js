@@ -1,29 +1,30 @@
-angular.module('revifeApp').controller('WishlistController', ['$scope', '$http', function($scope, $http) {
-    // Active filters for sorting (removed sorting logic)
+angular.module('revifeApp').controller('WishlistController', ['$scope', '$http', '$rootScope', function ($scope, $http, $rootScope) {
     $scope.activeFilters = {};
-    $scope.wishlistState = {};  
+    $scope.wishlistState = {};
+    $scope.filters = {
+        sort: '', // Holds the active sort criteria
+    };
 
-    $scope.loadWishlistItems = function() {
-        $http.get('/api/wishlist')  
-            .then(function(response) {
-                const wishlistItems = response.data || [];  // Ensure it's an array
+    // Load wishlist items from the API
+    $scope.loadWishlistItems = function () {
+        const sortParam = $scope.filters.sort ? `?sortBy=${$scope.filters.sort}` : '';
+
+        $http.get(`/api/wishlist${sortParam}`)
+            .then(function (response) {
+                const wishlistItems = response.data || []; // Ensure it's an array
                 $scope.wishlistItems = wishlistItems;
-    
+
                 if (Array.isArray(wishlistItems)) {
                     wishlistItems.forEach(product => {
                         $scope.wishlistState[product._id] = true; // Mark product as in wishlist
                     });
-    
-                    if ($scope.wishlistItems.length === 0) {
-                        $scope.emptyWishlistMessage = 'Your wishlist is empty!';
-                    } else {
-                        $scope.emptyWishlistMessage = '';  // Clear any empty message
-                    }
+
+                    $scope.emptyWishlistMessage = wishlistItems.length === 0 ? 'Your wishlist is empty!' : '';
                 } else {
                     console.error('Response data is not an array:', wishlistItems);
                     $scope.emptyWishlistMessage = 'Failed to load wishlist.';
                 }
-            }, function(error) {
+            }, function (error) {
                 console.error('Error fetching wishlist:', error);
                 $scope.emptyWishlistMessage = 'Failed to load wishlist.';
             });
@@ -31,45 +32,80 @@ angular.module('revifeApp').controller('WishlistController', ['$scope', '$http',
 
     // Toggle wishlist (add/remove)
     $scope.toggleWishlist = function (product) {
-        const action = $scope.wishlistState[product._id] ? 'DELETE' : 'POST';  
-        // Make the appropriate request
+        const action = $scope.wishlistState[product._id] ? 'DELETE' : 'POST';
+
         $http({
             method: action === 'POST' ? 'POST' : 'DELETE',
             url: '/api/wishlist',
             headers: {
-                'Content-Type': 'application/json' // Ensures the request is sent as JSON
+                'Content-Type': 'application/json'
             },
             data: { productId: product._id }
-        }).then(function(response) {
+        }).then(function (response) {
             if (action === 'POST') {
-                $scope.wishlistState[product._id] = true;  // Mark as added
+                $scope.wishlistState[product._id] = true;
                 alert('Item added to wishlist');
+            } else {
+                $scope.wishlistState[product._id] = false;
+                $scope.loadWishlistItems(); // Reload items
+                alert('Item removed from wishlist');
             }
-            else  {
-                $scope.wishlistState[product._id] = false;  // Mark as removed
-                alert('Item deleted to wishlist');
-            }
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.error('Error updating wishlist:', error);
         });
     };
 
-    // Toggle filter for sorting
-    $scope.toggleFilter = function (filterName) {
-        if ($scope.activeFilters[filterName]) {
-            $scope.activeFilters[filterName] = false;
-        } else {
-            $scope.activeFilters[filterName] = true;
-        }
+    // Apply sorting to the wishlist
+    $scope.sortWishlist = function (criteria) {
+        $scope.filters.sort = criteria; 
+        $scope.loadWishlistItems(); 
     };
 
-    // Check if the filter is active
+    // Toggle filter section visibility
     $scope.isFilterActive = function (filterName) {
-        return $scope.activeFilters[filterName] || false;
+        return !!$scope.activeFilters[filterName];
     };
 
-    $scope.isInWishlist = function(product) {
-        return $scope.wishlistItems.some(item => item._id === product._id);  // Check if the product's ID exists in the wishlist
+    $scope.toggleFilter = function (filterName) {
+        for (const key in $scope.activeFilters) {
+            if (key !== filterName) {
+                $scope.activeFilters[key] = false;
+            }
+        }
+        $scope.activeFilters[filterName] = !$scope.activeFilters[filterName];
+    };
+
+
+    // Add item to cart
+    $scope.addToCart = function (product) {
+        $http.get('/api/cart')
+            .then(function (response) {
+                const cart = response.data;
+                const existingItem = cart.find(item => item.productId === product._id);
+                if (existingItem) {
+                    $http.put(`/api/cart/update/${existingItem._id}`, {
+                        cartQuantity: existingItem.cartQuantity + 1
+                    }).then(function () {
+                        alert('Item quantity updated in cart!');
+                    }).catch(function (error) {
+                        console.error('Error updating cart:', error);
+                        alert('Failed to update item quantity in cart.');
+                    });
+                } else {
+                    $http.post('/api/cart/add', {
+                        productId: product._id,
+                        cartQuantity: 1
+                    }).then(function () {
+                        alert('Item added to cart successfully!');
+                    }).catch(function (error) {
+                        console.error('Error adding to cart:', error);
+                        alert('Failed to add item to cart.');
+                    });
+                }
+            }).catch(function (error) {
+                console.error('Error retrieving cart items:', error);
+                alert('Failed to retrieve cart items.');
+            });
     };
 
     // Initial call to load wishlist items

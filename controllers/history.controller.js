@@ -1,7 +1,7 @@
 angular.module('revifeApp').controller('HistoryController', ['$scope', '$http', '$rootScope', function ($scope, $http, $rootScope) {
-    $scope.transactions = []; 
-    $scope.isLoading = true; 
-    $scope.errorMessage = ''; 
+    $scope.transactions = [];
+    $scope.isLoading = true;
+    $scope.errorMessage = '';
 
     // Fetch transaction history
     $scope.loadTransactionHistory = function () {
@@ -22,7 +22,7 @@ angular.module('revifeApp').controller('HistoryController', ['$scope', '$http', 
         return item.quantity * item.price;
     };
 
-   // Modify the open rating modal method
+    // Modify the open rating modal method
     $scope.openRatingModal = function (transactionItem) {
         if (!transactionItem || !transactionItem.productId) {
             console.error('Invalid transaction item:', transactionItem);
@@ -31,11 +31,13 @@ angular.module('revifeApp').controller('HistoryController', ['$scope', '$http', 
         $scope.currentTransactionItemId = transactionItem._id;
         $scope.currentProductName = transactionItem.productId.name;
         $scope.isRatingModalOpen = true;
+        $scope.rating = null; // Reset rating
+        $scope.review = ''; // Reset review
     };
-    
+
     // Close rating modal
     $scope.closeRatingModal = function () {
-        document.getElementById('ratingModal').style.display = 'none';
+        $scope.isRatingModalOpen = false;
     };
 
     // Submit rating
@@ -49,19 +51,15 @@ angular.module('revifeApp').controller('HistoryController', ['$scope', '$http', 
             return;
         }
 
-        $http.post('/api/history/rate', { 
-            transactionItemId, 
-            rating, 
-            review 
+        $http.post('/api/history/rate', {
+            transactionItemId,
+            rating,
+            review
         })
         .then(function (response) {
             alert('Rating submitted successfully!');
             $scope.closeRatingModal();
-            $scope.rating = null;
-            $scope.review = '';
-            $scope.currentTransactionItemId = null;
             
-            // Optionally refresh the transaction history to reflect the new rating
             $scope.loadTransactionHistory();
         })
         .catch(function (error) {
@@ -70,12 +68,10 @@ angular.module('revifeApp').controller('HistoryController', ['$scope', '$http', 
         });
     };
 
-
-    // Add a method to check if an item has been rated
     $scope.isRated = function(item) {
         return item.rating && item.rating > 0;
     };
-    
+
     // Call the load function on controller initialization
     $scope.loadTransactionHistory();
 }]);
