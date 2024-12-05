@@ -12,6 +12,7 @@ angular.module('revifeApp')
     // Search and filter
     $scope.searchQuery =  $rootScope.searchQuery || '';
     $scope.selectedCategory = $rootScope.selectedCategory || 'none'; 
+    $scope.selectedSortings = 'none';
     
     // Initialize wishlist state
     $scope.wishlistState = JSON.parse(localStorage.getItem('wishlistState')) || {};
@@ -72,6 +73,23 @@ angular.module('revifeApp')
                 product.category === $scope.selectedCategory
             );
         }
+        $scope.selectedSortings = 'none';
+        $scope.currentPage = 1;  // Reset pagination
+        $scope.setupPagination();
+    };
+
+    $scope.sortByName = function() {
+        $scope.filteredProductsData = $scope.productsData;
+        if ($scope.selectedSortings === 'asc') {
+            $scope.filteredProductsData.sort(function(a, b) {
+                return a.name.localeCompare(b.name);
+            });
+        } else if ($scope.selectedSortings === 'desc') {
+            $scope.filteredProductsData.sort(function(a, b) {
+                return b.name.localeCompare(a.name);
+            });
+        } 
+        $scope.selectedCategory = 'none';
         $scope.currentPage = 1;  // Reset pagination
         $scope.setupPagination();
     };

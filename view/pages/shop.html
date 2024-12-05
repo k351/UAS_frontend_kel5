@@ -5,12 +5,22 @@
 <body>
     
     <section class="products" ng-controller="ShopController">
-        <div class="categories-filter">
-            <h1>Filter by:</h1>
-            <select name="categories" id="categories" class="categories-selection" ng-model="selectedCategory" ng-change="filterByCategory()">
-                <option value="none">none</option>
-                <option ng-repeat="category in categories" value="{{category.name}}" ng-click>{{category.name}}</option>
-            </select>
+        <div class="shop-function">
+            <div>
+                <h1>Filter by:</h1>
+                <select name="categories" id="categories" ng-model="selectedCategory" ng-change="filterByCategory()">
+                    <option value="none">none</option>
+                    <option ng-repeat="category in categories" value="{{category.name}}" ng-click>{{category.name}}</option>
+                </select>
+            </div>
+            <div>
+                <h1>Sort by:</h1>
+                <select name="sortings" id="sortings" ng-model="selectedSortings" ng-change="sortByName()">
+                    <option value="none" disabled>none</option>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
         </div>
         <div class="box-container">
             <div class="box" ng-repeat="product in paginatedProducts">

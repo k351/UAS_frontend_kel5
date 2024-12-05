@@ -1,6 +1,7 @@
 angular.module('revifeApp')
     .controller('HeaderController', ['$scope', '$window', '$document', '$location','$rootScope','$route',
     function($scope, $window, $document, $location, $rootScope, $route) {
+        $scope.searchQuery = '';
         // Dark Mode functionality
         $scope.initDarkMode = function() {
             $scope.darkTheme = $document[0].getElementById("dark-theme");
@@ -50,8 +51,9 @@ angular.module('revifeApp')
         };
 
         // Search functionality
-        $scope.handleHeaderSearch = function(searchQuery) {
-            $rootScope.searchQuery = searchQuery; 
+        $scope.handleHeaderSearch = function() {
+            $rootScope.searchQuery = $scope.searchQuery; 
+            $scope.searchQuery ='';
             if ($location.path() === '/shop') {
                 $route.reload();
             } else {
