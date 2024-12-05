@@ -11,17 +11,11 @@ const productRoutes = require('./api/routes/product.routes');
 const cartRoutes = require('./api/routes/cart.routes');
 const wishlistRoutes = require('./api/routes/wishlist.routes');
 const couponRoutes = require('./api/routes/coupon.routes');
-<<<<<<< Updated upstream
 const userRoutes = require('./api/routes/user.routes');
 const settingsRoutes = require('./api/routes/settings.routes');
 const checkoutRoutes = require("./api/routes/transaction.routes");
 const historyRoutes = require("./api/routes/history.route");
-=======
-const userRoutes = require('./api/routes/user.routes')
 const categoriesRoutes = require('./api/routes/categories.routes')
-// const transactionRoutes = require('./api/routes/transaction.routes');
-const wishlist = require('./api/models/wishlist.schema');
->>>>>>> Stashed changes
 
 const app = express();
 const port = 5500;
@@ -47,14 +41,13 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/users', userRoutes);
-<<<<<<< Updated upstream
 app.use('/api/settings', settingsRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/history', historyRoutes);
-=======
 app.use('/api/categories', categoriesRoutes);
-// app.use('/api/transaction', transactionRoutes);
->>>>>>> Stashed changes
+app.use('/api/categories', categoriesRoutes);
+
+
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
