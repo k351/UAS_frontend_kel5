@@ -41,7 +41,7 @@ router.get('/', verifyToken, isAdmin, async (req, res) => {
 });
 
 
-router.get('/home', verifyToken, isAdmin, async (req, res) => {
+router.get('/home', async (req, res) => {
     try {
         const categories = await Category.find({isOnHome : true});
         res.status(200).json(categories);

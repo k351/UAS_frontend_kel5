@@ -90,6 +90,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.isCouponVisible = true;
         $scope.isUsersVisible = false;
         $scope.isProductFormVisible = false;
+        $scope.isCategoryVisible = false;
     };
 
     $scope.toggleCouponsForm = function () {
