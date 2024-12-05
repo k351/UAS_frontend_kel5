@@ -4,7 +4,7 @@ angular.module('revifeApp').controller('HomeController', ['$scope', '$timeout', 
         $scope.categories = [];
         let autoSlideInterval; 
         const slideDuration = 700;
-        const autoSlideDelay = 5000; 
+        const autoSlideDelay = 4000; 
         let totalSlides = 0;
         let slideWidth = 0;
 
@@ -63,13 +63,15 @@ angular.module('revifeApp').controller('HomeController', ['$scope', '$timeout', 
             const $firstSlideClone = $slides.first().clone();
             angular.element('.carousel-track').append($firstSlideClone);
 
-            slideWidth = updateSlideWidth();
+            slideWidth = $scope.updateSlideWidth();
 
-            startAutoSlide();
+            $scope.startAutoSlide();
 
             angular.element($window).on('resize', function () {
-                slideWidth = updateSlideWidth();
-                angular.element('.carousel-track').css('transform', `translateX(-${$scope.currentIndex * slideWidth}px)`);
+                $scope.$apply(() => {
+                    slideWidth = $scope.updateSlideWidth();
+                    angular.element('.carousel-track').css('transform', `translateX(-${$scope.currentIndex * slideWidth}px)`);
+                });
             });
         };
 
@@ -87,6 +89,8 @@ angular.module('revifeApp').controller('HomeController', ['$scope', '$timeout', 
         };
 
         $scope.loadCategories();
-        $timeout($scope.initCarousel);
+        $timeout(() => {
+            $scope.initCarousel();
+        });
     }
 ]);
