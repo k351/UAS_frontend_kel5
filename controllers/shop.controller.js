@@ -16,7 +16,7 @@ angular.module('revifeApp')
     
     // Initialize products
     $scope.initializeProducts = function() {
-        $http.get('/api/products') // Assuming products are fetched from this endpoint
+        $http.get('/api/products/') // Assuming products are fetched from this endpoint
         .then(response => {
             $scope.productsData = response.data;
             

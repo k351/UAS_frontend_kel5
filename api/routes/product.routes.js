@@ -4,7 +4,7 @@ const Product = require('../models/product.schema');
 const mongoose = require('mongoose');
 const { verifyToken, isAdmin } = require('../middleware/auth');
 
-router.get('/', verifyToken, isAdmin, async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
     try {
         const products = await Product.find();
         res.status(200).json(products);
