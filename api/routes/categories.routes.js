@@ -51,6 +51,16 @@ router.get('/home', async (req, res) => {
     }
 });
 
+router.get('/shop', async (req, res) => {
+    try {
+        const categories = await Category.find().select('name');
+        res.status(200).json(categories);
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+});
+
 
 router.post('/add', verifyToken, isAdmin, upload.single('image'), async (req, res) => {
     try {
@@ -73,6 +83,27 @@ router.post('/add', verifyToken, isAdmin, upload.single('image'), async (req, re
         res.status(500).json({ message: 'Internal server error.' });
     }
 });
+
+router.put('/update/:id', verifyToken, isAdmin, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { isOnHome } = req.body;
+
+        const category = await Category.findById(id);
+        if (!category) {
+            return res.status(404).json({ message: 'Category not found.' });
+        }
+
+        category.isOnHome = isOnHome;  
+        await category.save();
+
+        res.status(200).json({ message: 'Category status updated successfully.' });
+    } catch (error) {
+        console.error('Error updating category status:', error);
+        res.status(500).json({ message: 'Failed to update category status.' });
+    }
+});
+
 
 router.delete('/delete/:id', verifyToken, isAdmin, async (req, res) => {
     try {

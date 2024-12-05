@@ -1,5 +1,5 @@
-angular.module('revifeApp').controller('HomeController', ['$scope', '$timeout', '$window', '$http',
-    function ($scope, $timeout, $window, $http) {
+angular.module('revifeApp').controller('HomeController', ['$scope', '$timeout', '$window', '$http', '$rootScope',
+    function ($scope, $timeout, $window, $http, $rootScope) {
         $scope.currentIndex = 0;
         $scope.categories = [];
         let autoSlideInterval; 
@@ -86,6 +86,16 @@ angular.module('revifeApp').controller('HomeController', ['$scope', '$timeout', 
             }).catch(function(error) {
                 console.error('Error fetching categories:', error);
             });
+        };
+
+        $scope.handleHomeSearch = function(searchQuery) {
+            $rootScope.searchQuery = searchQuery; 
+            $window.location.href = '#!/shop';
+        };
+
+        $scope.handleCategoryFilter = function(category) {
+            $rootScope.selectedCategory = category; 
+            $window.location.href = '#!/shop';
         };
 
         $scope.loadCategories();

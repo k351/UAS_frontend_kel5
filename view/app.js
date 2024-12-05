@@ -34,12 +34,22 @@ revifeApp.config(['$routeProvider', function($routeProvider) {
         .when('/login', {
             templateUrl: 'pages/login.html',
             controller: 'LoginController',
-            css: ['style/style.css', 'style/login.css']
+            css: ['style/style.css', 'style/login.css'],
+            resolve: {
+                checkIsLoggedIn: ['AuthService', function(AuthService) {
+                    return AuthService.checkIsLoggedIn(); 
+                }]
+            }
         })
         .when('/signup', {
             templateUrl: 'pages/signup.html',
             controller: 'SignUpController',
-            css: ['style/style.css', 'style/signup.css']
+            css: ['style/style.css', 'style/signup.css'],
+            resolve: {
+                checkIsLoggedIn: ['AuthService', function(AuthService) {
+                    return AuthService.checkIsLoggedIn(); 
+                }]
+            }
         })
         .when('/shop', {
             templateUrl: 'pages/shop.html',
@@ -139,7 +149,17 @@ revifeApp.factory('AuthService', ['$http', '$location', '$q', function($http, $l
                     $location.path('/').replace(); 
                     return $q.reject(error);
                 });
-        }
+        },
+        checkIsLoggedIn: function() {
+            return $http.get('/api/auth/logincheck')
+                .then(function(response) {
+                    $location.path('/').replace();
+                    return $q.reject('You Logged In');
+                })
+                .catch(function(error) {
+                    return $q.resolve();
+                });
+        },
     };
 }]);
 

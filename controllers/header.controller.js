@@ -1,6 +1,6 @@
 angular.module('revifeApp')
-    .controller('HeaderController', ['$scope', '$window', '$document', '$location',
-    function($scope, $window, $document, $location) {
+    .controller('HeaderController', ['$scope', '$window', '$document', '$location','$rootScope','$route',
+    function($scope, $window, $document, $location, $rootScope, $route) {
         // Dark Mode functionality
         $scope.initDarkMode = function() {
             $scope.darkTheme = $document[0].getElementById("dark-theme");
@@ -33,82 +33,32 @@ angular.module('revifeApp')
         };
 
         // Explore Menu functionality
-        $scope.initExplore = function() {
-            $scope.exploreMenu = $document[0].getElementById("Explore");
-            $scope.exploreLinks = $document[0].querySelector(".explore-links");
-            $scope.priaMenu = $document[0].querySelector(".pria");
-            $scope.wanitaMenu = $document[0].querySelector(".wanita");
-            $scope.priaExplore = $document[0].getElementById("pria-contents");
-            $scope.wanitaExplore = $document[0].getElementById("wanita-contents");
+        $scope.initSearchBox = function() {
             $scope.searchInput = $document[0].querySelector('.search-header input');
             $scope.blackBox = $document[0].querySelector(".black-box");
 
             // Add event listeners for search input
             $scope.searchInput.addEventListener('focus', function() {
-                $scope.blackBox.classList.add('black-box-show');
+                $scope.isBlackBoxVisible = true;
+                $scope.$apply();
             });
 
             $scope.searchInput.addEventListener('blur', function() {
-                $scope.blackBox.classList.remove('black-box-show');
+                $scope.isBlackBoxVisible = false;
+                $scope.$apply();
             });
-
-            // Handle scroll events for index page
-            const currentPage = $location.path();
-            if (currentPage === '/') {
-                angular.element($window).on('scroll', function() {
-                    const searchLimiter = $document[0].querySelector('.home');
-                    const searchHidden = $document[0].querySelector('.search-header');
-                    const categoriesLimiter = $document[0].querySelector('.categories');
-                    const categoriesHidden = $document[0].querySelector('.categories-header');
-                    const searchLimiterPos = searchLimiter.getBoundingClientRect().bottom;
-                    const categoriesLimiterPos = categoriesLimiter.getBoundingClientRect().bottom;
-
-                    if (searchLimiterPos <= 80) {
-                        searchHidden.classList.add('search-header-show');
-                    } else {
-                        searchHidden.classList.remove('search-header-show');
-                    }
-
-                    if (categoriesLimiterPos <= 80) {
-                        categoriesHidden.classList.add('categories-header-show');
-                    } else {
-                        categoriesHidden.classList.remove('categories-header-show');
-                    }
-                });
-            } else {
-                const searchHidden = $document[0].querySelector('.search-header');
-                searchHidden.classList.add('search-header-show');
-            }
-
         };
 
-        $scope.toggleExplore = function() {
-            $scope.exploreLinks.classList.toggle("explore-links-show");
-            $scope.wanitaExplore.classList.remove("contents-show");
-            $scope.priaExplore.classList.remove("contents-show");
-            $scope.updateExplore();
-        };
         // Search functionality
-        $scope.handleHeaderSearch = function(event) {
-            event.preventDefault();
-            const searchQuery = $document[0].getElementById('headerSearchBar').value;
-            
-            if (searchQuery === '') {
-                alert('You searched for nothing!');
-                return;
+        $scope.handleHeaderSearch = function(searchQuery) {
+            $rootScope.searchQuery = searchQuery; 
+            if ($location.path() === '/shop') {
+                $route.reload();
+            } else {
+                $window.location.href = '#!/shop';
             }
-            
-            $window.localStorage.setItem('searchQuery', searchQuery);
-            $window.location.href = '#!/shop';
         };
-
-        $scope.handleSearch = function(event) {
-            event.preventDefault();
-            const searchQuery = $document[0].getElementById('searchBar').value;
-            $window.localStorage.setItem('searchQuery', searchQuery)
-            $window.location.href = '#!/shop'
-        }
-
+        
         // Responsive menu
         $scope.initResponsiveMenu = function() {
             const mediaQuery = $window.matchMedia('(max-width: 768px)');
@@ -121,12 +71,26 @@ angular.module('revifeApp')
             });
         };
 
-        // Category Header Filter
-        $scope.handleCategoryFilter = function(event) {
-            event.preventDefault(); 
-            const filterQuery = angular.element(event.currentTarget).attr('data-category');
-            $window.localStorage.setItem('filterQuery', filterQuery);
-            $window.location.href = '#!/shop'
+        // Handle Scroll Behavior
+        $scope.handleScrollBehavior = function() {
+            const currentPage = $location.path();
+            const searchHidden = $document[0].querySelector('.search-header');
+            $scope.isSearchVisible = false;
+            if (currentPage === '/') {
+                angular.element($window).on('scroll', function() {
+                    const searchLimiter = $document[0].querySelector('.home');
+                    const searchLimiterPos = searchLimiter.getBoundingClientRect().bottom;
+
+                    if (searchLimiterPos <= 80) {
+                        $scope.isSearchVisible = true;  // Show search bar on scroll
+                    } else {
+                        $scope.isSearchVisible = false;  // Hide search bar when not scrolled
+                    }
+                    $scope.$apply();  // Update the view
+                });
+            } else {
+                $scope.isSearchVisible = true;  // Always show search on other pages
+            }
         };
 
         $scope.updateNav = function(mediaQuery) {
@@ -138,30 +102,31 @@ angular.module('revifeApp')
                         navLink.innerHTML = 'Cart';
                     } else if (navLink.innerHTML.includes('fa-heart')) {
                         navLink.innerHTML = 'Wishlist';
-                    } else if (navLink.innerHTML.includes('fa-angle-down')) {
-                        navLink.innerHTML = 'Explore';
+                    } else if (navLink.innerHTML.includes('fa-gear')) {
+                        navLink.innerHTML = 'Settings';
+                    } else if (navLink.innerHTML.includes('fa-scroll')) {
+                        navLink.innerHTML = 'History';
                     }
                 } else {
                     if (navLink.textContent === 'Cart') {
                         navLink.innerHTML = '<i class="fa-solid fa-cart-shopping"></i>';
                     } else if (navLink.textContent === 'Wishlist') {
                         navLink.innerHTML = '<i class="fa-regular fa-heart"></i>';
-                    } else if (navLink.textContent === 'Explore') {
-                        navLink.innerHTML = 'Explore <i class="fa-solid fa-angle-down"></i>';
+                    } else if (navLink.textContent === 'Settings') {
+                        navLink.innerHTML = '<i class="fa-solid fa-gear"></i>';
+                    } else if (navLink.textContent === 'History') {
+                        navLink.innerHTML = '<i class="fa-solid fa-scroll"></i>';
                     }
                 }
             });
         };
 
-        $scope.$watch(function() {
-            return $location.path();
-        }, function(path) {
-            $scope.isLoginPage = (path === '/login');
-            $scope.isSignupPage = (path === '/signup');
-            $scope.isAdminPage = (path === '/admin-dashboard');
+        $rootScope.$on('$routeChangeStart', function() {
+            $scope.handleScrollBehavior(); 
         });
-
-            $scope.initDarkMode();
-            $scope.initExplore();
-            $scope.initResponsiveMenu();
+        
+        $scope.handleScrollBehavior(); 
+        $scope.initDarkMode();
+        $scope.initSearchBox();
+        $scope.initResponsiveMenu();
     }]);

@@ -191,6 +191,7 @@
                                 <td>{{ category.name }}</td>
                                 <td>{{ category.isOnHome ? 'Yes' : 'No' }}</td>
                                 <td>
+                                    <button class="btn btn-danger" ng-click="changeOnHomeStatus(category._id)">Change Home Status</button>
                                     <button class="btn btn-danger" ng-click="deleteCategory(category._id)">Delete</button>
                                 </td>
                             </tr>

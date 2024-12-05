@@ -100,7 +100,4 @@
         border-radius: 0px;
     }
 
-    .categories .content .categories-links {
-        grid-template-columns: repeat(2, 1fr);
-    }
 }

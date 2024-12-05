@@ -301,6 +301,11 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             return;
         }
 
+        if(discountValue < 1) {
+            alert('Please fill the discount value more than one');
+            return;
+        }
+
         if (discountType != 'percentage' || discountType != 'fixed') {
             alert('Please fill discount type correctly.');
             return;
@@ -352,6 +357,19 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             });
     };
 
+    $scope.showCouponEditForm = function (coupon) {
+        $scope.couponCode = coupon.couponCode;
+        $scope.discountValue = coupon.discountValue;
+        $scope.discountType = coupon.discountType;
+        $scope.startAt = coupon.startAt;
+        $scope.description = coupon.description;
+        $scope.expiresAt = coupon.expiresAt;
+
+        $scope.couponId = coupon._id
+
+        $scope.couponEditMode = true;
+        $scope.isCouponFormVisible = true;
+    }
 
     $scope.updateCoupon = function (couponId, newCouponCode, newDiscountValue, newDiscountType, newStartAt, newExpiresAt) {
 
@@ -361,6 +379,11 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             return;
         }
 
+        if(newDiscountValue < 1) {
+            alert('Please fill the discount value more than one');
+            return;
+        }
+        
         let isPercentage = newDiscountType === 'percentage';
 
         if (isPercentage && (newDiscountValue <= 0 || newDiscountValue > 100)) {
@@ -424,6 +447,25 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             .catch(function (error) {
                 alert('Error creating category: ' + (error.data.message || 'Unknown error.'));
             });
+    };
+
+    $scope.changeOnHomeStatus = function (categoryId) {
+        const category = $scope.categories.find(cat => cat._id === categoryId);
+        if (category) {
+            category.isOnHome = !category.isOnHome;  
+
+            $http.put(`/api/categories/update/${categoryId}`, {
+                isOnHome: category.isOnHome
+            })
+            .then(function (response) {
+                alert('Category status updated successfully!');
+                $scope.loadCategories(); 
+            })
+            .catch(function (error) {
+                console.error('Error updating category status:', error);
+                alert('Failed to update category status.');
+            });
+        }
     };
 
     $scope.deleteCategory = function (categoryId) {
