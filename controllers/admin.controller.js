@@ -1,15 +1,23 @@
-angular.module('revifeApp').controller('AdminController', ['$scope', '$http', function ($scope, $http) {
-    $scope.isDashboardVisible = true;
-    $scope.isProductVisible = false;
-    $scope.isCouponVisible = false;
-    $scope.isCouponFormVisible = false;
-    $scope.isProductFormVisible = false;
-    $scope.isUsersVisible = false;
-    $scope.selectedProduct = null;
-    $scope.currentDate = new Date();
+    angular.module('revifeApp').controller('AdminController', ['$scope', '$http', function($scope, $http) {
+        $scope.isDashboardVisible = true;
 
-    $scope.coupons = [];
-    $scope.users = [];
+        $scope.isProductVisible = false;
+        $scope.isProductFormVisible = false;
+
+        $scope.isCouponVisible = false;
+        $scope.isCouponFormVisible = false;
+
+        $scope.isUsersVisible = false;
+
+        $scope.isCategoryVisible = false;
+        $scope.isCategoryFormVisible = false;
+
+        $scope.currentDate = new Date(); 
+        $scope.selectedProduct = null;
+
+        $scope.coupons = [];
+        $scope.users = [];
+        $scope.categories = [];
 
     $scope.newProduct = {
         name: '',
@@ -20,49 +28,63 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         quantity: ''
     };
 
-    $scope.notification = {
-        message: '',
-        isError: false,
-        isVisible: false
-    };
+    $scope.couponEditMode = false;
 
-    $scope.showNotification = function (message, isError = false) {
-        $scope.notification.message = message;
-        $scope.notification.isError = isError;
-        $scope.notification.isVisible = true;
-        $timeout(function () {
-            $scope.notification.isVisible = false;
-        }, 3000);
-    };
+        $scope.notification = {
+            message: '',
+            isError: false,
+            isVisible: false
+        };
 
-    $scope.showDashboard = function () {
+        $scope.showNotification = function (message, isError = false) {
+            $scope.notification.message = message;
+            $scope.notification.isError = isError;
+            $scope.notification.isVisible = true;
+            $timeout(function () {
+                $scope.notification.isVisible = false;
+            }, 3000);
+        };
+
+    $scope.showDashboard = function() {
         $scope.isDashboardVisible = true;
         $scope.isProductVisible = false;
         $scope.isCouponVisible = false;
         $scope.isUsersVisible = false;
         $scope.isCouponFormVisible = false;
         $scope.isProductFormVisible = false;
+        $scope.isCategoryVisible = false;
     };
-
-    $scope.showProducts = function () {
+    
+    $scope.showProducts = function() {
         $scope.isDashboardVisible = false;
         $scope.isProductVisible = true;
         $scope.isCouponVisible = false;
         $scope.isUsersVisible = false;
         $scope.isCouponFormVisible = false;
         $scope.isProductFormVisible = false;
-    };
+        $scope.isCategoryVisible = false;
 
-    $scope.showUsers = function () {
+    };
+    
+    $scope.showUsers = function() {
         $scope.isDashboardVisible = false;
         $scope.isProductVisible = false;
         $scope.isCouponVisible = false;
         $scope.isUsersVisible = true;
         $scope.isCouponFormVisible = false;
         $scope.isProductFormVisible = false;
+        $scope.isCategoryVisible = false;
     };
 
-    $scope.showCoupons = function () {
+    $scope.showCategories = function () {
+        $scope.isDashboardVisible = false;
+        $scope.isProductVisible = false;
+        $scope.isCouponVisible = false;
+        $scope.isUsersVisible = false;
+        $scope.isCategoryVisible = true;
+    };
+
+    $scope.showCoupons = function() {
         $scope.isDashboardVisible = false;
         $scope.isProductVisible = false;
         $scope.isCouponVisible = true;
@@ -70,17 +92,33 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.isProductFormVisible = false;
     };
 
-    $scope.toggleCouponsForm = function () {
+    $scope.toggleCouponsForm = function() {
         $scope.isCouponFormVisible = !$scope.isCouponFormVisible;
     };
 
-    $scope.toggleProductForm = function () {
+    $scope.toggleProductForm = function() {
         $scope.isProductFormVisible = !$scope.isProductFormVisible;
     };
 
-    $scope.loadCoupons = function () {
-        $http.get(`/api/coupons`)
+    $scope.toggleCategoryForm = function () {
+        $scope.isCategoryFormVisible = !$scope.isCategoryFormVisible;
+    };
+
+    $scope.loadCategories = function () {
+        $http.get(`/api/categories`)
             .then(function (response) {
+                $scope.categories = response.data;
+            })
+            .catch(function (error) {
+                console.error('Error fetching categories:', error);
+                alert('Failed to fetch categories.');
+            });
+    };
+
+    
+    $scope.loadCoupons = function() {
+        $http.get(`/api/coupons`)
+            .then(function(response) {
                 $scope.coupons = response.data.map(coupon => {
                     return {
                         ...coupon,
@@ -89,12 +127,12 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
                     };
                 });
             })
-            .catch(function (error) {
+            .catch(function(error) {
                 console.error('Error fetching coupons:', error);
                 alert('Failed to fetch coupons.');
             });
     };
-
+    
     $scope.loadUsers = function() {
         $http.get(`/api/users`)
             .then(function(response) {
@@ -227,76 +265,168 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
                 alert('Failed to validate product name');
             })
     }
-
-    $scope.addCoupon = function (couponCode, discountValue, discountType, startAt, expiresAt) {
+    
+    $scope.addCoupon = function(couponCode, discountValue, discountType, startAt, expiresAt) {
         if (!couponCode || !discountValue || !discountType || !startAt || !expiresAt) {
             alert('Please fill in all fields before adding the coupon.');
             return;
         }
 
+        if(discountType != 'percentage' || discountType != 'fixed') {
+            alert('Please fill discount type correctly.');
+            return;
+        }
+        
         let isPercentage = discountType === 'percentage';
-
+        
         if (isPercentage && (discountValue <= 0 || discountValue > 100)) {
             alert('Discount percentage must be between 1 and 100.');
             return;
         }
-
-        let startDate = new Date(startAt);
-        let expiryDate = new Date(expiresAt);
-
-        if (startDate > expiryDate) {
+        
+        
+        if (startAt > expiresAt) {
             alert('Start date must be before expiry date.');
             return;
         }
 
-        $http.get(`/api/coupons/${couponCode}`)
-            .then(function (response) {
-                if (response.data) {
-                    alert(`Coupon with code ${couponCode} already exists.`);
-                } else {
-                    $http.post('/api/coupons/add', {
-                        couponCode: couponCode,
-                        discountValue: discountValue,
-                        discountType: discountType,
-                        startAt: startAt,
-                        expiresAt: expiresAt
+    $http.get(`/api/coupons/${couponCode}`)
+        .then(function(response) {
+            if (response.data) {
+                alert(`Coupon with code ${couponCode} already exists.`);
+            } else {
+                $http.post('/api/coupons/add', {
+                    couponCode: couponCode,
+                    discountValue: discountValue,
+                    discountType: discountType,
+                    startAt: startAt,
+                    expiresAt: expiresAt
+                })
+                    .then(function() {
+                        alert('Coupon added successfully!');
+                        $scope.loadCoupons();
+                        $scope.couponCode = '';
+                        $scope.discountValue = '';
+                        $scope.discountType = '';
+                        $scope.startAt = '';
+                        $scope.expiresAt = '';
                     })
-                        .then(function () {
-                            alert('Coupon added successfully!');
-                            $scope.loadCoupons();
-                            $scope.couponCode = '';
-                            $scope.discountValue = '';
-                            $scope.discountType = '';
-                            $scope.startAt = '';
-                            $scope.expiresAt = '';
-                        })
-                        .catch(function (error) {
-                            console.error('Error adding coupon:', error);
-                            alert(error.data.message || 'Failed to add coupon.');
-                        });
-                }
-            })
-            .catch(function (error) {
-                console.error('Error checking coupon:', error);
-                alert('Failed to validate coupon code.');
-            });
+                    .catch(function(error) {
+                        console.error('Error adding coupon:', error);
+                        alert(error.data.message || 'Failed to add coupon.');
+                    });
+            }
+        })
+        .catch(function(error) {
+            console.error('Error checking coupon:', error);
+            alert('Failed to validate coupon code.');
+        });
     };
 
 
-    $scope.deleteCoupon = function (couponId) {
-        if (confirm('Are you sure you want to delete this coupon?')) {
-            $http.delete(`/api/coupons/delete/${couponId}`)
+    $scope.updateCoupon = function(couponId, newCouponCode, newDiscountValue, newDiscountType, newStartAt, newExpiresAt) {
+            
+
+        if (!newCouponCode || !newDiscountValue || !newDiscountType || !newStartAt || !newExpiresAt) {
+            alert('Please fill in all fields before adding the coupon.');
+            return;
+        }
+        
+        let isPercentage = newDiscountType === 'percentage';
+        
+        if (isPercentage && (newDiscountValue <= 0 || newDiscountValue > 100)) {
+            alert('Discount percentage must be between 1 and 100.');
+            return;
+        }
+        
+        
+        if (newStartAt > newExpiresAt) {
+            alert('Start date must be before expiry date.');
+            return;
+        }
+
+        $http.put(`/api/coupons/update/${couponId}`, {
+            couponCode: newCouponCode,
+            discountValue: newDiscountValue,
+            discountType: newDiscountType,
+            startAt: newStartAt,
+            expiresAt: newExpiresAt
+        })
+        .then(function() { 
+            alert('Coupon updated successfully!');
+            $scope.couponId = '';
+            $scope.couponCode = '';
+            $scope.discountValue = '';
+            $scope.discountType = '';
+            $scope.startAt = '';
+            $scope.expiresAt = '';
+            $scope.loadCoupons();
+        })
+        .catch(function(error) {
+            alert("Error updating coupon: " + error);
+        })
+    }
+
+    $scope.addCategory = function (categoryName, isOnHome) {
+        var fileInput = document.getElementById('fileInput');
+        var file = fileInput.files[0]; 
+    
+        if (!file) {
+            alert('Please select an image file.');
+            return;
+        }
+    
+        var formData = new FormData();
+        formData.append('name', categoryName);
+        formData.append('isOnHome', isOnHome); 
+        formData.append('image', file);
+    
+        $http.post('/api/categories/add', formData, {
+            transformRequest: angular.identity,
+            headers: { 'Content-Type': undefined },
+        })
+        .then(function (response) {
+            alert('Category created successfully!');
+            $scope.loadCategories();
+            $scope.categoryName = '';
+            $scope.isOnHome = false;
+            document.getElementById('fileInput').value = ''; 
+        })
+        .catch(function (error) {
+            alert('Error creating category: ' + (error.data.message || 'Unknown error.'));
+        });
+    };
+
+    $scope.deleteCategory = function (categoryId) {
+        if (confirm('Are you sure you want to delete this category?')) {
+            $http.delete(`/api/categories/delete/${categoryId}`)
                 .then(function () {
-                    alert('Coupon deleted successfully.');
-                    $scope.loadCoupons();
+                    alert('Category deleted successfully.');
+                    $scope.loadCategories();
                 })
                 .catch(function (error) {
+                    console.error('Error deleting category:', error);
+                    alert('Failed to delete category.');
+                });
+        }
+    };
+
+    $scope.deleteCoupon = function(couponId) {
+        if (confirm('Are you sure you want to delete this coupon?')) {
+            $http.delete(`/api/coupons/delete/${couponId}`)
+                .then(function() {
+                    alert('Coupon deleted successfully.');
+                    $scope.loadCoupons(); 
+                })
+                .catch(function(error) {
                     console.error('Error deleting coupon:', error);
                     alert('Failed to delete coupon.');
                 });
         }
     };
 
+    $scope.loadCoupons();
+    $scope.loadCategories();
     $scope.loadCoupons();
     $scope.loadUsers();
     $scope.loadProducts();

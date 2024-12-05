@@ -15,6 +15,7 @@ const userRoutes = require('./api/routes/user.routes');
 const settingsRoutes = require('./api/routes/settings.routes');
 const checkoutRoutes = require("./api/routes/transaction.routes");
 const historyRoutes = require("./api/routes/history.route");
+const categoriesRoutes = require('./api/routes/categories.routes')
 
 const app = express();
 const port = 5500;
@@ -43,6 +44,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/history', historyRoutes);
+app.use('/api/categories', categoriesRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

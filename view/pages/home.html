@@ -23,12 +23,12 @@
 <section class="categories">
     <div class="content">   
         <ul class="categories-links">
-            <li><a href="#!/shop" data-category="shirts" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Kemeja.png">Shirts</a></li>
-            <li><a href="#!/shop" data-category="t-shirts" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Kaos.png">T-Shirts</a></li>
-            <li><a href="#!/shop" data-category="jacket" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Jacket.png">Jackets</a></li>
-            <li><a href="#!/shop" data-category="dress" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Dress.png">Dress</a></li>
-            <li><a href="#!/shop" data-category="jeans" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Jeans.png">Jeans</a></li>
-            <li><a href="#!/shop" data-category="skirts" ng-click="handleCategoryFilter($event)"><img src="../images/icon/Rok.png">Skirts</a></li>
+            <li ng-repeat="category in categories">
+                <a href="#!/shop" data-category="{{category.name}}" ng-click="handleCategoryFilter(category.name)">
+                    <img ng-src="{{category.image}}" alt="{{category.name}}">
+                    {{category.name}}
+                </a>
+            </li>
         </ul>
     </div>
 </section>

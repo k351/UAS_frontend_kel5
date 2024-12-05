@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Wishlist = require('../models/wishlist.schema');
 const TransactionItem = require('../models/transactionitem.schema');
-const { verifyToken } = require('../middleware/auth.js');
+const { verifyToken, optionalVerify } = require('../middleware/auth.js');
 
 // Helper function to calculate average rating
 const calculateAverageRating = (ratings) => {
@@ -10,11 +10,21 @@ const calculateAverageRating = (ratings) => {
     const total = ratings.reduce((sum, rating) => sum + rating, 0);
     return (total / ratings.length).toFixed(1);
 };
+const Wishlist = require('../models/wishlist.schema'); 
+
+// Middleware to check if the user is authenticated (assuming JWT)
+const { verifyToken, optionalVerify } = require('../middleware/auth.js');
 
 // Get wishlist items for the logged-in user
-router.get('/', verifyToken, async (req, res) => {
+router.get('/', optionalVerify, async (req, res) => {
+    
     try {
         // Fetch wishlist for the logged-in user
+
+        if (!req.user) {
+            return res.json([]);
+        }
+
         const wishlist = await Wishlist.findOne({ userId: req.user._id }).populate('products');
 
         if (!wishlist) {
