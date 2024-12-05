@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.schema');
-const { verifyToken } = require('../middleware/auth');
+const { verifyToken, optionalVerify, checkAdmin } = require('../middleware/auth');
 
 router.post('/register', async (req, res) => {
     try {
@@ -49,14 +49,14 @@ router.post('/register', async (req, res) => {
         const token = jwt.sign(
             { userId: user._id, role: user.role },
             process.env.JWT_SECRET,
-            { expiresIn: '24h' }
+            { expiresIn: '48h' }
         );
 
         // Kirim token ke cookie
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            maxAge: 24 * 60 * 60 * 1000
+            maxAge: 48 * 60 * 60 * 1000
         });
 
         res.status(201).json({
@@ -96,11 +96,11 @@ router.post('/login', async (req, res) => {
         }
 
         console.log("User authenticated successfully");
-        const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '48h' });
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            maxAge: 24 * 60 * 60 * 1000
+            maxAge: 48 * 60 * 60 * 1000
         });
         
         res.status(200).json({
@@ -137,6 +137,14 @@ router.get('/api/user', verifyToken, async (req, res) => {
         console.error('Fetch user error:', error.message);
         res.status(500).json({ message: 'Server error' });
     }
+});
+
+router.get('/check', verifyToken, (req, res) => {
+    res.status(200).json({ message: 'Authenticated' });
+});
+
+router.get('/admin-check', verifyToken, checkAdmin, (req, res) => {
+    res.status(200).json({ message: 'Authenticated' });
 });
 
 module.exports = router;

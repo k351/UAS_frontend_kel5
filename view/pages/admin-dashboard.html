@@ -9,6 +9,7 @@
             <div class="menu-item" ng-click="showDashboard()">Dashboard</div>
             <div class="menu-item" ng-click="showUsers()">Users</div>
             <div class="menu-item" ng-click="showProducts()">Products</div>
+            <div class="menu-item" ng-click="showCategories()">Categories</div>
             <div class="menu-item" ng-click="showCoupons()">Coupons</div>
         </div>
 
@@ -146,6 +147,59 @@
                 </div>
             </div>
 
+            <div id="categoriesContent" ng-show="isCategoryVisible">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3>Category Management</h3>
+                    <button class="btn btn-primary" ng-click="toggleCategoryForm()">Create New Category</button>
+                </div>
+            
+                <div class="form-container" ng-show="isCategoryFormVisible">
+                    <form name="categoryForm" ng-submit="addCategory(categoryName, isOnHome)">
+                        <div class="mb-3">
+                            <label class="form-label">Category Name</label>
+                            <input type="text" class="form-control" ng-model="categoryName" placeholder="Enter category name" required>
+                        </div>
+                
+                        <div class="mb-3">
+                            <label class="form-label">Upload PNG Image</label>
+                            <input type="file" id="fileInput" accept="image/png" required>
+                        </div>
+                
+                        <div class="mb-3">
+                            <label class="form-label">Display on Home Page</label>
+                            <input type="checkbox" ng-model="isOnHome"> Yes
+                        </div>
+                
+                        <button type="submit" class="btn btn-primary">Create Category</button>
+                    </form>                 
+                </div>
+
+                <div class="list-container table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Category Name</th>
+                                <th>On Home</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="category in categories">
+                                <td>
+                                    <img ng-src="{{ category.image }}" alt="{{ category.name }}" style="width: 50px; height: 50px;">
+                                </td>
+                                <td>{{ category.name }}</td>
+                                <td>{{ category.isOnHome ? 'Yes' : 'No' }}</td>
+                                <td>
+                                    <button class="btn btn-danger" ng-click="deleteCategory(category._id)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div ng-show="isCouponVisible">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3>Coupon Management</h3>
@@ -153,8 +207,7 @@
                 </div>
 
                 <div class="form-container" ng-show="isCouponFormVisible">
-                    <form name="couponForm"
-                        ng-submit="addCoupon(couponCode, discountValue, discountType, startAt, expiresAt)">
+                    <form name="couponForm" ng-submit="couponEditMode ? updateCoupon(couponId, couponCode, discountValue, discountType, startAt, expiresAt) : addCoupon(couponCode, discountValue, discountType, startAt, expiresAt)">
                         <div class="mb-3">
                             <label class="form-label">Coupon Code</label>
                             <input type="text" class="form-control" ng-model="couponCode" required>
@@ -163,6 +216,7 @@
                         <div class="mb-3">
                             <label class="form-label">Discount Type</label>
                             <select class="form-control" ng-model="discountType" required>
+                                <option value="" disabled selected>Select Discount Type</option>
                                 <option value="percentage">Percentage</option>
                                 <option value="fixed">Fixed Amount</option>
                             </select>
@@ -183,7 +237,7 @@
                             <label class="form-label">Expiry Date</label>
                             <input type="date" class="form-control" ng-model="expiresAt" required>
                         </div>
-
+                        
                         <button type="submit" class="btn btn-primary">Create Coupon</button>
                     </form>
                 </div>
@@ -210,6 +264,7 @@
                                 <td>{{ coupon.expiresAt | date:'yyyy-MM-dd' }}</td>
                                 <td>{{ coupon.expiresAt > currentDate ? 'Active' : 'Expired'}}</td>
                                 <td>
+                                    <button class="btn btn-danger" ng-click="showCouponEditForm(coupon)">Edit</button>
                                     <button class="btn btn-danger" ng-click="deleteCoupon(coupon._id)">Delete</button>
                                 </td>
                             </tr>

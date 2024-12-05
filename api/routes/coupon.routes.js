@@ -24,6 +24,27 @@ router.get('/:couponCode', verifyToken, async (req, res) => {
     }
 });
 
+router.put('/update/:couponId', verifyToken, isAdmin, async(req, res) => {
+    const { couponId } = req.params;
+    const { couponCode, discountValue, discountType, startAt, expiresAt } = req.body;
+    try {
+        const coupons = await Coupon.findById(couponId);
+        if(!coupons){
+            return res.status(404).json({ message: 'Coupon not found!'});
+        }
+        
+        coupons.couponCode = couponCode;
+        coupons.discountValue = discountValue;
+        coupons.discountType = discountType;
+        coupons.startAt = startAt;
+        coupons.expiresAt = expiresAt;
+        await coupons.save()
+        res.status(200).json({ message: 'Coupons have been updated successfully.', coupons})
+    } catch (error) {
+        res.status(500).send('Error updating product');
+    }
+});
+
 router.post('/add', async (req, res) => {
     try {
         const { couponCode, discountValue, discountType, startAt, expiresAt } = req.body;

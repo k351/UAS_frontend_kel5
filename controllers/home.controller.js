@@ -1,18 +1,19 @@
-angular.module('revifeApp').controller('HomeController', ['$scope', '$timeout', '$window',
-    function ($scope, $timeout, $window) {
+angular.module('revifeApp').controller('HomeController', ['$scope', '$timeout', '$window', '$http',
+    function ($scope, $timeout, $window, $http) {
         $scope.currentIndex = 0;
+        $scope.categories = [];
         let autoSlideInterval; 
         const slideDuration = 700;
         const autoSlideDelay = 5000; 
         let totalSlides = 0;
         let slideWidth = 0;
 
-        function updateSlideWidth() {
+        $scope.updateSlideWidth = function () {
             return angular.element('.carousel-container').outerWidth();
-        }
+        };
 
         $scope.moveToNextSlide = function () {
-            slideWidth = updateSlideWidth();
+            slideWidth = $scope.updateSlideWidth();
             $scope.currentIndex++;
 
             angular.element('.carousel-track').css({
@@ -30,7 +31,7 @@ angular.module('revifeApp').controller('HomeController', ['$scope', '$timeout', 
         };
 
         $scope.moveToPrevSlide = function () {
-            slideWidth = updateSlideWidth();
+            slideWidth = $scope.updateSlideWidth();
             if ($scope.currentIndex > 0) {
                 $scope.currentIndex--;
                 angular.element('.carousel-track').css({
@@ -40,18 +41,18 @@ angular.module('revifeApp').controller('HomeController', ['$scope', '$timeout', 
             }
         };
 
-        function startAutoSlide() {
+        $scope.startAutoSlide = function () {
             autoSlideInterval = $timeout(() => {
                 $scope.moveToNextSlide();
-                startAutoSlide();
+                $scope.startAutoSlide();
             }, autoSlideDelay);
-        }
+        };
 
-        function stopAutoSlide() {
+        $scope.stopAutoSlide = function () {
             if (autoSlideInterval) {
                 $timeout.cancel(autoSlideInterval);
             }
-        }
+        };
 
         // Initialize carousel
         $scope.initCarousel = function () {
@@ -77,6 +78,15 @@ angular.module('revifeApp').controller('HomeController', ['$scope', '$timeout', 
             angular.element($window).off('resize');
         });
 
+        $scope.loadCategories = function () {
+            $http.get('/api/categories/home').then(function(response) {
+                $scope.categories = response.data;
+            }).catch(function(error) {
+                console.error('Error fetching categories:', error);
+            });
+        };
+
+        $scope.loadCategories();
         $timeout($scope.initCarousel);
     }
 ]);
