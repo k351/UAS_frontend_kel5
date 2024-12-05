@@ -68,7 +68,7 @@ revifeApp.config(['$routeProvider', function($routeProvider) {
         })
         .when('/checkout', {
             templateUrl: 'pages/checkout.html',
-            controller: 'CartController',
+            controller: 'CheckoutController',
             css: ['style/style.css', 'style/checkout.css', 'style/header.css', 'style/footer.css']
         })
         .when('/admin-dashboard', {

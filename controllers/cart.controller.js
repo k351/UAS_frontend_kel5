@@ -7,7 +7,7 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
         $http.get('/api/cart/populate')
             .then(function(response) {
                 $rootScope.cartItems = response.data.map(function(cartItem) {
-                    return { 
+                    return {    
                         id: cartItem._id,
                         name: cartItem.productId.name,
                         price: cartItem.productId.price,

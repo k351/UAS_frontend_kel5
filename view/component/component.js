@@ -9,9 +9,6 @@ angular.module('revifeApp').directive('productBox' , ['$http', function($http) {
                 <div class="desc">
                     <span>{{product.category}}</span>
                     <h5>{{product.name}}</h5>
-                    <div class="star">
-                        <i class="fa-solid" ng-repeat="n in [].constructor(product.stars) track by $index"></i>
-                    </div>
                     <h4>{{product.price}}</h4>
                 </div>
                 <a ng-click="addToCart(product)">

@@ -12,7 +12,7 @@
             </h3>
 
             <div ng-if="isEditingAddress">
-                <form ng-submit="saveAddress()">
+                <form ng-submit="saveAddress()">    
                     <div class="form-group">
                         <label for="street">Street</label>
                         <input type="text" id="street" ng-model="editedAddress.street" placeholder="Enter street" required>
@@ -65,7 +65,7 @@
                 </tr>
                 <tr>
                     <td><strong>Total</strong></td>
-                    <td><strong>{{ (cartTotal - couponDiscount) | currency:'Rp ' }}</strong></td>
+                    <td><strong>{{ totalAfterDiscount() | currency:'Rp ' }}</strong></td>
                 </tr>
             </table>
 
