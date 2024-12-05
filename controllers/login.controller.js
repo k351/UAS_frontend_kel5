@@ -13,11 +13,10 @@ angular.module("revifeApp").controller("LoginController", [
                     password: $scope.credentials.password,
                 })
                     .then(function (response) {
-                        // Simpan token di localStorage
+                        // Simpan token di sessionStorage
                         const { token, username, userId } = response.data.loginSuccess;
-                        localStorage.setItem("authToken", token);
-                        localStorage.setItem("name", username);
-                        localStorage.setItem("id", userId);
+                        console.log(userId);
+                        sessionStorage.setItem("authToken", token);
 
                         // Redirect ke halaman yang sesuai
                         const redirectUrl = response.data.redirect || "/#!/admin-dashboard";

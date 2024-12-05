@@ -1,12 +1,7 @@
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <div class="admin-container">
         <div class="sidebar">
@@ -23,10 +18,39 @@
                 <div class="dashboard-cards">
                     <!-- Your existing cards here -->
                 </div>
-                
+
                 <div class="table-container">
                     <h3 id="recent-orders">Recent Orders</h3>
                     <!-- Your existing table here -->
+                </div>
+            </div>
+
+            <div ng-show="isUsersVisible">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3>User Management</h3>
+                </div>
+
+                <div class="list-container table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="user in users">
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.role }}</td>
+                                <td>
+                                    <button class="btn btn-danger" ng-click="deleteUser(user._id)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -34,38 +58,53 @@
                 <div class="product-form-container">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h3>Product Management</h3>
-                        <button type="button" class="btn btn-secondary" ng-click="toggleProductForm()">Create New Product</button>
+                        <button type="button" class="btn btn-secondary" ng-click="toggleProductForm()">Create New
+                            Product</button>
                     </div>
-                    <div class="form-container"ng-show="isProductFormVisible" >
-                        <form  name="productForm">
+
+                    <div class="form-container" ng-show="isProductFormVisible">
+                        <form name="productForm" ng-submit="selectedProduct ? saveProductEdit() : addProduct(name, price, category, description, image, quantity)">
                             <div class="mb-3">
                                 <label class="form-label">Product Name</label>
-                                <input type="text" class="form-control" id="productName" required>
+                                <input type="text" class="form-control" ng-model="selectedProduct.name" required>
                             </div>
-                            
+
                             <div class="mb-3">
-                                <label  class="form-label">Price ($)</label>
-                                <input type="number" class="form-control" id="productPrice" step="0.01" min="0" required>
+                                <label class="form-label">Price (Rp)</label>
+                                <input type="number" class="form-control" ng-model="selectedProduct.price" step="1000"
+                                    min="0" required>
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label class="form-label">Category</label>
-                                <input type="text" class="form-control" id="productCategory" required>
+                                <input type="text" class="form-control" ng-model="selectedProduct.category" required>
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label class="form-label">Description</label>
-                                <textarea class="form-control" id="productDescription" rows="3" required></textarea>
+                                <textarea class="form-control" ng-model="selectedProduct.description" rows="3"
+                                    required></textarea>
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label class="form-label">Image URL</label>
-                                <input type="text" class="form-control" id="productImage" required 
-                                       onchange="previewImage(this.value)">
-                                <img id="imagePreview" class="preview-image" style="display: none;">
+                                <input type="text" class="form-control" ng-model="selectedProduct.image" required>
                             </div>
-                            
-                            <button type="submit" class="btn btn-primary">Add Product</button>
+
+                            <div class="mb-3">
+                                <label class="form-label">Quantity</label>
+                                <input type="number" class="form-control" ng-model="selectedProduct.quantity" required>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <button ng-click="addProduct()" class="btn btn-primary">
+                                    {{ selectedProduct ? 'Update Product' : 'Add Product' }}
+                                </button>
+                                <button type="button" class="btn btn-secondary"
+                                    ng-click="selectedProduct = null; isProductFormVisible = false;">
+                                    Cancel
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -78,13 +117,30 @@
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>Price</th>
-                                <th>Sales</th>
-                                <th>Rating</th>
+                                <th>Quantity</th>
+                                <th>Sold</th>
+                                <th>Description</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="productsTableBody">
-                            <!-- Products will be loaded here dynamically -->
+                        <tbody>
+                            <tr ng-repeat="product in products">
+                                <td>
+                                    <img ng-src="{{ product.image }}" alt="Product Image"
+                                        style="width: 100px; height: auto;">
+                                </td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.category }}</td>
+                                <td>{{ product.price }}</td>
+                                <td>{{ product.quantity }}</td>
+                                <td>{{ product.sold }}</td>
+                                <td>{{ product.description }}</td>
+                                <td>
+                                    <button class="btn btn-warning me-2"
+                                        ng-click="showEditProductForm(product)">Edit</button>
+                                    <button class="btn btn-danger" ng-click="deleteProduct(product._id)">Delete</button>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -95,14 +151,15 @@
                     <h3>Coupon Management</h3>
                     <button class="btn btn-primary" ng-click="toggleCouponsForm()">Create New Coupon</button>
                 </div>
-            
+
                 <div class="form-container" ng-show="isCouponFormVisible">
-                    <form name="couponForm" ng-submit="addCoupon(couponCode, discountValue, discountType, startAt, expiresAt)">
+                    <form name="couponForm"
+                        ng-submit="addCoupon(couponCode, discountValue, discountType, startAt, expiresAt)">
                         <div class="mb-3">
                             <label class="form-label">Coupon Code</label>
                             <input type="text" class="form-control" ng-model="couponCode" required>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label class="form-label">Discount Type</label>
                             <select class="form-control" ng-model="discountType" required>
@@ -110,26 +167,27 @@
                                 <option value="fixed">Fixed Amount</option>
                             </select>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label class="form-label">Discount Value</label>
-                            <input type="number" class="form-control" ng-model="discountValue" step="0.01" min="0" required>
+                            <input type="number" class="form-control" ng-model="discountValue" step="0.01" min="0"
+                                required>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label class="form-label">Start Date</label>
                             <input type="date" class="form-control" ng-model="startAt" required>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label class="form-label">Expiry Date</label>
                             <input type="date" class="form-control" ng-model="expiresAt" required>
                         </div>
-                        
+
                         <button type="submit" class="btn btn-primary">Create Coupon</button>
                     </form>
                 </div>
-            
+
                 <div class="list-container table-container">
                     <table class="table">
                         <thead>
@@ -154,15 +212,15 @@
                                 <td>
                                     <button class="btn btn-danger" ng-click="deleteCoupon(coupon._id)">Delete</button>
                                 </td>
-                            </tr>                            
+                            </tr>
                         </tbody>
                     </table>
-                </div>  
-            </div>            
+                </div>
+            </div>
         </div>
 
-    <!-- Modal for notifications -->
-    <div class="modal fade" id="notificationModal" tabindex="-1">
+        <!-- Modal for notifications -->
+        <!-- <div class="modal fade" id="notificationModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -177,6 +235,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </body>
-

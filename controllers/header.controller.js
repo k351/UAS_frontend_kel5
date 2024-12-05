@@ -80,16 +80,6 @@ angular.module('revifeApp')
                 searchHidden.classList.add('search-header-show');
             }
 
-            // Add resize and fullscreen event listeners
-            angular.element($window).on('resize', function() {
-                $scope.updateExplore();
-            });
-
-            $document[0].addEventListener('fullscreenchange', function() {
-                $scope.updateExplore();
-            });
-
-            $scope.updateExplore();
         };
 
         $scope.toggleExplore = function() {
@@ -97,38 +87,6 @@ angular.module('revifeApp')
             $scope.wanitaExplore.classList.remove("contents-show");
             $scope.priaExplore.classList.remove("contents-show");
             $scope.updateExplore();
-        };
-
-        $scope.showPriaContent = function() {
-            $scope.priaExplore.classList.toggle("contents-show");
-            $scope.wanitaExplore.classList.remove("contents-show");
-            $scope.updateExplore();
-        };
-
-        $scope.showWanitaContent = function() {
-            $scope.wanitaExplore.classList.toggle("contents-show");
-            $scope.priaExplore.classList.remove("contents-show");
-            $scope.updateExplore();
-        };
-
-        $scope.updateExplore = function() {
-            const isMobile = $window.matchMedia('(max-width: 768px)').matches;
-            if (isMobile) {
-                $scope.exploreLinks.style.right = '3%';
-                $scope.priaExplore.style.right = '3%';
-                $scope.wanitaExplore.style.right = '3%';
-                $scope.exploreLinks.style.left = '';
-                $scope.priaExplore.style.left = '';
-                $scope.wanitaExplore.style.left = '';
-            } else {
-                const exploreMenuOffsetLeft = $scope.exploreMenu.offsetLeft;
-                $scope.exploreLinks.style.left = `${exploreMenuOffsetLeft}px`;
-                $scope.priaExplore.style.left = `${exploreMenuOffsetLeft - 410}px`;
-                $scope.wanitaExplore.style.left = `${exploreMenuOffsetLeft - 410}px`;
-                $scope.exploreLinks.style.right = '';
-                $scope.priaExplore.style.right = '';
-                $scope.wanitaExplore.style.right = '';
-            }
         };
         // Search functionality
         $scope.handleHeaderSearch = function(event) {
@@ -200,6 +158,7 @@ angular.module('revifeApp')
         }, function(path) {
             $scope.isLoginPage = (path === '/login');
             $scope.isSignupPage = (path === '/signup');
+            $scope.isAdminPage = (path === '/admin-dashboard');
         });
 
             $scope.initDarkMode();

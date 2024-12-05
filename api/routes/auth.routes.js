@@ -117,32 +117,6 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// router.post('/login', async (req, res) => {
-//     try {
-//         const { email, password } = req.body;
-        
-//         const user = await User.findOne({ email });
-//         if (!user) {
-//             return res.status(401).json({ message: 'Invalid credentials' });
-//         }
-
-//         // Manual verification
-//         console.log("Original Password:", password);
-//         console.log("Stored Hashed Password:", user.password);
-
-//         // Try manual bcrypt compare with logging
-//         const isMatch = await bcrypt.compare(password, user.password);
-//         console.log("Direct bcrypt compare result:", isMatch);
-
-//         // Optional: Try verifying with direct hash generation
-//         const directHash = await bcrypt.hash(password, 10);
-//         console.log("Newly generated hash:", directHash);
-//         console.log("Matches stored hash:", directHash === user.password);
-//     } catch (error) {
-//         console.error("Login error:", error);
-//     }
-// });
-
 
 // Logout Route
 router.post('/logout', (req, res) => {
