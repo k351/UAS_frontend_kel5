@@ -43,6 +43,13 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
             });
     };
 
+    // Centralized function to clear the cart
+    $rootScope.resetCart = function() {
+        $rootScope.cartItems = [];
+        $rootScope.cartTotal = 0;
+        $rootScope.couponDiscount = 0;
+    };
+
     $scope.calculateCartTotal = function() {
         let total = 0;
         $rootScope.cartItems.forEach(function(item) {

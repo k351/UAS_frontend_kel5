@@ -61,6 +61,11 @@ revifeApp.config(['$routeProvider', function($routeProvider) {
             controller: 'SettingsController',
             css: ['style/style.css', 'style/settings.css', 'style/header.css', 'style/footer.css']
         })
+        .when('/history', {
+            templateUrl: 'pages/history.html',
+            controller: 'HistoryController',
+            css: ['style/style.css', 'style/history.css', 'style/header.css', 'style/footer.css']
+        })
         .when('/product/:id', {
             templateUrl: 'pages/product.html',
             controller: 'ProductController',

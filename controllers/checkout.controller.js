@@ -1,4 +1,4 @@
-angular.module('revifeApp').controller('CheckoutController', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
+angular.module('revifeApp').controller('CheckoutController', ['$scope', '$http', '$rootScope', '$location', function($scope, $http, $rootScope, $location) {
     $scope.userAddress = {};
     $scope.isEditingAddress = false;
     $scope.editedAddress = {};  
@@ -53,8 +53,22 @@ angular.module('revifeApp').controller('CheckoutController', ['$scope', '$http',
             totalAmount: $scope.totalAfterDiscount(),
         };
         $http.post('/api/checkout', checkoutData)
-        .then(function(response) {
+            .then(function (response) {
             alert('Checkout successful!');
+            $scope.cartItems = [];
+            $rootScope.cartItems = [];
+            $rootScope.cartTotal = 0; 
+            $scope.couponDiscount = 0;
+                
+            $http.delete('/api/cart/clear')
+                .then(function() {
+                    $rootScope.resetCart(); 
+                    $location.path('/'); 
+                })
+                .catch(function(error) {
+                    console.error('Error clearing cart:', error);
+                    alert('Failed to clear cart, but checkout was successful.');
+                });
         })
         .catch(function(error) {
             console.error('Checkout failed:', error);

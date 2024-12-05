@@ -77,4 +77,19 @@ router.delete('/delete/:cartItemId', verifyToken, async (req, res) => {
     }
 });
 
+router.delete('/clear', verifyToken, async (req, res) => {
+    try {
+        // Find and delete all cart items for the user
+        await CartItem.deleteMany({ userId: req.user._id });
+
+        // Clear the cart reference in the user's document
+        await User.findByIdAndUpdate(req.user._id, { $set: { cart: [] } });
+
+        res.status(200).json({ message: 'Cart cleared successfully.' });
+    } catch (error) {
+        console.error('Error clearing cart:', error);
+        res.status(500).json({ message: 'Failed to clear cart.' });
+    }
+});
+
 module.exports = router;
