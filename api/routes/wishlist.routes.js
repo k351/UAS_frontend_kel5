@@ -4,23 +4,15 @@ const Wishlist = require('../models/wishlist.schema');
 const TransactionItem = require('../models/transactionitem.schema');
 const { verifyToken, optionalVerify } = require('../middleware/auth.js');
 
-// Helper function to calculate average rating
 const calculateAverageRating = (ratings) => {
     if (!ratings || ratings.length === 0) return 0;
     const total = ratings.reduce((sum, rating) => sum + rating, 0);
     return (total / ratings.length).toFixed(1);
 };
-const Wishlist = require('../models/wishlist.schema'); 
 
-// Middleware to check if the user is authenticated (assuming JWT)
-const { verifyToken, optionalVerify } = require('../middleware/auth.js');
-
-// Get wishlist items for the logged-in user
 router.get('/', optionalVerify, async (req, res) => {
     
     try {
-        // Fetch wishlist for the logged-in user
-
         if (!req.user) {
             return res.json([]);
         }
