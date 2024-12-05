@@ -12,7 +12,6 @@ const cartRoutes = require('./api/routes/cart.routes');
 const wishlistRoutes = require('./api/routes/wishlist.routes');
 const couponRoutes = require('./api/routes/coupon.routes');
 const userRoutes = require('./api/routes/user.routes');
-const settingsRoutes = require('./api/routes/settings.routes');
 const checkoutRoutes = require("./api/routes/transaction.routes");
 const historyRoutes = require("./api/routes/history.route");
 const categoriesRoutes = require('./api/routes/categories.routes')
@@ -41,7 +40,6 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/settings', settingsRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/categories', categoriesRoutes);

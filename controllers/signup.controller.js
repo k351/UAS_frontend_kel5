@@ -24,8 +24,9 @@ angular.module('revifeApp')
             $http.post('/api/auth/register', $scope.formData)
                 .then(function (response) {
                     if (response.status === 200) {
+                        const redirectUrl = response.data.redirect || "/#!/";
                         alert('Registration successful!');
-                        $location.path('/');
+                        window.location.href = redirectUrl;
                     } else {
                         alert(response.data.message || 'Registration failed. Please try again.');
                     }

@@ -117,13 +117,6 @@ router.post('/login', async (req, res) => {
     }
 });
 
-
-// Logout Route
-router.post('/logout', (req, res) => {
-    res.clearCookie('token');
-    res.status(200).json({ redirect: '/' });
-});
-
 // Get User Route (Protected)
 router.get('/api/user', verifyToken, async (req, res) => {
     try {

@@ -1,7 +1,9 @@
 .account-settings {
     max-width: 700px;
-    margin: 30px auto;
-    background-color: white;
+    margin: auto;
+    margin-top: 80px;
+    margin-bottom: 40px;
+    background-color: var(--primary-color);
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -9,6 +11,7 @@
 
 .profile-section, .password-section, .delete-account-section {
     margin-bottom: 30px;
+    color: var(--tertiary-color);
 }
 
 h2, h3 {
@@ -42,6 +45,14 @@ input:disabled {
     margin-top: 20px;
 }
 
+.form-actions button {
+    margin-right: 10px; 
+}
+
+.form-actions button:last-child {
+    margin-right: 0;
+}
+
 .btn {
     padding: 10px 15px;
     border: none;
@@ -68,6 +79,10 @@ input:disabled {
 .delete-account-section {
     border-top: 1px solid var(--quarternary-color);
     padding-top: 20px;
+}
+
+.delete-account-section p {
+    margin-bottom: 10px; 
 }
 
 .delete-confirmation {

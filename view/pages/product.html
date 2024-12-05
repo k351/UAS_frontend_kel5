@@ -4,23 +4,49 @@
 </head>
 
 <body ng-controller="ProductController">
-    <div class="compare-list-container">
-        <i class="fa-solid fa-x" id="compare-list-close"></i>
-        <ul class="compare-list"></ul>
+    <!-- Compare List Container -->
+    <div class="compare-list-container" ng-show="isCompareListVisible">
+        <i class="fa-solid fa-x" id="compare-list-close" ng-click="closeCompare()"></i>
+        <ul class="compare-list">
+            <li ng-repeat="comparableProduct in compareList" ng-click="selectCompareProduct(comparableProduct)">
+                <h5>{{comparableProduct.name}}</h5>
+            </li>
+        </ul>
     </div>
+
+    <!-- Detail Produk yang Dipilih -->
+    <div class="compare-product-container" ng-class="{'show-detail': compareProduct}">
+        <div class="compare-product">
+            <div class="compare-product-image">
+                <img ng-src="{{compareProduct.image}}" alt="{{compareProduct.name}}">
+            </div>
+            <div class="compare-summary">
+                <h3>{{compareProduct.name}}</h3>
+                <h2>Rp{{compareProduct.price | number}}</h2>
+            </div>
+            <button ng-click="removeCompareProduct()"><i class="fa-solid fa-x"></i></button>
+        </div>
+    </div>
+
+    <!-- Product Section -->
     <section class="product" ng-if="product">
         <div class="product-container">
-            <div class="compare-product">
+            <!-- Comparison Section -->
+            <div class="compare-product" ng-if="compareProduct">
                 <div class="compare-product-image">
-                    <img src="" alt="">
+                    <img ng-src="{{compareProduct.image}}" alt="{{compareProduct.name}}">
                 </div>
                 <div class="compare-summary">
-                    <h5>(Compared-product)</h5>
-                    <h3></h3>
-                    <h2></h2>
+                    <h5>(Compared Product)</h5>
+                    <h3>{{compareProduct.name}}</h3>
+                    <h2>Rp{{compareProduct.price | number}}</h2>
                 </div>
             </div>
-            <div class="compare-line"></div>
+
+            <!-- Compare Line -->
+            <div class="compare-line" ng-if="compareProduct"></div>
+
+            <!-- Main Product -->
             <div class="main-product">
                 <div class="product-image">
                     <img ng-src="{{product.image}}" alt="{{product.name}}">
@@ -31,6 +57,8 @@
                     <h2>Rp{{product.price | number}}</h2>
                 </div>
             </div>
+
+            <!-- Main Product Details -->
             <div class="main-product-details">
                 <div class="main-product-summary2">
                     <h6>{{product.category}}</h6>
@@ -38,9 +66,9 @@
                     <h2>Rp{{product.price | number}}</h2>
                 </div>
                 <div class="product-details-button">
-                    <input type="number" value="1">
+                    <input type="number" ng-model="quantity" min="1" value="1" ng-change="updateQuantity(quantity)">
                     <button ng-click="addToCart(product)">Add to Cart</button>
-                    <button class="compare-button">
+                    <button class="compare-button" ng-click="openCompareList()" ng-if="compareList.length > 0">
                         <i class="fa-solid fa-code-compare"></i>
                     </button>
                 </div>
