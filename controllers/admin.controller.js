@@ -1,6 +1,4 @@
 angular.module('revifeApp').controller('AdminController', ['$scope', '$http', function ($scope, $http) {
-    $scope.isDashboardVisible = true;
-
     $scope.isProductVisible = false;
     $scope.isProductFormVisible = false;
 
@@ -12,7 +10,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
     $scope.isCategoryVisible = false;
     $scope.isCategoryFormVisible = false;
 
-    $scope.isTransactionVisible = false;
+    $scope.isTransactionVisible = true;
 
     $scope.currentDate = new Date();
     $scope.isEditMode = false;
@@ -590,7 +588,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
     
     // Fetch transaction history
     $scope.loadTransactionHistory = function () {
-        $http.get('/api/history')
+        $http.get('/api/history/all')
             .then(function (response) {
                 $scope.transactions = response.data;
                 console.log($scope.transactions)

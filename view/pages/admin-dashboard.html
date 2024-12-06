@@ -6,7 +6,6 @@
     <div class="admin-container">
         <div class="sidebar">
             <div class="logo mb-4">Admin Panel</div>
-            <div class="menu-item" ng-click="showDashboard()">Dashboard</div>
             <div class="menu-item" ng-click="showUsers()">Users</div>
             <div class="menu-item" ng-click="showProducts()">Products</div>
             <div class="menu-item" ng-click="showCategories()">Categories</div>
@@ -15,18 +14,6 @@
         </div>
 
         <div class="main-content">
-            <div id="dashboardContent" ng-show="isDashboardVisible">
-                <!-- Original dashboard content -->
-                <div class="dashboard-cards">
-                    <!-- Your existing cards here -->
-                </div>
-
-                <div class="table-container">
-                    <h3 id="recent-orders">Recent Orders</h3>
-                    <!-- Your existing table here -->
-                </div>
-            </div>
-
             <div ng-show="isUsersVisible">
                 <div>
                     <h3>User Management</h3>
