@@ -4,6 +4,7 @@ const User = require('../models/user.schema');
 const bcrypt = require('bcrypt');
 const { verifyToken, isAdmin } = require('../middleware/auth');
 
+// Mendapatkan semua pengguna (hanya untuk admin)
 router.get('/', verifyToken, isAdmin, async (req, res) => {
     try {
         const users = await User.find();
@@ -14,6 +15,7 @@ router.get('/', verifyToken, isAdmin, async (req, res) => {
     }
 });
 
+// Menghapus pengguna berdasarkan ID (hanya untuk admin)
 router.delete('/delete/:userId', verifyToken, isAdmin, async (req, res) => {
     try {
         const {userId} = req.params;
@@ -30,6 +32,7 @@ router.delete('/delete/:userId', verifyToken, isAdmin, async (req, res) => {
     }
 });
 
+// Mendapatkan data pengguna berdasarkan token
 router.get('/', verifyToken, async (req, res) => {
     try {
         const user = await User.findById(req.user._id).select('-password');
@@ -43,6 +46,7 @@ router.get('/', verifyToken, async (req, res) => {
     }
 });
 
+// Mendapatkan alamat pengguna
 router.get('/address', verifyToken, async (req, res) => {
     try {
         const user = await User.findById(req.user._id, 'address');
@@ -56,6 +60,7 @@ router.get('/address', verifyToken, async (req, res) => {
     }
 });
 
+// Mendapatkan pengaturan pengguna
 router.get('/settings', verifyToken, async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
@@ -69,6 +74,7 @@ router.get('/settings', verifyToken, async (req, res) => {
     }
 });
 
+// Memperbarui profil pengguna
 router.put('/settings/update', verifyToken, async (req, res) => {
     try {
         const { name, email, phoneNumber, address } = req.body;
@@ -95,6 +101,7 @@ router.put('/settings/update', verifyToken, async (req, res) => {
     }
 });
 
+// Memperbarui kata sandi pengguna
 router.put('/settings/password/update', verifyToken, async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
@@ -124,11 +131,13 @@ router.put('/settings/password/update', verifyToken, async (req, res) => {
     }
 });
 
+// Logout pengguna
 router.post('/settings/logout', (req, res) => {
     res.clearCookie('token');
     res.status(200).json({ message: 'Logout successful', redirect: '/login' });
 });
 
+// Memperbarui alamat pengguna
 router.put('/address/update', verifyToken, async (req, res) => {
     const { street, city, country } = req.body;
     try {
@@ -149,6 +158,7 @@ router.put('/address/update', verifyToken, async (req, res) => {
     }
 });
 
+// Menghapus akun pengguna
 router.delete('/settings/delete', verifyToken, async (req, res) => {
     try {
         const user = await User.findById(req.user._id);

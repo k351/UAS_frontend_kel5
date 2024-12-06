@@ -7,6 +7,7 @@ const { verifyToken, isAdmin } = require('../middleware/auth');
 const fs = require('fs');
 const path = require('path');
 
+// Konfigurasi multer untuk mengunggah gambar
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, path.join(__dirname, '../../images/products')); // Lokasi penyimpanan file
@@ -17,6 +18,7 @@ const storage = multer.diskStorage({
     },
 });
 
+// Filter file untuk hanya menerima file PNG
 const fileFilter = (req, file, cb) => {
     if (file.mimetype === 'image/png') {
         cb(null, true);
@@ -30,6 +32,7 @@ const upload = multer({
     fileFilter: fileFilter,
 });
 
+// Mendapatkan semua produk
 router.get('/', async (req, res) => {
     try {
         const products = await Product.find();
@@ -40,6 +43,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Mendapatkan daftar produk yang akan dibandingkan berdasarkan wishlist pengguna
 router.get('/compare', verifyToken, async (req, res) => {
     try {
         // Cari wishlist berdasarkan userId
@@ -63,6 +67,7 @@ router.get('/compare', verifyToken, async (req, res) => {
     }
 });
 
+// Menambahkan produk baru dengan gambar
 router.post('/add', verifyToken, isAdmin, upload.single('image'), async (req, res) => {
     const { name, price, category, description, quantity } = req.body;
 
@@ -98,6 +103,7 @@ router.post('/add', verifyToken, isAdmin, upload.single('image'), async (req, re
     }
 });
 
+// Memperbarui informasi produk berdasarkan ID
 router.put('/update/:productId', verifyToken, isAdmin, upload.single('image'), async (req, res) => {
     const { productId } = req.params;
     const { name, price, category, description, quantity } = req.body;
@@ -136,7 +142,7 @@ router.put('/update/:productId', verifyToken, isAdmin, upload.single('image'), a
     }
 });
 
-
+// Menghapus produk berdasarkan ID
 router.delete('/delete/:id', verifyToken, isAdmin, async (req, res) => {
     const id = req.params.id;
     try {
@@ -163,6 +169,7 @@ router.delete('/delete/:id', verifyToken, isAdmin, async (req, res) => {
     }
 });
 
+// Mendapatkan detail produk berdasarkan ID
 router.put('/update/:productId', verifyToken, isAdmin, upload.single('image'), async (req, res) => {
     const { productId } = req.params;
     const { name, price, category, description, quantity } = req.body;
@@ -196,6 +203,8 @@ router.put('/update/:productId', verifyToken, isAdmin, upload.single('image'), a
         res.status(500).send('Error updating product');
     }
 });
+
+// Mengecek apakah nama produk sudah ada
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
