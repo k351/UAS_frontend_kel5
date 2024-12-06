@@ -171,7 +171,6 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
     $scope.loadUsers = function () {
         $http.get(`/api/users`)
             .then(function (response) {
-                console.log('Fetched users:', response.data);
                 $scope.users = response.data;
             })
             .catch(function (error) {
@@ -183,7 +182,6 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
     $scope.loadProducts = function () {
         $http.get(`/api/products`)
             .then(function (response) {
-                console.log('Fetched products:', response.data);
                 $scope.products = response.data;
             })
             .catch(function (error) {
@@ -579,7 +577,6 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $http.get('/api/history/all')
             .then(function (response) {
                 $scope.transactions = response.data;
-                console.log($scope.transactions)
                 $scope.isLoading = false;
             })
             .catch(function (error) {

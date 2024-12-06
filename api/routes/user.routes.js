@@ -16,12 +16,13 @@ router.get('/', verifyToken, isAdmin, async (req, res) => {
 
 router.delete('/delete/:userId', verifyToken, isAdmin, async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
+        const {userId} = req.params;
+        const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ message: 'User tidak ditemukan.' });
         }
 
-        await User.findByIdAndDelete(req.user._id);
+        await User.findByIdAndDelete(userId);
         res.status(200).json({ message: 'Akun berhasil dihapus.' });
     } catch (error) {
         console.error('Error deleting user:', error.message || error);
