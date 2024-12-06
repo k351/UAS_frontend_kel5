@@ -335,7 +335,12 @@
 }
 
 .review-item:hover {
+    background-color: var(--secondary-color);
     transform: scale(1.02);
+}
+
+.review-date {
+    color: var(--tertiary-color);
 }
 
 .reviewer-info {
@@ -365,6 +370,20 @@
 .review-text {
     max-width: 600px;
     text-align: center;
+    color: var(--tertiary-color);
+}
+
+.user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stars {
+    color: #f3b519 !important;
+    font-size: 16px;
+    margin-right: 2px;
 }
 
 .no-reviews {

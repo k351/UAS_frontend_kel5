@@ -75,6 +75,7 @@
                 <p>{{product.description}}</p>
             </div>
         </div>
+
         <div class="reviews-container">
             <h3>Reviews ({{ reviews.length }})</h3>
 
@@ -88,16 +89,16 @@
             <div ng-if="reviews.length === 0" class="no-reviews">
                 No reviews yet. Be the first to leave a review!
             </div>
-
+ 
             <div ng-repeat="review in reviews" class="review-item card">
                 <div class="reviewer-info">
                     <div class="user">
                         <div class="reviewer-name">{{ review.userId.name }}</div>
                         <div class="review-date"><strong>Date:</strong> {{ review.transactionDate | date:'medium' }}</div>
                     </div>
-                    <div class="rating">
-                        <i ng-repeat="star in getStars(review.rating)" class="fa"
-                            ng-class="{'fa-star': $index < review.rating, 'fa-star-o': $index >= review.rating}">
+                    <div>
+                        <i ng-repeat="star in [1, 2, 3, 4, 5]" class="fa stars"
+                            ng-class="{'fa-star': star <= review.rating, 'fa-star-o': star > review.rating}">
                         </i>
                     </div>
                 </div>
