@@ -6,6 +6,7 @@ const User = require('../models/user.schema');
 const Wishlist = require('../models/wishlist.schema');
 const { verifyToken, optionalVerify, checkAdmin } = require('../middleware/auth');
 
+// Register User
 router.post('/register', async (req, res) => {
     try {
         const { email, password, name, phoneNumber, address, role = 'user' } = req.body;
@@ -81,7 +82,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-
+// Get User Details (Protected)
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -139,10 +140,12 @@ router.get('/api/user', verifyToken, async (req, res) => {
     }
 });
 
+// Checking token
 router.get('/check', verifyToken, (req, res) => {
     res.status(200).json({ message: 'Authenticated' });
 });
 
+// Checking login
 router.get('/logincheck', optionalVerify, (req, res) => {
     if (!req.user) { 
         return res.status(303).json({ message: 'User not authenticated' });
@@ -150,7 +153,7 @@ router.get('/logincheck', optionalVerify, (req, res) => {
     res.status(200).json({ message: 'Authenticated' });
 });
 
-
+// Check admin
 router.get('/admin-check', verifyToken, checkAdmin, (req, res) => {
     res.status(200).json({ message: 'Authenticated' });
 });

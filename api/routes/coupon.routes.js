@@ -3,6 +3,7 @@ const router = express.Router();
 const Coupon = require('../models/coupon.schema'); 
 const { verifyToken, isAdmin } = require('../middleware/auth');
 
+// Mendapatkan semua kupon (hanya admin)
 router.get('/', verifyToken, isAdmin, async (req, res) => {
     try {
         const coupon = await Coupon.find();
@@ -13,6 +14,7 @@ router.get('/', verifyToken, isAdmin, async (req, res) => {
     }
 });
 
+// Mendapatkan detail kupon berdasarkan kode kupo
 router.get('/:couponCode', verifyToken, async (req, res) => {
     try {
         const { couponCode } = req.params;
@@ -24,6 +26,7 @@ router.get('/:couponCode', verifyToken, async (req, res) => {
     }
 });
 
+// Memperbarui kupon berdasarkan ID (hanya admin)
 router.put('/update/:couponId', verifyToken, isAdmin, async(req, res) => {
     const { couponId } = req.params;
     const { couponCode, discountValue, discountType, startAt, expiresAt } = req.body;
@@ -45,6 +48,7 @@ router.put('/update/:couponId', verifyToken, isAdmin, async(req, res) => {
     }
 });
 
+// Menambahkan kupon baru (hanya admin)
 router.post('/add', verifyToken, isAdmin, async (req, res) => {
     try {
         const { couponCode, discountValue, discountType, startAt, expiresAt } = req.body;
@@ -64,6 +68,7 @@ router.post('/add', verifyToken, isAdmin, async (req, res) => {
     }
 });
 
+// Menghapus kupon berdasarkan ID (hanya admin)
 router.delete('/delete/:id', verifyToken, isAdmin, async (req, res) => {
     try {
         const { id } = req.params;

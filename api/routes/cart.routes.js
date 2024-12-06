@@ -4,6 +4,7 @@ const CartItem = require('../models/cartItem.schema');
 const User = require('../models/user.schema');
 const { verifyToken } = require('../middleware/auth');
 
+// Mendapatkan semua item di keranjang untuk pengguna yang sedang login
 router.get('/', verifyToken, async (req, res) => {
     try {
         const cartItems = await CartItem.find({ userId: req.user._id});
@@ -14,6 +15,7 @@ router.get('/', verifyToken, async (req, res) => {
     }
 });
 
+// Mendapatkan item keranjang dengan detail produk (menggunakan populate)
 router.get('/populate', verifyToken, async (req, res) => {
     try {
         const cartItems = await CartItem.find({ userId: req.user._id }).populate('productId', 'name price image');
@@ -24,6 +26,7 @@ router.get('/populate', verifyToken, async (req, res) => {
     }
 });
 
+// Menambahkan item ke keranjang
 router.post('/add', verifyToken, async (req, res) => {
     const { productId, cartQuantity } = req.body;
 
@@ -44,6 +47,7 @@ router.post('/add', verifyToken, async (req, res) => {
     }
 });
 
+// Memperbarui jumlah item dalam keranjang
 router.put('/update/:cartItemId', verifyToken, async (req, res) => {
     const { cartItemId } = req.params;
     const { cartQuantity } = req.body;
@@ -61,6 +65,7 @@ router.put('/update/:cartItemId', verifyToken, async (req, res) => {
     }
 });
 
+// Menghapus item tertentu dari keranjang
 router.delete('/delete/:cartItemId', verifyToken, async (req, res) => {
     const { cartItemId } = req.params;
     try {
@@ -77,6 +82,7 @@ router.delete('/delete/:cartItemId', verifyToken, async (req, res) => {
     }
 });
 
+// Menghapus semua item dari keranjang
 router.delete('/clear', verifyToken, async (req, res) => {
     try {
         // Find and delete all cart items for the user

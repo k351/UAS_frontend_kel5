@@ -6,6 +6,7 @@ const { verifyToken, isAdmin } = require('../middleware/auth');
 const fs = require('fs');
 const path = require('path');
 
+// Konfigurasi penyimpanan untuk file yang diunggah
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, path.join(__dirname, '../../images/categories')); // Lokasi penyimpanan file
@@ -16,6 +17,7 @@ const storage = multer.diskStorage({
     },
 });
 
+// Filter file untuk hanya mengizinkan file PNG
 const fileFilter = (req, file, cb) => {
     if (file.mimetype === 'image/png') {
         cb(null, true);
@@ -29,7 +31,7 @@ const upload = multer({
     fileFilter: fileFilter,
 });
 
-
+// Mendapatkan semua kategori (hanya admin)
 router.get('/', verifyToken, isAdmin, async (req, res) => {
     try {
         const categories = await Category.find();
@@ -40,7 +42,7 @@ router.get('/', verifyToken, isAdmin, async (req, res) => {
     }
 });
 
-
+// Mendapatkan kategori yang ditampilkan di halaman utama
 router.get('/home', async (req, res) => {
     try {
         const categories = await Category.find({isOnHome : true});
@@ -51,6 +53,7 @@ router.get('/home', async (req, res) => {
     }
 });
 
+// Mendapatkan daftar nama kategori untuk halaman toko
 router.get('/shop', async (req, res) => {
     try {
         const categories = await Category.find().select('name');
@@ -61,7 +64,7 @@ router.get('/shop', async (req, res) => {
     }
 });
 
-
+// Menambahkan kategori baru (hanya admin)
 router.post('/add', verifyToken, isAdmin, upload.single('image'), async (req, res) => {
     try {
         const { name, isOnHome } = req.body;
@@ -84,6 +87,7 @@ router.post('/add', verifyToken, isAdmin, upload.single('image'), async (req, re
     }
 });
 
+// Memperbarui status kategori berdasarkan ID (hanya admin)
 router.put('/update/:id', verifyToken, isAdmin, async (req, res) => {
     try {
         const { id } = req.params;
@@ -104,7 +108,7 @@ router.put('/update/:id', verifyToken, isAdmin, async (req, res) => {
     }
 });
 
-
+// Menghapus kategori berdasarkan ID (hanya admin)
 router.delete('/delete/:id', verifyToken, isAdmin, async (req, res) => {
     try {
         const { id } = req.params;
