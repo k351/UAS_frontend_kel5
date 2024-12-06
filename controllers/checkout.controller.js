@@ -14,6 +14,7 @@ angular.module('revifeApp').controller('CheckoutController', ['$scope', '$http',
         color: '#4caf50',
     };
 
+    // Notification pop up
     $scope.showNotification = function (message, color = '#4caf50') {
         $scope.notification.message = message;
         $scope.notification.color = color;
@@ -65,6 +66,7 @@ angular.module('revifeApp').controller('CheckoutController', ['$scope', '$http',
         $scope.editedAddress = angular.copy($scope.userAddress);  
     };
     
+    // Payment logic for checkout
     $scope.makePayment = function() {
         const checkoutData = {
             address: $scope.userAddress,

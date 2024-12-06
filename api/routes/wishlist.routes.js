@@ -4,6 +4,7 @@ const Wishlist = require('../models/wishlist.schema');
 const TransactionItem = require('../models/transactionitem.schema');
 const { verifyToken, optionalVerify } = require('../middleware/auth.js');
 
+// Calculated accumulated Rating
 const calculateAverageRating = (ratings) => {
     if (!ratings || ratings.length === 0) return 0;
     const total = ratings.reduce((sum, rating) => sum + rating, 0);

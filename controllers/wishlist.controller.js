@@ -31,7 +31,7 @@ angular.module('revifeApp').controller('WishlistController', ['$scope', '$http',
 
         $http.get(`/api/wishlist${sortParam}`)
             .then(function (response) {
-                const wishlistItems = response.data || []; // Ensure it's an array
+                const wishlistItems = response.data || []; 
                 $scope.wishlistItems = wishlistItems;
 
                 if (Array.isArray(wishlistItems)) {
@@ -64,10 +64,11 @@ angular.module('revifeApp').controller('WishlistController', ['$scope', '$http',
         }).then(function (response) {
             if (action === 'POST') {
                 $scope.wishlistState[product._id] = true;
-                $scope.showNotification('Item added to wishlist!', '#4caf50');
+                alert('Item added to wishlist!');
             } else {
                 $scope.wishlistState[product._id] = false;
-                $scope.loadWishlistItems(); // Reload items
+                $scope.loadWishlistItems(); 
+                alert('Item removed from wishlist!');
                 $scope.showNotification('Item removed from wishlist!', '#4caf50');
             }
         }).catch(function (error) {
