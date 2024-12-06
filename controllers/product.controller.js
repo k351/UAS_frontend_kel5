@@ -1,12 +1,56 @@
 angular.module('revifeApp').controller('ProductController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
     $scope.product = {};
+    $scope.quantity = 1;
     $scope.productId = $routeParams.id;
+    $scope.compareList = [];
+    $scope.compareProduct = null;
+    $scope.isCompareListVisible = false;
 
     $scope.getProductById = function () {
         $http.get(`/api/products/${$scope.productId}`).then(function (response) {
             $scope.product = response.data;
         })
     }
+
+    $scope.updateQuantity = function (quantity) {
+        $scope.quantity = quantity;
+    };
+
+    $scope.loadCompareList = function () {
+        $http.get('/api/products/compare').then(function (response) {
+            $scope.compareList = response.data.filter(product => product._id !== $scope.productId);
+            console.log('Compare List:', $scope.compareList);
+        }).catch(function (error) {
+            console.error('Error loading compare list:', error);
+        });
+    };
+
+    $scope.openCompareList = function () {
+        if ($scope.compareList && $scope.compareList.length > 0) {
+            $scope.isCompareListVisible = true;
+            console.log('Compare list opened:', $scope.isCompareListVisible);
+        } else {
+            alert('No products available for comparison');
+        }
+    };
+
+    $scope.selectCompareProduct = function (product) {
+        if (product._id !== $scope.productId) {
+            $scope.compareProduct = product;
+            $scope.isCompareListVisible = false;
+        } else {
+            alert('Cannot compare with the current product');
+        }
+    };
+
+    $scope.removeCompareProduct = function () {
+        $scope.compareProduct = null;
+    };
+
+    $scope.closeCompare = function () {
+        $scope.isCompareListVisible = false;
+    };
+
 
        $scope.getReviews = function () {
         $http.get(`/api/reviews/${$scope.productId}`).then(function (response) {
@@ -33,6 +77,7 @@ angular.module('revifeApp').controller('ProductController', ['$scope', '$http', 
 
 
     $scope.addToCart = function (product) {
+        const quantityToAdd = $scope.quantity;
         $http.get('/api/cart')
             .then(function (response) {
                 console.log('Cart data: ', response.data)
@@ -40,7 +85,7 @@ angular.module('revifeApp').controller('ProductController', ['$scope', '$http', 
                 const existingItem = cart.find(item => item.productId === product._id);
                 if (existingItem) {
                     $http.put(`/api/cart/update/${existingItem._id}`, {
-                        cartQuantity: existingItem.cartQuantity + 1
+                        cartQuantity: existingItem.cartQuantity + quantityToAdd
                     }).then(function () {
                         alert('Item quantity updated in cart!');
                     }).catch(function (error) {
@@ -50,7 +95,7 @@ angular.module('revifeApp').controller('ProductController', ['$scope', '$http', 
                 } else {
                     $http.post('/api/cart/add', {
                         productId: product._id,
-                        cartQuantity: 1
+                        cartQuantity: quantityToAdd
                     }).then(function () {
                         alert('Item added to cart successfully!');
                     }).catch(function (error) {
@@ -66,5 +111,6 @@ angular.module('revifeApp').controller('ProductController', ['$scope', '$http', 
 
     $scope.getProductById();
     $scope.getReviews();
+    $scope.loadCompareList()
 }
 ]);

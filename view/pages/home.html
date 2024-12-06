@@ -12,8 +12,8 @@
                 <p>Find Your Favourite <span>Outfit</span>, <br>
                     Discover Your Style.
                 </p>
-                <form id="homeSearchForm" class="search-form" ng-submit="handleHomeSearch($event)">
-                    <input type="text" placeholder="Search for products" id="homeSearchBar">
+                <form id="homeSearchForm" class="search-form" ng-submit="handleHomeSearch(searchQuery)">
+                    <input type="text" placeholder="Search for products" ng-model="searchQuery">
                     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
         </div>
@@ -24,7 +24,7 @@
     <div class="content">   
         <ul class="categories-links">
             <li ng-repeat="category in categories">
-                <a href="#!/shop" data-category="{{category.name}}" ng-click="handleCategoryFilter(category.name)">
+                <a ng-click="handleCategoryFilter(category.name)">
                     <img ng-src="{{category.image}}" alt="{{category.name}}">
                     {{category.name}}
                 </a>

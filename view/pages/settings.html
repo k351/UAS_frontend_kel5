@@ -42,33 +42,43 @@
                 <button type="button" class="btn btn-secondary" ng-click="toggleEdit()">
                     {{ isEditing ? 'Batal' : 'Edit Profil' }}
                 </button>
-                <button type="submit" class="btn btn-primary" ng-show="isEditing">
-                    Simpan Perubahan
-                </button>
+                <button type="submit" class="btn btn-primary" ng-show="isEditing">Simpan Perubahan</button>
             </div>
         </form>
     </div>
 
     <div class="password-section">
-        <h3>Ganti Kata Sandi</h3>
+        <h3>Ubah Kata Sandi</h3>
 
-        <form name="passwordForm" ng-submit="changePassword()">
+        <form name="passwordForm" ng-submit="changePassword()" novalidate>
             <div class="form-group">
                 <label>Kata Sandi Saat Ini</label>
                 <input type="password" ng-model="password.current" required>
+                <span class="error"
+                    ng-show="passwordForm.currentPassword.$touched && passwordForm.currentPassword.$invalid">
+                    Kata sandi saat ini diperlukan.
+                </span>
             </div>
 
             <div class="form-group">
                 <label>Kata Sandi Baru</label>
                 <input type="password" ng-model="password.new" required>
+                <span class="error" ng-show="passwordForm.newPassword.$touched && passwordForm.newPassword.$invalid">
+                    Kata sandi baru diperlukan.
+                </span>
             </div>
 
             <div class="form-group">
                 <label>Konfirmasi Kata Sandi Baru</label>
                 <input type="password" ng-model="password.confirm" required>
+                <span class="error" ng-show="password.new !== password.confirm">
+                    Kata sandi baru tidak cocok.
+                </span>
             </div>
 
-            <button type="submit" class="btn btn-primary">Ganti Kata Sandi</button>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
         </form>
     </div>
 
@@ -78,20 +88,26 @@
 
     <div class="delete-account-section">
         <h3>Hapus Akun</h3>
-        <p>Peringatan: Tindakan ini tidak dapat dibatalkan</p>
+        <p class="warning">Peringatan: Tindakan ini tidak dapat dibatalkan.</p>
 
         <button class="btn btn-danger" ng-click="confirmDeleteAccount()">Hapus Akun</button>
 
         <div class="delete-confirmation" ng-show="showDeleteConfirmation">
             <div class="confirmation-content">
                 <h4>Konfirmasi Penghapusan Akun</h4>
-                <p>Ketik "HAPUS" untuk mengonfirmasi penghapusan akun</p>
+                <p>Ketik <strong>"HAPUS"</strong> untuk mengonfirmasi penghapusan akun Anda.</p>
 
-                <input type="text" ng-model="deleteConfirmation" placeholder="Ketik HAPUS">
+                <input type="text" ng-model="deleteConfirmation" placeholder="Ketik HAPUS"
+                    class="form-control confirmation-input" required>
 
                 <div class="confirmation-buttons">
-                    <button class="btn btn-danger" ng-click="deleteAccount()">Konfirmasi</button>
-                    <button class="btn btn-secondary" ng-click="showDeleteConfirmation = false">Batal</button>
+                    <button class="btn btn-danger" ng-click="deleteAccount()"
+                        ng-disabled="deleteConfirmation.toUpperCase() !== 'HAPUS'">
+                        Konfirmasi
+                    </button>
+                    <button class="btn btn-secondary" ng-click="showDeleteConfirmation = false">
+                        Batal
+                    </button>
                 </div>
             </div>
         </div>

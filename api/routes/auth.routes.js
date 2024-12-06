@@ -117,13 +117,6 @@ router.post('/login', async (req, res) => {
     }
 });
 
-
-// Logout Route
-router.post('/logout', (req, res) => {
-    res.clearCookie('token');
-    res.status(200).json({ redirect: '/' });
-});
-
 // Get User Route (Protected)
 router.get('/api/user', verifyToken, async (req, res) => {
     try {
@@ -142,6 +135,14 @@ router.get('/api/user', verifyToken, async (req, res) => {
 router.get('/check', verifyToken, (req, res) => {
     res.status(200).json({ message: 'Authenticated' });
 });
+
+router.get('/logincheck', optionalVerify, (req, res) => {
+    if (!req.user) { 
+        return res.status(401).json({ message: 'User not authenticated' });
+    }
+    res.status(200).json({ message: 'Authenticated' });
+});
+
 
 router.get('/admin-check', verifyToken, checkAdmin, (req, res) => {
     res.status(200).json({ message: 'Authenticated' });

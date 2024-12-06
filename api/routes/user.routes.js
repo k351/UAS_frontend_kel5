@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user.schema');
+const bcrypt = require('bcrypt');
 const { verifyToken, isAdmin } = require('../middleware/auth');
 
 router.get('/', verifyToken, isAdmin, async (req, res) => {
@@ -10,15 +11,6 @@ router.get('/', verifyToken, isAdmin, async (req, res) => {
     } catch (error) {
         console.error('Error fetching users', error);
         res.status(500).json({ message: 'Internal server error.' });
-    }
-});
-
-router.delete('/delete/:id', async (req, res) => {
-    try {
-        await User.findByIdAndDelete(req.params.id);
-        res.send('User deleted successfully');
-    } catch (error) {
-        res.status(500).send('Error deleting user');
     }
 });
 
@@ -48,6 +40,78 @@ router.get('/address', verifyToken, async (req, res) => {
     }
 });
 
+router.get('/settings', verifyToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Error fetching user settings:', error);
+        res.status(500).json({ message: 'Failed to fetch user settings.' });
+    }
+});
+
+router.put('/settings/update', verifyToken, async (req, res) => {
+    try {
+        const { name, email, phoneNumber, address } = req.body;
+
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        if (name) user.name = name;
+        if (email) user.email = email;
+        if (phoneNumber) user.phoneNumber = phoneNumber;
+        if (address) {
+            user.address.street = address.street || user.address.street;
+            user.address.city = address.city || user.address.city;
+            user.address.country = address.country || user.address.country;
+        }
+
+        await user.save();
+        res.status(200).json({ message: 'Profile updated successfully.', user });
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        res.status(500).json({ message: 'Failed to update profile.' });
+    }
+});
+
+router.put('/settings/password/update', verifyToken, async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ message: 'Harap masukkan semua data.' });
+        }
+
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ message: 'User tidak ditemukan.' });
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Kata sandi saat ini salah.' });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(newPassword, salt);
+
+        await user.save();
+        res.status(200).json({ message: 'Kata sandi berhasil diubah.' });
+    } catch (error) {
+        console.error('Error updating password:', error.message || error);
+        res.status(500).json({ message: 'Gagal memperbarui kata sandi.' });
+    }
+});
+
+router.post('/settings/logout', (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({ message: 'Logout successful', redirect: '/login' });
+});
 
 router.put('/address/update', verifyToken, async (req, res) => {
     const { street, city, country } = req.body;
@@ -66,6 +130,21 @@ router.put('/address/update', verifyToken, async (req, res) => {
     } catch (error) {
         console.error('Error updating address:', error);
         res.status(500).json({ message: 'Failed to update address.' });
+    }
+});
+
+router.delete('/settings/delete', verifyToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ message: 'User tidak ditemukan.' });
+        }
+
+        await User.findByIdAndDelete(req.user._id);
+        res.status(200).json({ message: 'Akun berhasil dihapus.' });
+    } catch (error) {
+        console.error('Error deleting user:', error.message || error);
+        res.status(500).json({ message: 'Terjadi kesalahan saat menghapus akun.' });
     }
 });
 

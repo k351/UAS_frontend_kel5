@@ -64,45 +64,47 @@
                     </div>
 
                     <div class="form-container" ng-show="isProductFormVisible">
-                        <form name="productForm" ng-submit="selectedProduct ? saveProductEdit() : addProduct(name, price, category, description, image, quantity)">
+                        <form name="productForm" ng-submit="isEditMode ? saveProductEdit() : addProduct(name, price, category, description, quantity)">
                             <div class="mb-3">
                                 <label class="form-label">Product Name</label>
-                                <input type="text" class="form-control" ng-model="selectedProduct.name" required>
+                                <input type="text" class="form-control" ng-model="name" required>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Price (Rp)</label>
-                                <input type="number" class="form-control" ng-model="selectedProduct.price" step="1000"
+                                <input type="number" class="form-control" ng-model="price" step="1000"
                                     min="0" required>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Category</label>
-                                <input type="text" class="form-control" ng-model="selectedProduct.category" required>
+                                <select class="form-control" ng-model="category" required>
+                                    <option value="" disabled selected>Select Category</option>
+                                    <option ng-repeat="cat in categories" value="{{ cat.name }}">{{ cat.name }}</option>
+                                </select>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Description</label>
-                                <textarea class="form-control" ng-model="selectedProduct.description" rows="3"
+                                <textarea class="form-control" ng-model="description" rows="3"
                                     required></textarea>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Image URL</label>
-                                <input type="text" class="form-control" ng-model="selectedProduct.image" required>
+                                <label class="form-label">Upload PNG Image</label>
+                                <input type="file" id="fileInput" accept="image/png" required>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Quantity</label>
-                                <input type="number" class="form-control" ng-model="selectedProduct.quantity" required>
+                                <input type="number" class="form-control" ng-model="quantity" required>
                             </div>
 
                             <div class="d-flex justify-content-between">
-                                <button ng-click="addProduct()" class="btn btn-primary">
-                                    {{ selectedProduct ? 'Update Product' : 'Add Product' }}
+                                <button type="submit" class="btn btn-primary">
+                                    {{ isEditMode ? 'Update Product' : 'Add Product' }}
                                 </button>
-                                <button type="button" class="btn btn-secondary"
-                                    ng-click="selectedProduct = null; isProductFormVisible = false;">
+                                <button type="button" class="btn btn-secondary" ng-click="resetProductForm()">
                                     Cancel
                                 </button>
                             </div>
@@ -192,6 +194,7 @@
                                 <td>{{ category.name }}</td>
                                 <td>{{ category.isOnHome ? 'Yes' : 'No' }}</td>
                                 <td>
+                                    <button class="btn btn-danger" ng-click="changeOnHomeStatus(category._id)">Change Home Status</button>
                                     <button class="btn btn-danger" ng-click="deleteCategory(category._id)">Delete</button>
                                 </td>
                             </tr>

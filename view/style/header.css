@@ -30,17 +30,10 @@ a {
 /* Search Header */
 .search-header {
     display: flex;
-    visibility: hidden;
-    opacity: 0%;
     margin-left: 10px;
     border-radius: 9px;
     width: 30vw;
     height: 40px;
-}
-
-.search-header-show {
-    visibility: visible;
-    opacity: 100%;
 }
 
 .search-header input {
@@ -195,12 +188,6 @@ a {
     height: 100%;
     z-index: 4;
     background-color: black;
-    opacity: 0%;
-    visibility: hidden;
-}
-
-.black-box-show {
-    visibility: visible;
     opacity: 35%;
 }
 
