@@ -32,18 +32,19 @@ angular.module('revifeApp')
         $scope.hideNotification = function () {
             $scope.notification.active = false;
         };
-
         // Trim semua data sebelum dikirim
         $scope.submitForm = function () {
             $scope.formData.name = $scope.formData.name.trim();
             $scope.formData.email = $scope.formData.email.trim();
+            $scope.formData.phoneNumber = $scope.formData.phoneNumber.trim();
+            $scope.formData.password = $scope.formData.password.trim();
             $scope.formData.address.street = $scope.formData.address.street.trim();
             $scope.formData.address.city = $scope.formData.address.city.trim();
             $scope.formData.address.country = $scope.formData.address.country.trim();
-
+            console.log($scope.formData);
             $http.post('/api/auth/register', $scope.formData)
                 .then(function (response) {
-                    if (response.status === 200) {
+                    if (response.status === 201) {
                         const redirectUrl = response.data.redirect || "/#!/";
                         $scope.showNotification('Registration successful!', '#4caf50');
                         window.location.href = redirectUrl;
