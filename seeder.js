@@ -16,7 +16,7 @@ const seedUsers = async () => {
         const users = [
             {
                 email: "admin@example.com",
-                password: "securePassword123", // Plain text password to hash
+                password: "securePassword123", 
                 name: "Admin User",
                 address: {
                     street: "Jl. Admin",
@@ -28,7 +28,7 @@ const seedUsers = async () => {
             },
             {
                 email: "user@example.com",
-                password: "securePassword456", // Plain text password to hash
+                password: "securePassword456", 
                 name: "Regular User",
                 address: {
                     street: "Jl. User",

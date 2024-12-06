@@ -93,7 +93,8 @@
             <div ng-repeat="review in reviews" class="review-item card">
                 <div class="reviewer-info">
                     <div class="user">
-                        <div class="reviewer-name">{{ review.userId.name }}</div>
+                        <div class="reviewer-name">{{ review.userId.name }}</div>                        
+
                         <div class="review-date"><strong>Date:</strong> {{ review.transactionDate | date:'medium' }}
                         </div>
                     </div>

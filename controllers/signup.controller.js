@@ -19,6 +19,7 @@ angular.module('revifeApp')
             color: '#4caf50',
         };
 
+        // Menampilkan notifikasi ketika terjadi event
         $scope.showNotification = function (message, color = '#4caf50') {
             $scope.notification.message = message;
             $scope.notification.color = color;
@@ -32,7 +33,8 @@ angular.module('revifeApp')
         $scope.hideNotification = function () {
             $scope.notification.active = false;
         };
-        // Trim semua data sebelum dikirim
+
+        // Terima semua data sebelum dikirim
         $scope.submitForm = function () {
             $scope.formData.name = $scope.formData.name.trim();
             $scope.formData.email = $scope.formData.email.trim();
@@ -54,7 +56,11 @@ angular.module('revifeApp')
                 })
                 .catch(function (error) {
                     console.error('Error:', error);
-                    $scope.showNotification('An error occurred. Please try again.', '#f44336');
+                    if (error.status === 400 && error.data.message === 'User already exists') {
+                        $scope.showNotification('The email is already registered. Please try another.', '#f44336');
+                    } else {
+                        $scope.showNotification('An error occurred. Please try again.', '#f44336');
+    }
                 });
         };
     }]);

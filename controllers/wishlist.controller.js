@@ -2,7 +2,7 @@ angular.module('revifeApp').controller('WishlistController', ['$scope', '$http',
     $scope.activeFilters = {};
     $scope.wishlistState = {};
     $scope.filters = {
-        sort: '', // Holds the active sort criteria
+        sort: '', 
     };
 
         $scope.notification = {

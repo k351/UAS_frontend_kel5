@@ -26,7 +26,7 @@ router.get('/:productId', async (req, res) => {
                 name: item.transaction.userId.name,
                 _id: item.transaction.userId._id
             },
-            transactionDate: item.transaction.transactionDate // Add transaction date
+            transactionDate: item.transaction.transactionDate 
         }));
 
         res.status(200).json(reviews);

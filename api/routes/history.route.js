@@ -64,8 +64,6 @@ router.post('/rate', verifyToken, async (req, res) => {
         const updatedTransactionItem = await TransactionItem.findOneAndUpdate(
             { 
                 _id: transactionItemId,
-                // Optional: Add additional verification if needed
-                // userId: req.user._id 
             }, 
             { 
                 rating: rating, 

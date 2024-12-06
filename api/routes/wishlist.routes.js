@@ -107,7 +107,6 @@ router.post('/', verifyToken, async (req, res) => {
 // Remove an item from the user's wishlist
 router.delete('/', verifyToken, async (req, res) => {
     try {
-        console.log('Request body:', req.body);  // Debugging line to check req.body
         const { productId } = req.body;
 
         if (!productId) {

@@ -72,7 +72,7 @@ angular.module('revifeApp').controller('ProductController', ['$scope', '$http', 
     };
 
 
-       $scope.getReviews = function () {
+    $scope.getReviews = function () {
         $http.get(`/api/reviews/${$scope.productId}`).then(function (response) {
             $scope.reviews = response.data;
             $scope.averageRating = $scope.calculateAverageRating($scope.reviews);
