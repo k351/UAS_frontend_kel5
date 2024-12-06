@@ -1,11 +1,33 @@
 angular.module("revifeApp").controller("LoginController", [
     "$scope",
     "$http",
-    function ($scope, $http) {
+    "$timeout",
+    function ($scope, $http, $timeout) {
         $scope.credentials = {
             email: "",
             password: "",
         };
+
+    $scope.notification = {
+        active: false,
+        message: '',
+        color: '#4caf50',
+    };
+
+    $scope.showNotification = function (message, color = '#4caf50') {
+        $scope.notification.message = message;
+        $scope.notification.color = color;
+        $scope.notification.active = true;
+
+        $timeout(function () {
+            $scope.notification.active = false;
+        }, 3000);
+    };
+
+    $scope.hideNotification = function () {
+        $scope.notification.active = false;
+    };
+
         $scope.login = function () {
             if ($scope.credentials.email && $scope.credentials.password) {
                 $http.post("/api/auth/login", {
@@ -20,15 +42,15 @@ angular.module("revifeApp").controller("LoginController", [
 
                         // Redirect ke halaman yang sesuai
                         const redirectUrl = response.data.redirect || "/#!/admin-dashboard";
-                        alert(`Login successful! Welcome, ${username}`);
+                        $scope.showNotification(`Login successful! Welcome, ${username}`, '#4caf50');
                         window.location.href = redirectUrl;
                     })
                     .catch(function (error) {
                         console.error('Login error:', error);
-                        alert(error.data?.message || "An error occurred during login");
+                        $scope.showNotification(error.data?.message || 'An error occured during login.', '#f44336');
                     });
             } else {
-                alert("Please fill in both fields!");
+                $scope.showNotification('Please fill in both fields!', '#f44336');
             }
         };
     },

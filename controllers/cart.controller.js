@@ -1,7 +1,27 @@
-angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$rootScope', '$location', function($scope, $http, $rootScope, $location) {
+angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$rootScope', '$location', '$timeout', function($scope, $http, $rootScope, $location, $timeout) {
     $rootScope.cartItems = $rootScope.cartItems || [];
     $rootScope.cartTotal = $rootScope.cartTotal || 0;
     $rootScope.couponDiscount = $rootScope.couponDiscount || 0;
+
+    $scope.notification = {
+        active: false,
+        message: '',
+        color: '#4caf50',
+    };
+
+    $scope.showNotification = function (message, color = '#4caf50') {
+        $scope.notification.message = message;
+        $scope.notification.color = color;
+        $scope.notification.active = true;
+
+        $timeout(function () {
+            $scope.notification.active = false;
+        }, 3000);
+    };
+
+    $scope.hideNotification = function () {
+        $scope.notification.active = false;
+    };
 
     $scope.loadCartItems = function() {
         $http.get('/api/cart/populate')
@@ -80,13 +100,13 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
                     console.error(coupon.discountType);
                     $rootScope.couponDiscount = 0;
                 }
-                alert("Coupon Succesfully Added")
+                $scope.showNotification('Coupon added successfully!', '#4caf50');
             } else {
-                if(!!$rootScope.couponDiscount){
-                    alert("Coupon not found, old coupon used")
+                if(!!$rootScope.couponDiscount) {
+                    $scope.showNotification('Coupon not found, old coupon used.', '#f44336');
                 }
-                else{
-                    alert("Coupon not found")
+                else {
+                    $scope.showNotification('Coupon not found!', '#f44336');
                     $rootScope.couponDiscount = 0;
                 }
             }
@@ -118,11 +138,11 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
                 .then(function(response) {
                     $scope.userAddress = response.data.address; 
                     $scope.isEditingAddress = false; 
-                    alert('Address updated successfully!');
+                    $scope.showNotification('Address updated successfully!', '#4caf50');
                 })
                 .catch(function(error) {
                     console.error('Error updating address:', error);
-                    alert('Failed to update address.');
+                    $scope.showNotification('Failed to update address.', '#f44336');
                 });
         };
         
