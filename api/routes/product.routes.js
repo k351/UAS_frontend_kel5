@@ -163,28 +163,39 @@ router.delete('/delete/:id', verifyToken, isAdmin, async (req, res) => {
     }
 });
 
-
-router.put('/update/:productId', verifyToken, isAdmin, async (req, res) => {
+router.put('/update/:productId', verifyToken, isAdmin, upload.single('image'), async (req, res) => {
     const { productId } = req.params;
-    const { name, price, category, description, image, quantity } = req.body;
+    const { name, price, category, description, quantity } = req.body;
     try {
         const productItem = await Product.findById(productId);
         if (!productItem) {
             return res.status(404).json({ message: 'Product item not found!' });
         }
+        // Handle the old image deletion if a new image is uploaded
+        if (req.file) {
+            // Delete the old image if it exists
+            const oldImagePath = path.join(__dirname, '../../', productItem.image);
+            fs.unlink(oldImagePath, (err) => {
+                if (err) {
+                    console.error('Error deleting old image file:', err);
+                }
+            });
+            // Set the new image path
+            productItem.image = `images/products/${req.file.filename}`;
+        }
+        // Update other product fields
         productItem.name = name;
         productItem.price = price;
         productItem.category = category;
         productItem.description = description;
-        productItem.image = image;
         productItem.quantity = quantity;
         await productItem.save();
         res.status(200).json({ message: 'Product item updated successfully.', productItem });
     } catch (error) {
+        console.error('Error updating product:', error);
         res.status(500).send('Error updating product');
     }
 });
-
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {

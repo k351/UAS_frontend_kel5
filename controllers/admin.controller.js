@@ -235,7 +235,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             alert(`The category "${newCategory}" does not exist. Please choose a valid category.`);
             return;
         }
-
+        
         var fileInput = document.getElementById('ProductFileInput');
         var file = fileInput.files[0];
 
@@ -334,7 +334,22 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             return;
         }
 
-        $http.get(`/api/products/name/${name}`)
+        const categoryExists = $scope.categories.some(cat => cat.name === category);
+
+        if (!categoryExists) {
+            alert(`The category "${category}" does not exist. Please choose a valid category.`);
+            return;
+        }
+
+        var fileInput = document.getElementById('ProductFileInput');
+        var file = fileInput.files[0];
+
+        if (!file) {
+            alert('Please select an image file.');
+            return;
+        }
+
+        $http.get(`/api/products/checkname/${name}`)
             .then(function (response) {
                 if (response.data.exists) {
                     alert(`The product ${name} already exists!`);
