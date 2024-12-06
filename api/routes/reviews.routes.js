@@ -22,12 +22,14 @@ router.get('/:productId', async (req, res) => {
         const reviews = reviewItems.map(item => ({
             rating: item.rating,
             review: item.review,
-            userId: {
-                name: item.transaction.userId.name,
-                _id: item.transaction.userId._id
-            },
-            transactionDate: item.transaction.transactionDate 
+            userId: item.transaction?.userId
+                ? { name: item.transaction.userId.name, _id: item.transaction.userId._id }
+                : null, // Handle missing userId gracefully
+            transactionDate: item.transaction?.transactionDate || null // Handle missing transaction gracefully
         }));
+
+
+        console.log(reviews);
 
         res.status(200).json(reviews);
     } catch (error) {

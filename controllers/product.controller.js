@@ -83,6 +83,7 @@ angular.module('revifeApp').controller('ProductController', ['$scope', '$http', 
             $scope.reviews = [];
         });
     };
+    
     // Calculates the average rating from a list of reviews
     $scope.calculateAverageRating = function(reviews) {
         if (!reviews || reviews.length === 0) return 0;
