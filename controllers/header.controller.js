@@ -78,22 +78,26 @@ angular.module('revifeApp')
             const currentPage = $location.path();
             const searchHidden = $document[0].querySelector('.search-header');
             $scope.isSearchVisible = false;
+        
             if (currentPage === '/') {
                 angular.element($window).on('scroll', function() {
                     const searchLimiter = $document[0].querySelector('.home');
-                    const searchLimiterPos = searchLimiter.getBoundingClientRect().bottom;
-
-                    if (searchLimiterPos <= 80) {
-                        $scope.isSearchVisible = true;  // Show search bar on scroll
-                    } else {
-                        $scope.isSearchVisible = false;  // Hide search bar when not scrolled
+                    if (searchLimiter) { // Pastikan elemen ada
+                        const searchLimiterPos = searchLimiter.getBoundingClientRect().bottom;
+        
+                        if (searchLimiterPos <= 80) {
+                            $scope.isSearchVisible = true;  // Show search bar on scroll
+                        } else {
+                            $scope.isSearchVisible = false;  // Hide search bar when not scrolled
+                        }
+                        $scope.$apply();  // Update the view
                     }
-                    $scope.$apply();  // Update the view
                 });
             } else {
                 $scope.isSearchVisible = true;  // Always show search on other pages
             }
         };
+        
 
         $scope.updateNav = function(mediaQuery) {
             const navItems = $document[0].querySelectorAll('.nav-item');

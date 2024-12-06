@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.schema');
+const Wishlist = require('../models/wishlist.schema');
 const { verifyToken, optionalVerify, checkAdmin } = require('../middleware/auth');
 
 router.post('/register', async (req, res) => {
@@ -44,6 +45,12 @@ router.post('/register', async (req, res) => {
         });
 
         await user.save();
+
+        const newWishlist = new Wishlist({
+            userId: user._id,
+            products: [],
+        });
+        await newWishlist.save();
 
         // Buat JWT token
         const token = jwt.sign(
