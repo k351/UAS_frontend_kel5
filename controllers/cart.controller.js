@@ -1,14 +1,15 @@
 angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$rootScope', '$location', '$timeout', function($scope, $http, $rootScope, $location, $timeout) {
+    // Inisialisasi variabel global
     $rootScope.cartItems = $rootScope.cartItems || [];
     $rootScope.cartTotal = $rootScope.cartTotal || 0;
     $rootScope.couponDiscount = $rootScope.couponDiscount || 0;
-
+    // Konfigurasi notifikasi   
     $scope.notification = {
         active: false,
         message: '',
         color: '#4caf50',
     };
-
+    // Fungsi untuk menampilkan notifikasi
     $scope.showNotification = function (message, color = '#4caf50') {
         $scope.notification.message = message;
         $scope.notification.color = color;
@@ -18,11 +19,11 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
             $scope.notification.active = false;
         }, 3000);
     };
-
+     // Fungsi untuk menyembunyikan notifikasi
     $scope.hideNotification = function () {
         $scope.notification.active = false;
     };
-
+    // Memuat item ke keranjang dari API
     $scope.loadCartItems = function() {
         $http.get('/api/cart/populate')
             .then(function(response) {
@@ -42,7 +43,7 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
             });
     };
 
-
+     // Mengupdate jumlah item dalam keranjang
     $scope.updateQuantity = function(cartItemId, newQuantity) {
         $http.put(`/api/cart/update/${cartItemId}`, { cartQuantity: newQuantity })
             .then(function() {
@@ -53,6 +54,7 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
             });
     };
 
+    // Menghapus item dari keranjang
     $scope.removeItem = function(cartItemId) {
         $http.delete(`/api/cart/delete/${cartItemId}`)
             .then(function() {
@@ -63,13 +65,14 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
             });
     };
 
-    // Centralized function to clear the cart
+    // Reset keranjang belanja
     $rootScope.resetCart = function() {
         $rootScope.cartItems = [];
         $rootScope.cartTotal = 0;
         $rootScope.couponDiscount = 0;
     };
 
+    // Menghitung total keranjang belanja
     $scope.calculateCartTotal = function() {
         let total = 0;
         $rootScope.cartItems.forEach(function(item) {
@@ -78,6 +81,7 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
         $rootScope.cartTotal = total;
     };
 
+    // Mengaplikasikan kode kupon
     $scope.applyCoupon = function(couponCode) {
 
         if (!couponCode) {
@@ -120,10 +124,12 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
         });
     };
 
+        // Handling alamat di halaman checkout
     if ($location.path() === '/checkout') {
         $scope.isEditingAddress = false;
         $scope.editedAddress = {};
-
+        
+         // Memuat alamat pengguna
         $scope.loadAddress = function() {
             $http.get('/api/users/address')
                 .then(function(response) {
@@ -135,7 +141,7 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
                 });
         };
         
-
+        // Menyimpan alamat yang diubah
         $scope.saveAddress = function() {
             $http.put('/api/users/address/update', $scope.editedAddress)
                 .then(function(response) {
@@ -148,15 +154,15 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
                     $scope.showNotification('Failed to update address.', '#f44336');
                 });
         };
-        
+        // Membatalkan pengeditan alamat
         $scope.cancelEdit = function() {
             $scope.editedAddress = angular.copy($scope.userAddress); 
             $scope.isEditingAddress = false; 
         };
-
+        // Memuat data alamat saat halaman dimuat
         $scope.loadAddress();
     }
     
-
+    // Memuat item keranjang pada inisialisasi controller
     $scope.loadCartItems();
 }]);

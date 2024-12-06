@@ -3,17 +3,18 @@ angular.module("revifeApp").controller("LoginController", [
     "$http",
     "$timeout",
     function ($scope, $http, $timeout) {
-        $scope.credentials = {
-            email: "",
-            password: "",
-        };
-
+    // Stores user login credentials
+    $scope.credentials = {
+        email: "",
+        password: "",
+    };
+    // Handles notification display 
     $scope.notification = {
         active: false,
         message: '',
         color: '#4caf50',
     };
-
+     // Displays a notification with a message and optional color
     $scope.showNotification = function (message, color = '#4caf50') {
         $scope.notification.message = message;
         $scope.notification.color = color;
@@ -23,11 +24,11 @@ angular.module("revifeApp").controller("LoginController", [
             $scope.notification.active = false;
         }, 3000);
     };
-
+    // Manually hides the notification
     $scope.hideNotification = function () {
         $scope.notification.active = false;
     };
-
+        // Handles user login
         $scope.login = function () {
             if ($scope.credentials.email && $scope.credentials.password) {
                 $http.post("/api/auth/login", {

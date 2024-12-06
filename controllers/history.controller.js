@@ -1,4 +1,5 @@
 angular.module('revifeApp').controller('HistoryController', ['$scope', '$http', '$rootScope', '$timeout', function ($scope, $http, $rootScope, $timeout) {
+    // Intiation variabel
     $scope.transactions = [];
     $scope.isLoading = true;
     $scope.errorMessage = '';
@@ -8,7 +9,7 @@ angular.module('revifeApp').controller('HistoryController', ['$scope', '$http', 
         message: '',
         color: '#4caf50',
     };
-
+    // Nontification configuration
     $scope.showNotification = function (message, color = '#4caf50') {
         $scope.notification.message = message;
         $scope.notification.color = color;
@@ -18,7 +19,8 @@ angular.module('revifeApp').controller('HistoryController', ['$scope', '$http', 
             $scope.notification.active = false;
         }, 3000);
     };
-
+    
+    // Fetch transaction history
     $scope.hideNotification = function () {
         $scope.notification.active = false;
     };

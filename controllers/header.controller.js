@@ -14,6 +14,7 @@ angular.module('revifeApp')
             }
         };
 
+        // Dark Mode toggle
         $scope.toggleDarkMode = function() {
             $document[0].body.classList.toggle("darkmode");
             if ($document[0].body.classList.contains("darkmode")) {
@@ -98,7 +99,7 @@ angular.module('revifeApp')
             }
         };
         
-
+        // Updating the nav-item for resonsive
         $scope.updateNav = function(mediaQuery) {
             const navItems = $document[0].querySelectorAll('.nav-item');
             navItems.forEach(item => {
@@ -127,6 +128,7 @@ angular.module('revifeApp')
             });
         };
 
+        
         $rootScope.$on('$routeChangeStart', function() {
             $scope.handleScrollBehavior(); 
         });
