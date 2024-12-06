@@ -18,7 +18,7 @@
             <tbody>
                 <tr ng-repeat="item in cartItems">
                     <td>
-                        <button ng-click="removeItem(item.id)">X</button>
+                        <button class="remove" ng-click="removeItem(item.id)">X</button>
                     </td>
                     <td>
                         <img ng-src="{{item.image}}" alt="{{item.name}}">
