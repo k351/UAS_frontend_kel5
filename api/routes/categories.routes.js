@@ -109,11 +109,22 @@ router.delete('/delete/:id', verifyToken, isAdmin, async (req, res) => {
     try {
         const { id } = req.params;
 
-        const category = await Category.findByIdAndDelete(id);
+        const category = await Category.findById(id);
         if (!category) {
             return res.status(404).json({ message: 'Category not found.' });
         }
 
+        const imagePath = path.join(__dirname, '../../', category.image); 
+
+        if (category.image) {
+            fs.unlink(imagePath, (err) => {
+                if (err) {
+                    console.error('Error deleting image file:', err);
+                }
+            });
+        }
+
+        await Category.findByIdAndDelete(id);
         res.status(200).json({ message: 'Category deleted successfully.' });
     } catch (error) {
         console.error('Error deleting category:', error);

@@ -45,7 +45,7 @@ router.put('/update/:couponId', verifyToken, isAdmin, async(req, res) => {
     }
 });
 
-router.post('/add', async (req, res) => {
+router.post('/add', verifyToken, isAdmin, async (req, res) => {
     try {
         const { couponCode, discountValue, discountType, startAt, expiresAt } = req.body;
 
