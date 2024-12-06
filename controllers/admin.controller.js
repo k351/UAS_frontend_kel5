@@ -37,6 +37,34 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         isError: false,
         isVisible: false
     };
+    
+
+    $scope.productFileName = 'No file chosen';
+    $scope.CategoryFileName = 'No file chosen';
+
+    $scope.updateProductFileName = function () {
+        var fileInput = document.getElementById('ProductFileInput');
+        var file = fileInput.files[0];
+        if (file) {
+            $scope.productFileName = file.name;
+        } else {
+            $scope.productFileName = 'No file chosen';
+        }
+        $scope.$apply();
+    };
+
+    $scope.updateCategoryFileName = function () {
+        var fileInput = document.getElementById('categoryFileInput');
+        var file = fileInput.files[0];
+        if (file) {
+            $scope.CategoryFileName = file.name;
+        } else {
+            $scope.CategoryFileName = 'No file chosen';
+        }
+        $scope.$apply();
+    };
+
+
 
     $scope.showNotification = function (message, isError = false) {
         $scope.notification.message = message;
@@ -184,8 +212,8 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.price = product.price;
         $scope.category = product.category;
         $scope.description = product.description;
-        $scope.image = product.image;
         $scope.quantity = product.quantity;
+        $scope.category = product.category;
 
         // Keep track of the product ID for updating
         $scope.editProductId = product._id;
@@ -203,7 +231,6 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             $scope.price,
             $scope.category,
             $scope.description,
-            $scope.image,
             $scope.quantity
         );
 
@@ -211,23 +238,48 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.resetProductForm();
     };
 
-    $scope.updateProduct = function (productId, newName, newPrice, newCategory, newDescription, newImage, newQuantity) {
-        $http.put(`/api/products/update/${productId}`, {
-            name: newName,
-            price: newPrice,
-            category: newCategory,
-            description: newDescription,
-            image: newImage,
-            quantity: newQuantity
+    $scope.updateProduct = function (productId, newName, newPrice, newCategory, newDescription, newQuantity) {
+
+        if (!newName || !newPrice || !newCategory || !newDescription || !newQuantity) {
+            alert('Please fill in all fields before adding new product.');
+            return;
+        }
+
+        const categoryExists = $scope.categories.some(cat => cat.name === newCategory);
+
+        if (!categoryExists) {
+            alert(`The category "${newCategory}" does not exist. Please choose a valid category.`);
+            return;
+        }
+
+        var fileInput = document.getElementById('ProductFileInput');
+        var file = fileInput.files[0];
+
+        var formData = new FormData();
+
+        formData.append('name', newName);
+        formData.append('price', newPrice);
+        formData.append('category', newCategory);
+        formData.append('description', newDescription);
+        formData.append('quantity', newQuantity);
+    
+        if (file) {
+            formData.append('image', file);
+        }
+    
+        $http.put(`/api/products/update/${productId}`, formData, {
+            transformRequest: angular.identity,
+            headers: { 'Content-Type': undefined }
         })
-            .then(function (response) {
-                alert('Product updated successfully!');
-                $scope.loadProducts();
-            })
-            .catch(function (error) {
-                console.error('Error updating product:', error);
-                alert('Failed to update product.');
-            });
+        .then(function (response) {
+            alert('Product updated successfully!');
+            $scope.resetProductForm();
+            $scope.loadProducts();
+        })
+        .catch(function (error) {
+            console.error('Error updating product:', error);
+            alert('Failed to update product.');
+        });
     };
 
     $scope.resetProductForm = function () {
@@ -236,13 +288,31 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.price = '';
         $scope.category = '';
         $scope.description = '';
-        $scope.image = '';
+        document.getElementById('ProductFileInput').value = '';
         $scope.quantity = '';
 
         // Reset edit-related variables
         $scope.editProductId = null;
         $scope.isEditMode = false;
         $scope.isProductFormVisible = false;
+        $scope.productFileName = 'No file chosen';
+    };
+
+    $scope.resetCategoryForm = function () {  
+        $scope.categoryName = '';
+        $scope.isOnHome = false;
+        document.getElementById('categoryFileInput').value = '';
+        $scope.isCategoryFormVisible = false;
+        $scope.CategoryFileName = 'No file chosen';
+    };
+
+    $scope.resetCouponForm = function () {  
+        $scope.couponCode = '';
+        $scope.discountValue = '';
+        $scope.discountType = '';
+        $scope.startAt = '';
+        $scope.expiresAt = '';
+        $scope.isCouponFormVisible = false;
     };
 
     $scope.deleteUser = function (userId) {
@@ -264,6 +334,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             $http.delete(`/api/products/delete/${productId}`)
                 .then(function () {
                     alert('Product deleted successfully.');
+                    $scope.resetProductForm();
                     $scope.loadProducts();
                 })
                 .catch(function (error) {
@@ -279,15 +350,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             return;
         }
 
-        var fileInput = document.getElementById('fileInput');
-        var file = fileInput.files[0];
-
-        if (!file) {
-            alert('Please select an image file.');
-            return;
-        }
-
-        $http.get(`/api/products/checkname/${name}`)
+        $http.get(`/api/products/name/${name}`)
             .then(function (response) {
                 if (response.data.exists) {
                     alert(`The product ${name} already exists!`);
@@ -307,12 +370,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
                         .then(function () {
                             alert('Product created successfully!');
                             $scope.loadProducts();
-                            $scope.name = '';
-                            $scope.price = '';
-                            $scope.category = '';
-                            $scope.description = '';
-                            $scope.image = null;
-                            $scope.quantity = '';
+                            $scope.resetProductForm();
                         })
                         .catch(function (error) {
                             console.error('Error adding product', error);
@@ -456,7 +514,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             return;
         }
 
-        var fileInput = document.getElementById('fileInput');
+        var fileInput = document.getElementById('categoryFileInput');
         var file = fileInput.files[0];
 
         if (!file) {
@@ -476,9 +534,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             .then(function (response) {
                 alert('Category created successfully!');
                 $scope.loadCategories();
-                $scope.categoryName = '';
-                $scope.isOnHome = false;
-                document.getElementById('fileInput').value = '';
+                $scope.resetCategoryForm();
             })
             .catch(function (error) {
                 alert('Error creating category: ' + (error.data.message || 'Unknown error.'));
@@ -553,5 +609,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
     $scope.loadUsers();
     $scope.loadProducts();
     $scope.showDashboard();
+    angular.element(document.getElementById('ProductFileInput')).on('change', $scope.updateProductFileName);
+    angular.element(document.getElementById('categoryFileInput')).on('change', $scope.updateCategoryFileName);
     $scope.loadTransactionHistory();
 }]);

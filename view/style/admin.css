@@ -189,57 +189,119 @@ html, body {
 /* Coupon Form Container */
 .form-container {
     background-color: var(--primary-color);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 0 auto;
-    position: relative;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin: 30px auto;
+    transition: all 0.3s ease;
 }
 
+.form-container:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
 /* Form Header */
 .form-container .form-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
-    border-bottom: 1px solid var(--quarternary-color);
-    padding-bottom: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--quarternary-color);
 }
 
-.form-container .form-header h4 {
+.form-container .form-header h2 {
     color: var(--tertiary-color);
     margin: 0;
-    font-size: 20px;
+    font-size: 24px;
+    font-weight: 600;
 }
 
 /* Form Labels */
 .form-container .form-label {
     color: var(--tertiary-color);
-    font-weight: 500;
-    margin-bottom: 8px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+
+.form-container .form-label:hover {
+    color: var(--secondary-color);
 }
 
 /* Form Inputs */
-.form-container .form-control {
+.form-container .form-control,
+.form-container select,
+.form-container textarea {
     background-color: var(--primary-color);
-    border: 1px solid var(--quarternary-color);
+    border: 2px solid var(--quarternary-color);
     color: var(--tertiary-color);
-    border-radius: 6px;
-    padding: 10px 15px;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 16px;
     transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.form-container .form-control:focus {
-    background-color: var(--secondary-color);
+.form-container .form-control:focus,
+.form-container select:focus,
+.form-container textarea:focus {
     border-color: var(--secondary-color);
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
+
 
 /* Form Groups */
-.form-container .mb-3 {
-    margin-bottom: 20px;
+.form-container .file-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.form-container .file-input-label {
+    display: flex;
+    align-items: center;
+    background-color: var(--primary-color);
+    border: 2px dashed var(--quarternary-color);
+    color: var(--tertiary-color);
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    justify-content: center;
+}
+
+.form-container .file-input-label:hover {
+    border-color: var(--secondary-color);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.form-container .file-input-label i {
+    margin-right: 10px;
+    font-size: 24px;
+}
+
+.form-container .file-name {
+    margin-left: 10px;
+    color: var(--tertiary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.form-container input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
 }
 
 /* Checkbox Styling */
@@ -247,49 +309,86 @@ html, body {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-container .form-check:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+    padding: 5px;
 }
 
 .form-container .form-check-input {
-    margin-right: 10px;
-    width: 18px;
-    height: 18px;
+    margin-right: 15px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
 }
+
 
 .form-container .form-check-label {
     color: var(--tertiary-color);
     font-weight: 500;
-    margin-top: 2px;
+    cursor: pointer;
+}
+
+.form-container .btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 20px;
+}
+
+.button-divition {
+    display: flex;
+    gap: 15px; /* Menambahkan jarak antar tombol */
+    justify-content: flex-start; /* Mengatur tombol agar berjejer di sisi kiri */
 }
 
 /* Submit Button */
-.form-container .btn-primary {
+.btn-primary,
+.btn-secondary {
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.btn-primary {
     background-color: var(--secondary-color);
     color: var(--primary-color);
     border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    font-weight: 600;
-    transition: all 0.3s ease;
 }
 
-.form-container .btn-primary:hover {
+.btn-primary:hover {
     background-color: var(--tertiary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Close Button */
-.form-container .btn-secondary {
+.btn-secondary {
     background-color: transparent;
     color: var(--tertiary-color);
-    border: 1px solid var(--quarternary-color);
-    transition: all 0.3s ease;
+    border: 2px solid var(--quarternary-color);
 }
 
-.form-container .btn-secondary:hover {
+.btn-secondary:hover {
     background-color: var(--quarternary-color);
     color: var(--primary-color);
 }
+
+.form-container .mb-3 {
+    margin-bottom: 25px;
+}
+
 
 /* Coupon Table Styling */
 .list-container .table {
@@ -308,6 +407,57 @@ html, body {
 .list-container .table th {
     background-color: var(--secondary-color);
     color: var(--primary-color);
+}
+
+/* File Input Styling */
+.form-container .custom-file-input {
+    display: none; /* Hide the default file input */
+}
+
+.form-container .file-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.form-container .file-input-label {
+    display: flex;
+    align-items: center;
+    background-color: var(--primary-color);
+    border: 1px solid var(--quarternary-color);
+    color: var(--tertiary-color);
+    border-radius: 6px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-container .file-input-label:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.form-container .file-input-label i {
+    margin-right: 10px;
+}
+
+.form-container .file-name {
+    margin-left: 10px;
+    color: var(--tertiary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Input File Specific Styling */
+.form-container input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
 }
 
 #transactionCotainer {
@@ -672,19 +822,29 @@ html, body {
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .form-container {
-        padding: 20px;
-        max-width: 100%;
+        padding: 25px;
+        margin: 15px;
+    }
+
+    .form-container .btn-group {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-container .btn-primary,
+    .form-container .btn-secondary {
+        width: 100%;
     }
 
     .form-container .form-header {
         flex-direction: column;
-        align-items: flex-start;
+        text-align: center;
     }
 
-    .form-container .form-header .btn-secondary {
-        margin-top: 10px;
+    .form-container .form-header h2 {
+        margin-bottom: 15px;
     }
-
+    
     .list-container .table {
         font-size: 12px;
     }

@@ -138,7 +138,7 @@ router.get('/check', verifyToken, (req, res) => {
 
 router.get('/logincheck', optionalVerify, (req, res) => {
     if (!req.user) { 
-        return res.status(401).json({ message: 'User not authenticated' });
+        return res.status(303).json({ message: 'User not authenticated' });
     }
     res.status(200).json({ message: 'Authenticated' });
 });

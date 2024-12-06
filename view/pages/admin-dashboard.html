@@ -28,7 +28,7 @@
             </div>
 
             <div ng-show="isUsersVisible">
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
                     <h3>User Management</h3>
                 </div>
 
@@ -48,7 +48,7 @@
                                 <td>{{ user.email }}</td>
                                 <td>{{ user.role }}</td>
                                 <td>
-                                    <button class="btn btn-danger" ng-click="deleteUser(user._id)">Delete</button>
+                                    <button class="btn" ng-click="deleteUser(user._id)">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -58,9 +58,9 @@
 
             <div id="productsContent" ng-show="isProductVisible">
                 <div class="product-form-container">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
                         <h3>Product Management</h3>
-                        <button type="button" class="btn btn-secondary" ng-click="toggleProductForm()">Create New
+                        <button type="button" class="btn btn-primary" ng-click="toggleProductForm()">Create New
                             Product</button>
                     </div>
 
@@ -74,7 +74,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Price (Rp)</label>
                                 <input type="number" class="form-control" ng-model="price" step="1000"
-                                    min="0" required>
+                                    min="1000" required>
                             </div>
 
                             <div class="mb-3">
@@ -93,15 +93,23 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Upload PNG Image</label>
-                                <input type="file" id="fileInput" accept="image/png" required>
+                                <div class="file-input-wrapper">
+                                    <input type="file" id="ProductFileInput" class="custom-file-input" accept="image/png" ng-required="!isEditMode"
+                                        ng-model="productFileName"/>
+                                    <label for="ProductFileInput" class="file-input-label">
+                                        <i class="fas fa-upload"></i>
+                                        Choose File
+                                        <span class="file-name" id="fileNameDisplay">{{productFileName || 'No file chosen'}}</span>
+                                    </label>
+                                </div>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Quantity</label>
-                                <input type="number" class="form-control" ng-model="quantity" required>
+                                <input type="number" class="form-control" ng-model="quantity" required min="1">
                             </div>
 
-                            <div class="d-flex justify-content-between">
+                            <div class="button-divition">
                                 <button type="submit" class="btn btn-primary">
                                     {{ isEditMode ? 'Update Product' : 'Add Product' }}
                                 </button>
@@ -140,9 +148,9 @@
                                 <td>{{ product.sold }}</td>
                                 <td>{{ product.description }}</td>
                                 <td>
-                                    <button class="btn btn-warning me-2"
+                                    <button class="btn"
                                         ng-click="showEditProductForm(product)">Edit</button>
-                                    <button class="btn btn-danger" ng-click="deleteProduct(product._id)">Delete</button>
+                                    <button class="btn" ng-click="deleteProduct(product._id)">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -151,7 +159,7 @@
             </div>
 
             <div id="categoriesContent" ng-show="isCategoryVisible">
-                <div class="d-flex justify-content-between align-items-center">
+                <div>
                     <h3>Category Management</h3>
                     <button class="btn btn-primary" ng-click="toggleCategoryForm()">Create New Category</button>
                 </div>
@@ -162,18 +170,31 @@
                             <label class="form-label">Category Name</label>
                             <input type="text" class="form-control" ng-model="categoryName" placeholder="Enter category name" required>
                         </div>
-                
+                        
                         <div class="mb-3">
                             <label class="form-label">Upload PNG Image</label>
-                            <input type="file" id="fileInput" accept="image/png" required>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="categoryFileInput" class="custom-file-input" accept="image/png" ng-model="CategoryFileName" required>
+                                <label for="categoryFileInput" class="file-input-label">
+                                    <i class="fas fa-upload"></i>
+                                    Choose File
+                                    <span class="file-name" id="fileNameDisplay">{{CategoryFileName || 'No file chosen'}}</span>
+                                </label>
+                            </div>
                         </div>
                 
                         <div class="mb-3">
                             <label class="form-label">Display on Home Page</label>
                             <input type="checkbox" ng-model="isOnHome"> Yes
                         </div>
-                
-                        <button type="submit" class="btn btn-primary">Create Category</button>
+                        <div class="button-divition">
+                            <button type="submit" class="btn btn-primary">
+                                Create Category
+                            </button>
+                            <button type="button" class="btn btn-secondary" ng-click="resetCategoryForm()">
+                                Cancel
+                            </button>
+                        </div>
                     </form>                 
                 </div>
 
@@ -195,8 +216,8 @@
                                 <td>{{ category.name }}</td>
                                 <td>{{ category.isOnHome ? 'Yes' : 'No' }}</td>
                                 <td>
-                                    <button class="btn btn-danger" ng-click="changeOnHomeStatus(category._id)">Change Home Status</button>
-                                    <button class="btn btn-danger" ng-click="deleteCategory(category._id)">Delete</button>
+                                    <button class="btn" ng-click="changeOnHomeStatus(category._id)">Change Home Status</button>
+                                    <button class="btn" ng-click="deleteCategory(category._id)">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -205,7 +226,7 @@
             </div>
 
             <div ng-show="isCouponVisible">
-                <div class="d-flex justify-content-between align-items-center">
+                <div>
                     <h3>Coupon Management</h3>
                     <button class="btn btn-primary" ng-click="toggleCouponsForm()">Create New Coupon</button>
                 </div>
@@ -242,7 +263,14 @@
                             <input type="date" class="form-control" ng-model="expiresAt" required>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary">Create Coupon</button>
+                        <div class="button-divition">
+                            <button type="submit" class="btn btn-primary">
+                                Create Coupon
+                            </button>
+                            <button type="button" class="btn btn-secondary" ng-click="resetCouponForm()">
+                                Cancel
+                            </button>
+                        </div>
                     </form>
                 </div>
 
@@ -268,8 +296,8 @@
                                 <td>{{ coupon.expiresAt | date:'yyyy-MM-dd' }}</td>
                                 <td>{{ coupon.expiresAt > currentDate ? 'Active' : 'Expired'}}</td>
                                 <td>
-                                    <button class="btn btn-danger" ng-click="showCouponEditForm(coupon)">Edit</button>
-                                    <button class="btn btn-danger" ng-click="deleteCoupon(coupon._id)">Delete</button>
+                                    <button class="btn" ng-click="showCouponEditForm(coupon)">Edit</button>
+                                    <button class="btn" ng-click="deleteCoupon(coupon._id)">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
