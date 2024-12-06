@@ -31,7 +31,7 @@ angular.module('revifeApp').controller('WishlistController', ['$scope', '$http',
 
         $http.get(`/api/wishlist${sortParam}`)
             .then(function (response) {
-                const wishlistItems = response.data || []; 
+                const wishlistItems = response.data || []; 322
                 $scope.wishlistItems = wishlistItems;
 
                 if (Array.isArray(wishlistItems)) {

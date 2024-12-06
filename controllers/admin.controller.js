@@ -40,6 +40,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
     $scope.productFileName = 'No file chosen';
     $scope.CategoryFileName = 'No file chosen';
 
+    // Memperbarui name file produk
     $scope.updateProductFileName = function () {
         var fileInput = document.getElementById('ProductFileInput');
         var file = fileInput.files[0];
@@ -168,6 +169,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             });
     };
 
+    // Ambil user melalui API
     $scope.loadUsers = function () {
         $http.get(`/api/users`)
             .then(function (response) {
@@ -179,6 +181,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             });
     };
 
+    // Ambil produk melalui API
     $scope.loadProducts = function () {
         $http.get(`/api/products`)
             .then(function (response) {
@@ -190,8 +193,8 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             });
     };
 
+    // CRUD edit produk
     $scope.showEditProductForm = function (product) {
-        // Instead of creating a copy, directly set the form fields
         $scope.name = product.name;
         $scope.price = product.price;
         $scope.category = product.category;
@@ -206,6 +209,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.isProductFormVisible = true;
     };
 
+    // CRUD untuk menyimpan hasil edit
     $scope.saveProductEdit = function () {
         if (!$scope.editProductId) return;
 
@@ -222,6 +226,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.resetProductForm();
     };
 
+    // Fungsi untuk mengperbarui informasi produk menggunakan API
     $scope.updateProduct = function (productId, newName, newPrice, newCategory, newDescription, newQuantity) {
 
         if (!newName || !newPrice || !newCategory || !newDescription || !newQuantity) {
@@ -250,7 +255,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         if (file) {
             formData.append('image', file);
         }
-    
+
         $http.put(`/api/products/update/${productId}`, formData, {
             transformRequest: angular.identity,
             headers: { 'Content-Type': undefined }
@@ -265,6 +270,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             alert('Failed to update product.');
         });
     };
+
 
     $scope.resetProductForm = function () {
         // Clear all form fields
@@ -299,6 +305,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.isCouponFormVisible = false;
     };
 
+    // Hapus user dari admin dashboard
     $scope.deleteUser = function (userId) {
         if (confirm('Are you sure you want to delete this user?')) {
             $http.delete(`/api/users/delete/${userId}`)
@@ -313,6 +320,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         }
     };
 
+    // Hapus produk dari admin dashboard
     $scope.deleteProduct = function (productId) {
         if (confirm('Are you sure you want to delete this product?')) {
             $http.delete(`/api/products/delete/${productId}`)
@@ -328,6 +336,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         }
     };
 
+    // Menambahkan produk dan detail baru untuk website
     $scope.addProduct = function (name, price, category, description, quantity) {
         if (!name || !price || !category || !description || !quantity) {
             alert('Please fill in all fields before adding new product.');
@@ -383,7 +392,9 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             })
     }
 
+    // CRUD Create untuk menambahkan kupon pada website
     $scope.addCoupon = function (couponCode, discountValue, discountType, startAt, expiresAt) {
+        // Validasi
         if (!couponCode || !discountValue || !discountType || !startAt || !expiresAt) {
             alert('Please fill in all fields before adding the coupon.');
             return;
@@ -399,6 +410,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             return;
         }        
 
+        // Jika diskon secara persentase
         let isPercentage = discountType === 'percentage';
 
         if (isPercentage && (discountValue <= 0 || discountValue > 100)) {
@@ -412,11 +424,14 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             return;
         }
 
+        // Pemanggilan API untuk kuppon
         $http.get(`/api/coupons/${couponCode}`)
             .then(function (response) {
+                // Cek jika sudah ada kupon
                 if (response.data) {
                     alert(`Coupon with code ${couponCode} already exists.`);
                 } else {
+                    // Tambahkan kupon jika belum ada
                     $http.post('/api/coupons/add', {
                         couponCode: couponCode,
                         discountValue: discountValue,
@@ -445,6 +460,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             });
     };
 
+    // Tampilkan form untuk edit data kupon
     $scope.showCouponEditForm = function (coupon) {
         $scope.couponCode = coupon.couponCode;
         $scope.discountValue = coupon.discountValue;
@@ -459,9 +475,10 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.isCouponFormVisible = true;
     }
 
+    // Memperbaruii data kupon yang tersedia
     $scope.updateCoupon = function (couponId, newCouponCode, newDiscountValue, newDiscountType, newStartAt, newExpiresAt) {
 
-
+        // Validasi
         if (!newCouponCode || !newDiscountValue || !newDiscountType || !newStartAt || !newExpiresAt) {
             alert('Please fill in all fields before adding the coupon.');
             return;
@@ -507,6 +524,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             })
     }
 
+    // Menambahkan kategori
     $scope.addCategory = function (categoryName, isOnHome) {
         if(!categoryName) {
             alert('Please fill the category name.');
@@ -540,6 +558,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             });
     };
 
+    // Mengganti status ng-repeat pada home page
     $scope.changeOnHomeStatus = function (categoryId) {
         const category = $scope.categories.find(cat => cat._id === categoryId);
         if (category) {
@@ -559,6 +578,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         }
     };
 
+    // Hapus kategori dari database dan perbarui pada home page
     $scope.deleteCategory = function (categoryId) {
         if (confirm('Are you sure you want to delete this category?')) {
             $http.delete(`/api/categories/delete/${categoryId}`)
@@ -573,6 +593,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         }
     };
 
+    // Hapus kupon dari database
     $scope.deleteCoupon = function (couponId) {
         if (confirm('Are you sure you want to delete this coupon?')) {
             $http.delete(`/api/coupons/delete/${couponId}`)
@@ -601,6 +622,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             });
     };
 
+    // Inisiasi data yang perlu diambil
     $scope.loadCoupons();
     $scope.loadCategories();
     $scope.loadCoupons();
