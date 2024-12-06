@@ -92,6 +92,9 @@ angular.module('revifeApp').controller('CartController', ['$scope', '$http', '$r
             if (coupon) {
                 if (coupon.discountType === "fixed") {
                     $rootScope.couponDiscount = coupon.discountValue;
+                    if($rootScope.cartTotal < $rootScope.couponDiscount) {
+                        $rootScope.couponDiscount = $rootScope.cartTotal;
+                    }
                 }
                 else if (coupon.discountType === "percentage") {
                     $rootScope.couponDiscount = (coupon.discountValue / 100) * $scope.cartTotal;

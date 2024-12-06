@@ -62,18 +62,6 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.$apply();
     };
 
-
-
-    $scope.showNotification = function (message, isError = false) {
-        $scope.notification.message = message;
-        $scope.notification.isError = isError;
-        $scope.notification.isVisible = true;
-        $timeout(function () {
-            $scope.notification.isVisible = false;
-        }, 3000);
-        $scope.isTransactionVisible = false;
-    };
-
     $scope.showDashboard = function () {
         $scope.isDashboardVisible = true;
         $scope.isProductVisible = false;
@@ -393,10 +381,10 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
             return;
         }
 
-        if (discountType != 'percentage' || discountType != 'fixed') {
+        if (discountType !== 'percentage' && discountType !== 'fixed') {
             alert('Please fill discount type correctly.');
             return;
-        }
+        }        
 
         let isPercentage = discountType === 'percentage';
 
