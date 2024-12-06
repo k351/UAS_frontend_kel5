@@ -77,6 +77,41 @@ section {
     margin: 0;
 }
 
+.notification-container {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.notification-container.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.notification {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    font-size: 14px;
+    min-width: 250px;
+}
+
+.notification .close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
 .copyright {
     display: flex;
     justify-content: center;

@@ -1,8 +1,28 @@
-angular.module('revifeApp').controller('WishlistController', ['$scope', '$http', '$rootScope', function ($scope, $http, $rootScope) {
+angular.module('revifeApp').controller('WishlistController', ['$scope', '$http', '$rootScope', '$timeout', function ($scope, $http, $rootScope, $timeout) {
     $scope.activeFilters = {};
     $scope.wishlistState = {};
     $scope.filters = {
         sort: '', // Holds the active sort criteria
+    };
+
+        $scope.notification = {
+        active: false,
+        message: '',
+        color: '#4caf50',
+    };
+
+    $scope.showNotification = function (message, color = '#4caf50') {
+        $scope.notification.message = message;
+        $scope.notification.color = color;
+        $scope.notification.active = true;
+
+        $timeout(function () {
+            $scope.notification.active = false;
+        }, 3000);
+    };
+
+    $scope.hideNotification = function () {
+        $scope.notification.active = false;
     };
 
     // Load wishlist items from the API
@@ -44,13 +64,14 @@ angular.module('revifeApp').controller('WishlistController', ['$scope', '$http',
         }).then(function (response) {
             if (action === 'POST') {
                 $scope.wishlistState[product._id] = true;
-                alert('Item added to wishlist');
+                $scope.showNotification('Item added to wishlist!', '#4caf50');
             } else {
                 $scope.wishlistState[product._id] = false;
                 $scope.loadWishlistItems(); // Reload items
-                alert('Item removed from wishlist');
+                $scope.showNotification('Item removed from wishlist!', '#4caf50');
             }
         }).catch(function (error) {
+            $scope.showNotification('Error updating wishlist.', '#f44336');
             console.error('Error updating wishlist:', error);
         });
     };
@@ -86,25 +107,25 @@ angular.module('revifeApp').controller('WishlistController', ['$scope', '$http',
                     $http.put(`/api/cart/update/${existingItem._id}`, {
                         cartQuantity: existingItem.cartQuantity + 1
                     }).then(function () {
-                        alert('Item quantity updated in cart!');
+                        $scope.showNotification('Item quantity updated in cart!', '#4caf50');
                     }).catch(function (error) {
                         console.error('Error updating cart:', error);
-                        alert('Failed to update item quantity in cart.');
+                        $scope.showNotification('Failed to update item quantity in cart.', '#f44336');
                     });
                 } else {
                     $http.post('/api/cart/add', {
                         productId: product._id,
                         cartQuantity: 1
                     }).then(function () {
-                        alert('Item added to cart successfully!');
+                        $scope.showNotification('Item added to cart successfully!', '#4caf50');
                     }).catch(function (error) {
                         console.error('Error adding to cart:', error);
-                        alert('Failed to add item to cart.');
+                        $scope.showNotification('Failed to add item to cart!', '#4caf50');
                     });
                 }
             }).catch(function (error) {
                 console.error('Error retrieving cart items:', error);
-                alert('Failed to retrieve cart items.');
+                $scope.showNotification('Failed to retrieve cart items.', '#f44336');
             });
     };
 

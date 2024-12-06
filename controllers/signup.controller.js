@@ -1,5 +1,5 @@
 angular.module('revifeApp')
-    .controller('SignUpController', ['$scope', '$http', function ($scope, $http) {
+    .controller('SignUpController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
         $scope.formData = {
             name: '',
             email: '',
@@ -11,6 +11,26 @@ angular.module('revifeApp')
                 country: ''
             },
             role: 'user'
+        };
+
+        $scope.notification = {
+            active: false,
+            message: '',
+            color: '#4caf50',
+        };
+
+        $scope.showNotification = function (message, color = '#4caf50') {
+            $scope.notification.message = message;
+            $scope.notification.color = color;
+            $scope.notification.active = true;
+
+            $timeout(function () {
+                $scope.notification.active = false;
+            }, 3000);
+        };
+
+        $scope.hideNotification = function () {
+            $scope.notification.active = false;
         };
 
         // Trim semua data sebelum dikirim
@@ -25,15 +45,15 @@ angular.module('revifeApp')
                 .then(function (response) {
                     if (response.status === 200) {
                         const redirectUrl = response.data.redirect || "/#!/";
-                        alert('Registration successful!');
+                        $scope.showNotification('Registration successful!', '#4caf50');
                         window.location.href = redirectUrl;
                     } else {
-                        alert(response.data.message || 'Registration failed. Please try again.');
+                        $scope.showNotification('Registration failed. Please try again later.', '#f44336');
                     }
                 })
                 .catch(function (error) {
                     console.error('Error:', error);
-                    alert('An error occurred. Please try again.');
+                    $scope.showNotification('An error occurred. Please try again.', '#f44336');
                 });
         };
     }]);

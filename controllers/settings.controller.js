@@ -1,4 +1,4 @@
-angular.module('revifeApp').controller('SettingsController', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
+angular.module('revifeApp').controller('SettingsController', ['$scope', '$http', '$location', '$routeParams', '$timeout', function ($scope, $http, $location, $routeParams, $timeout) {
     const userId = $routeParams.userId;
     $scope.isEditing = false;
     $scope.isEditingPassword = false;
@@ -10,9 +10,30 @@ angular.module('revifeApp').controller('SettingsController', ['$scope', '$http',
         confirm: ''
     };
 
+    
+    $scope.notification = {
+        active: false,
+        message: '',
+        color: '#4caf50',
+    };
+
+    $scope.showNotification = function (message, color = '#4caf50') {
+        $scope.notification.message = message;
+        $scope.notification.color = color;
+        $scope.notification.active = true;
+
+        $timeout(function () {
+            $scope.notification.active = false;
+        }, 3000);
+    };
+
+    $scope.hideNotification = function () {
+        $scope.notification.active = false;
+    };
+
     $scope.changePassword = function () {
         if ($scope.password.new !== $scope.password.confirm) {
-            alert('Kata sandi baru tidak cocok.');
+            $scope.showNotification('Kata sandi baru tidak cocok.', '#f44336');
             return;
         }
 
@@ -25,7 +46,7 @@ angular.module('revifeApp').controller('SettingsController', ['$scope', '$http',
                     'Authorization': 'Bearer ' + sessionStorage.getItem('authToken')
                 }
             }).then(function (response) {
-                alert(response.data.message || 'Kata sandi berhasil diubah.');
+                $scope.showNotification(response.data.message || 'Kata sandi berhasil diubah!', '#4caf50');
                 $scope.password = {
                     current: '',
                     new: '',
@@ -33,7 +54,7 @@ angular.module('revifeApp').controller('SettingsController', ['$scope', '$http',
                 };
             }).catch(function (error) {
                 const errorMessage = error.data?.message || 'Terjadi kesalahan pada server.';
-                alert('Gagal mengubah kata sandi: ' + errorMessage);
+                $scope.showNotification('Failed to change password: ', '#f44336' + errorMessage);
             });
         }
     };
@@ -46,7 +67,7 @@ angular.module('revifeApp').controller('SettingsController', ['$scope', '$http',
         }).then(function (response) {
             $scope.user = response.data;
         }).catch(function (error) {
-            alert('Gagal mengambil data pengguna: ' + error.message);
+            $scope.showNotification('Failed to fetch users: ', '#f44336' + error.message);
         });
     }
 
@@ -69,10 +90,10 @@ angular.module('revifeApp').controller('SettingsController', ['$scope', '$http',
                     country: $scope.user.address.country
                 }
             }).then(function (response) {
-                alert('Profil berhasil diperbarui');
+                $scope.showNotification('Profile has been updated successfully!', '#4caf50');
                 $scope.isEditing = false;
             }).catch(function (error) {
-                alert('Gagal memperbarui profil: ' + error.data.message);
+                $scope.showNotification('Failed to update profile: ', '#f44336' + error.data.message);
             });
         }
     };
@@ -100,7 +121,7 @@ angular.module('revifeApp').controller('SettingsController', ['$scope', '$http',
                 });
             }
         } else {
-            alert('Konfirmasi tidak valid. Ketik "HAPUS" dengan benar untuk menghapus akun.');
+            $scope.showNotification('Confirmation invalid, Type "HAPUS" correctly to delete account.', '#f44336');
         }
     };
 
@@ -112,7 +133,7 @@ angular.module('revifeApp').controller('SettingsController', ['$scope', '$http',
             $location.path('/login'); // Redirect ke halaman login
         }).catch(function (error) {
             console.error('Error during logout:', error);
-            alert('Gagal logout: ' + (error.data?.message || 'Unknown error'));
+            $scope.showNotification('Failed to logout: ', '#f44336' + (error.data?.message || 'Unknown error'));
         });
     };
 

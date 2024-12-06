@@ -1,10 +1,30 @@
-angular.module('revifeApp').controller('ProductController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
+angular.module('revifeApp').controller('ProductController', ['$scope', '$http', '$routeParams', '$timeout', function ($scope, $http, $routeParams, $timeout) {
     $scope.product = {};
     $scope.quantity = 1;
     $scope.productId = $routeParams.id;
     $scope.compareList = [];
     $scope.compareProduct = null;
     $scope.isCompareListVisible = false;
+
+    $scope.notification = {
+        active: false,
+        message: '',
+        color: '#4caf50',
+    };
+
+    $scope.showNotification = function (message, color = '#4caf50') {
+        $scope.notification.message = message;
+        $scope.notification.color = color;
+        $scope.notification.active = true;
+
+        $timeout(function () {
+            $scope.notification.active = false;
+        }, 3000);
+    };
+
+    $scope.hideNotification = function () {
+        $scope.notification.active = false;
+    };
 
     $scope.getProductById = function () {
         $http.get(`/api/products/${$scope.productId}`).then(function (response) {
@@ -30,7 +50,7 @@ angular.module('revifeApp').controller('ProductController', ['$scope', '$http', 
             $scope.isCompareListVisible = true;
             console.log('Compare list opened:', $scope.isCompareListVisible);
         } else {
-            alert('No products available for comparison');
+            $scope.showNotification('No products available for comparison.', '#f44336');
         }
     };
 
@@ -39,7 +59,7 @@ angular.module('revifeApp').controller('ProductController', ['$scope', '$http', 
             $scope.compareProduct = product;
             $scope.isCompareListVisible = false;
         } else {
-            alert('Cannot compare with the current product');
+            $scope.showNotification('Cannot compare with the current product.', '#f44336');
         }
     };
 
@@ -87,25 +107,25 @@ angular.module('revifeApp').controller('ProductController', ['$scope', '$http', 
                     $http.put(`/api/cart/update/${existingItem._id}`, {
                         cartQuantity: existingItem.cartQuantity + quantityToAdd
                     }).then(function () {
-                        alert('Item quantity updated in cart!');
+                        $scope.showNotification('Item quantity updated in cart!', '#4caf50');
                     }).catch(function (error) {
                         console.error('Error updating cart:', error);
-                        alert('Failed to update item quantity in cart.');
+                        $scope.showNotification('Failed to update item quantity in cart.', '#f44336');
                     });
                 } else {
                     $http.post('/api/cart/add', {
                         productId: product._id,
                         cartQuantity: quantityToAdd
                     }).then(function () {
-                        alert('Item added to cart successfully!');
+                        $scope.showNotification('Item added to cart successfully!', '#4caf50');
                     }).catch(function (error) {
                         console.error('Error adding to cart:', error);
-                        alert('Failed to add item to cart.');
+                        $scope.showNotification('Failed to add item to cart.', '#f44336');
                     });
                 }
             }).catch(function (error) {
                 console.error('Error retrieving cart items:', error);
-                alert('Failed to retrieve cart items.');
+                $scope.showNotification('Failed to retrieve cart items.', '#f44336');
             });
     };
 

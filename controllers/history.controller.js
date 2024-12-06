@@ -1,7 +1,27 @@
-angular.module('revifeApp').controller('HistoryController', ['$scope', '$http', '$rootScope', function ($scope, $http, $rootScope) {
+angular.module('revifeApp').controller('HistoryController', ['$scope', '$http', '$rootScope', '$timeout', function ($scope, $http, $rootScope, $timeout) {
     $scope.transactions = [];
     $scope.isLoading = true;
     $scope.errorMessage = '';
+
+    $scope.notification = {
+        active: false,
+        message: '',
+        color: '#4caf50',
+    };
+
+    $scope.showNotification = function (message, color = '#4caf50') {
+        $scope.notification.message = message;
+        $scope.notification.color = color;
+        $scope.notification.active = true;
+
+        $timeout(function () {
+            $scope.notification.active = false;
+        }, 3000);
+    };
+
+    $scope.hideNotification = function () {
+        $scope.notification.active = false;
+    };
 
     // Fetch transaction history
     $scope.loadTransactionHistory = function () {
@@ -47,7 +67,7 @@ angular.module('revifeApp').controller('HistoryController', ['$scope', '$http', 
         const transactionItemId = $scope.currentTransactionItemId;
 
         if (!rating || rating < 1 || rating > 5) {
-            alert('Please provide a rating between 1 and 5.');
+            $scope.showNotification('Please provide a rating between 1 and 5.', '#f44336');
             return;
         }
 
@@ -57,14 +77,14 @@ angular.module('revifeApp').controller('HistoryController', ['$scope', '$http', 
             review
         })
         .then(function (response) {
-            alert('Rating submitted successfully!');
+            $scope.showNotification('Rating submitted successfully!', '#4caf50');
             $scope.closeRatingModal();
             
             $scope.loadTransactionHistory();
         })
         .catch(function (error) {
             console.error('Error submitting rating:', error);
-            alert('Error submitting rating. Please try again.');
+            $scope.showNotification('Error submitting rating. Please try again.', '#f44336');
         });
     };
 

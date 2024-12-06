@@ -94,7 +94,8 @@
                 <div class="reviewer-info">
                     <div class="user">
                         <div class="reviewer-name">{{ review.userId.name }}</div>
-                        <div class="review-date"><strong>Date:</strong> {{ review.transactionDate | date:'medium' }}</div>
+                        <div class="review-date"><strong>Date:</strong> {{ review.transactionDate | date:'medium' }}
+                        </div>
                     </div>
                     <div>
                         <i ng-repeat="star in [1, 2, 3, 4, 5]" class="fa stars"
@@ -107,4 +108,14 @@
         </div>
 
     </section>
+
+    <div class="notification-container" ng-class="{ 'active': notification.active }">
+        <div class="notification" ng-style="{ backgroundColor: notification.color }">
+            <p>{{ notification.message }}</p>
+            <button class="close-btn" ng-click="hideNotification()">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+    </div>
+
 </body>
