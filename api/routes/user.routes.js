@@ -14,6 +14,21 @@ router.get('/', verifyToken, isAdmin, async (req, res) => {
     }
 });
 
+router.delete('/delete/:userId', verifyToken, isAdmin, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ message: 'User tidak ditemukan.' });
+        }
+
+        await User.findByIdAndDelete(req.user._id);
+        res.status(200).json({ message: 'Akun berhasil dihapus.' });
+    } catch (error) {
+        console.error('Error deleting user:', error.message || error);
+        res.status(500).json({ message: 'Terjadi kesalahan saat menghapus akun.' });
+    }
+});
+
 router.get('/', verifyToken, async (req, res) => {
     try {
         const user = await User.findById(req.user._id).select('-password');
@@ -147,5 +162,7 @@ router.delete('/settings/delete', verifyToken, async (req, res) => {
         res.status(500).json({ message: 'Terjadi kesalahan saat menghapus akun.' });
     }
 });
+
+
 
 module.exports = router;
