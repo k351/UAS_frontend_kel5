@@ -76,7 +76,7 @@ angular.module('revifeApp').controller('HomeController', ['$scope', '$timeout', 
         };
 
         $scope.$on('$destroy', function () {
-            stopAutoSlide();
+            $scope.stopAutoSlide();
             angular.element($window).off('resize');
         });
 

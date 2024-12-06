@@ -20,7 +20,7 @@ router.post('/', verifyToken, async (req, res) => {
 
         // Use the user's full address
         const fullAddress = Object.values(user.address.toObject())
-            .filter((value) => typeof value === 'string') // Ensure only string values are included
+            .filter((value) => typeof value === 'string')
             .join(', ');
 
         // Validate required fields
@@ -34,16 +34,26 @@ router.post('/', verifyToken, async (req, res) => {
             return res.status(400).json({ error: 'Invalid payment method.' });
         }
 
+        // Create a Transaction document
+        const transaction = new Transaction({
+            userId,
+            address: fullAddress,
+            totalAmount,
+            paymentMethod,
+        });
+
+        const savedTransaction = await transaction.save(); // Save transaction to get the _id
+
         // Fetch CartItems based on the items passed in the request body
-        const cartItems = await CartItem.find({ 
-            _id: { $in: items.map(item => item.id) }, 
-            userId: userId 
+        const cartItems = await CartItem.find({
+            _id: { $in: items.map(item => item.id) },
+            userId,
         });
 
         // Create TransactionItem documents
         const transactionItems = await Promise.all(
             cartItems.map(async (cartItem) => {
-                const product = await Product.findById(cartItem.productId); 
+                const product = await Product.findById(cartItem.productId);
                 if (!product) {
                     throw new Error('Product not found: ' + cartItem.productId);
                 }
@@ -53,46 +63,40 @@ router.post('/', verifyToken, async (req, res) => {
                 }
 
                 const transactionItem = new TransactionItem({
+                    transaction: savedTransaction._id, // Link to Transaction
                     productId: cartItem.productId,
                     quantity: cartItem.cartQuantity,
-                    price: product.price, 
+                    price: product.price,
                 });
 
                 // Save the transaction item
                 await transactionItem.save();
 
                 // Update the product stock
-                product.quantity -= cartItem.cartQuantity; 
-                product.sold += cartItem.cartQuantity; 
+                product.quantity -= cartItem.cartQuantity;
+                product.sold += cartItem.cartQuantity;
                 await product.save();
 
                 return transactionItem;
             })
         );
 
-        // Create Transaction document
-        const transaction = new Transaction({
-            userId: userId,
-            address: fullAddress,
-            items: transactionItems.map((item) => item._id),
-            totalAmount: totalAmount,
-            paymentMethod: paymentMethod,
-        });
+        // Update Transaction with item IDs
+        savedTransaction.items = transactionItems.map((item) => item._id);
+        await savedTransaction.save();
 
-        // Save the Transaction
-        const savedTransaction = await transaction.save();
-
-        // Prepare item details (productId and cartQuantity)
+        // Prepare item details (productId, cartQuantity, and transactionId)
         const transactionDetails = transactionItems.map(item => ({
             productId: item.productId,
             cartQuantity: item.quantity,
+            transactionId: item.transaction, // Include transactionId in response
         }));
 
         // Send response with transaction and item details
         res.status(201).json({
             message: 'Checkout successful!',
             transaction: savedTransaction,
-            items: transactionDetails,  // Include product ID and cart quantity
+            items: transactionDetails,
         });
     } catch (error) {
         console.error(error);

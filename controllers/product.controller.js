@@ -8,6 +8,30 @@ angular.module('revifeApp').controller('ProductController', ['$scope', '$http', 
         })
     }
 
+       $scope.getReviews = function () {
+        $http.get(`/api/reviews/${$scope.productId}`).then(function (response) {
+            $scope.reviews = response.data;
+            $scope.averageRating = $scope.calculateAverageRating($scope.reviews);
+        }).catch(function (error) {
+            console.error('Error fetching reviews:', error);
+            $scope.reviews = [];
+        });
+    };
+
+    $scope.calculateAverageRating = function(reviews) {
+        if (!reviews || reviews.length === 0) return 0;
+        const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+        return (totalRating / reviews.length).toFixed(1);
+    };
+
+    $scope.getStars = function (rating) {
+        const filledStars = new Array(Math.floor(rating)).fill(1);
+        const emptyStars = new Array(5 - Math.floor(rating)).fill(0);
+
+        return filledStars.concat(emptyStars); 
+    };
+
+
     $scope.addToCart = function (product) {
         $http.get('/api/cart')
             .then(function (response) {
@@ -40,6 +64,7 @@ angular.module('revifeApp').controller('ProductController', ['$scope', '$http', 
             });
     };
 
-    $scope.getProductById()
+    $scope.getProductById();
+    $scope.getReviews();
 }
 ]);

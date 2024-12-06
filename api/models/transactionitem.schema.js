@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const TransactionItemSchema = new mongoose.Schema({
+    transaction: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Transaction',
+        required: true,
+    },
     productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
