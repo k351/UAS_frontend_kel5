@@ -11,6 +11,7 @@
             <div class="menu-item" ng-click="showProducts()">Products</div>
             <div class="menu-item" ng-click="showCategories()">Categories</div>
             <div class="menu-item" ng-click="showCoupons()">Coupons</div>
+            <div class="menu-item" ng-click="showTransactions()">Transactions</div>
         </div>
 
         <div class="main-content">
@@ -275,7 +276,86 @@
                     </table>
                 </div>
             </div>
+
+            <div id="transactionContainer" ng-show="isTransactionVisible">
+                <div class="transaction-history-container">
+                    <div class="history-header">
+                        <h1>Transaction History</h1>
+                    </div>
+            
+                    <!-- Loading State -->
+                    <div ng-if="isLoading" class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Loading your transaction history...</p>
+                    </div>
+            
+                    <!-- Error State -->
+                    <div ng-if="errorMessage" class="error-state">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <p>{{ errorMessage }}</p>
+                    </div>
+            
+                    <!-- Transactions List -->
+                    <div ng-if="!isLoading && !errorMessage">
+                        <!-- No Transactions -->
+                        <div ng-if="transactions.length === 0" class="no-transactions">
+                            <p>No transaction history found.</p>
+                        </div>
+            
+                        <!-- Transactions Iteration -->
+                        <div ng-repeat="transaction in transactions" class="transaction-card">
+                            <!-- Transaction Header -->
+                            <div class="transaction-header">
+                                <span class="transaction-date">
+                                    {{ transaction.transactionDate | date:'medium' }}
+                                </span>
+                                <span class="transaction-id">
+                                    Transaction ID: {{ transaction._id }}
+                                </span>
+                            </div>
+            
+                            <!-- Shipping Address -->
+                            <div class="shipping-address">
+                                <h3>User ID : {{ transaction.userId  }}</h3>
+                            </div>
+            
+                            <!-- Transaction Items -->
+                            <div class="transaction-items">
+                                <div ng-repeat="item in transaction.items" class="transaction-item">
+                                    <div class="item-image">
+                                        <img ng-src="{{ item.productId.image }}" alt="{{ item.productId.name }}">
+                                    </div>
+                                    <div class="item-details">
+                                        <h3>{{ item.productId.name }}</h3>
+                                        <p>Quantity: {{ item.quantity }}</p>
+                                        <p>Price: Rp {{ item.price | number }}</p>
+                                        <p>Subtotal: Rp {{ calculateItemTotal(item) | number }}</p>
+                                    </div>
+            
+                                </div>
+                            </div>
+            
+                            <!-- Transaction Summary -->
+                            <div class="transaction-summary">
+                                <div class="total-price">
+                                    <strong>Total:</strong> Rp {{ transaction.totalAmount | number }}
+                                </div>
+                                <div class="transaction-status">
+                                    Status: Completed
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                </div>
+            
+            
+            </div>
         </div>
+
+
+
+
 
         <!-- Modal for notifications -->
         <!-- <div class="modal fade" id="notificationModal" tabindex="-1">

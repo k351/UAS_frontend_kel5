@@ -42,7 +42,7 @@ router.post('/', verifyToken, async (req, res) => {
             paymentMethod,
         });
 
-        const savedTransaction = await transaction.save(); // Save transaction to get the _id
+        const savedTransaction = await transaction.save(); 
 
         // Fetch CartItems based on the items passed in the request body
         const cartItems = await CartItem.find({
@@ -63,7 +63,7 @@ router.post('/', verifyToken, async (req, res) => {
                 }
 
                 const transactionItem = new TransactionItem({
-                    transaction: savedTransaction._id, // Link to Transaction
+                    transaction: savedTransaction._id, 
                     productId: cartItem.productId,
                     quantity: cartItem.cartQuantity,
                     price: product.price,
@@ -89,10 +89,9 @@ router.post('/', verifyToken, async (req, res) => {
         const transactionDetails = transactionItems.map(item => ({
             productId: item.productId,
             cartQuantity: item.quantity,
-            transactionId: item.transaction, // Include transactionId in response
+            transactionId: item.transaction, 
         }));
 
-        // Send response with transaction and item details
         res.status(201).json({
             message: 'Checkout successful!',
             transaction: savedTransaction,

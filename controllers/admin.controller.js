@@ -12,6 +12,8 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
     $scope.isCategoryVisible = false;
     $scope.isCategoryFormVisible = false;
 
+    $scope.isTransactionVisible = false;
+
     $scope.currentDate = new Date();
     $scope.isEditMode = false;
 
@@ -43,6 +45,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $timeout(function () {
             $scope.notification.isVisible = false;
         }, 3000);
+        $scope.isTransactionVisible = false;
     };
 
     $scope.showDashboard = function () {
@@ -52,6 +55,7 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.isUsersVisible = false;
         $scope.isCouponFormVisible = false;
         $scope.isProductFormVisible = false;
+        $scope.isTransactionVisible = false;
         $scope.isCategoryVisible = false;
     };
 
@@ -63,6 +67,8 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.isCouponFormVisible = false;
         $scope.isProductFormVisible = false;
         $scope.isCategoryVisible = false;
+        $scope.isTransactionVisible = false;
+
 
     };
 
@@ -74,6 +80,8 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.isCouponFormVisible = false;
         $scope.isProductFormVisible = false;
         $scope.isCategoryVisible = false;
+        $scope.isTransactionVisible = false;
+
     };
 
     $scope.showCategories = function () {
@@ -82,12 +90,24 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
         $scope.isCouponVisible = false;
         $scope.isUsersVisible = false;
         $scope.isCategoryVisible = true;
+        $scope.isTransactionVisible = false;
     };
 
     $scope.showCoupons = function () {
         $scope.isDashboardVisible = false;
         $scope.isProductVisible = false;
         $scope.isCouponVisible = true;
+        $scope.isUsersVisible = false;
+        $scope.isProductFormVisible = false;
+        $scope.isTransactionVisible = false;
+        $scope.isCategoryVisible = false;
+    };
+
+    $scope.showTransactions = function () {
+        $scope.isTransactionVisible = true;
+        $scope.isDashboardVisible = false;
+        $scope.isProductVisible = false;
+        $scope.isCouponVisible = false;
         $scope.isUsersVisible = false;
         $scope.isProductFormVisible = false;
         $scope.isCategoryVisible = false;
@@ -511,6 +531,21 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
                 });
         }
     };
+    
+    // Fetch transaction history
+    $scope.loadTransactionHistory = function () {
+        $http.get('/api/history')
+            .then(function (response) {
+                $scope.transactions = response.data;
+                console.log($scope.transactions)
+                $scope.isLoading = false;
+            })
+            .catch(function (error) {
+                console.error('Error fetching transaction history:', error);
+                $scope.errorMessage = 'Failed to load transaction history.';
+                $scope.isLoading = false;
+            });
+    };
 
     $scope.loadCoupons();
     $scope.loadCategories();
@@ -518,4 +553,5 @@ angular.module('revifeApp').controller('AdminController', ['$scope', '$http', fu
     $scope.loadUsers();
     $scope.loadProducts();
     $scope.showDashboard();
+    $scope.loadTransactionHistory();
 }]);
